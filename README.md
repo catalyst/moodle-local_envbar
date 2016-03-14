@@ -3,7 +3,9 @@
 Environment bar - Moodle local plugin
 ====================
 
-This plugin can show a fixed div with custom text according to the URL.
+**FOR DEVELOPMENT SERVERS ONLY**
+
+This displays a configurable fixed div across across the top of your Moodle site which can change depending on where it has been deployed.
 
 This is useful with development and production for identifying which server you currently reside on based on the URL.
 
