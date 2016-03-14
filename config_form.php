@@ -33,6 +33,11 @@ require_once(dirname(__FILE__).'/config.php');
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class local_envbar_form extends moodleform {
+
+    /**
+     * {@inheritDoc}
+     * @see moodleform::definition()
+     */
     public function definition() {
         global $envbarcolorchoices;
 
@@ -95,6 +100,14 @@ class local_envbar_form extends moodleform {
         $this->add_action_buttons();
     }
 
+    /**
+     * Returns an array with fields that are invalid while creating a new QR link.
+     *
+     * @param array $data array of ("fieldname"=>value) of submitted data
+     * @param array $files array of uploaded files "element_name"=>tmp_file_path
+     * @return array of "element_name"=>"error_description" if there are errors,
+     *         or an empty array if everything is OK (true allowed for backwards compatibility too).
+     */
     public function validation($data, $files) {
         global $CFG, $DB, $USER;
 

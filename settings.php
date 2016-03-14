@@ -15,6 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Environment bar settings.
  *
  * @package   local_envbar
  * @author    Grigory Baleevskiy (grigory@catalyst-au.net)

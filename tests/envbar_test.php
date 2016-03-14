@@ -14,17 +14,39 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Environment bar tests.
+ *
+ * @package   local_envbar
+ * @author    Grigory Baleevskiy (grigory@catalyst-au.net)
+ * @copyright Catalyst IT
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 require_once(dirname(__FILE__) . '/../config.php');
 require_once($CFG->dirroot . '/local/envbar/lib.php');
 require_once($CFG->dirroot . '/local/envbar/config.php');
 require_once($CFG->dirroot . '/local/envbar/config_form.php');
 
+/**
+ * Environment bar tests.
+ *
+ * @author    Grigory Baleevskiy (grigory@catalyst-au.net)
+ * @copyright Catalyst IT
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class local_envbar_test extends advanced_testcase{
 
+    /**
+     * Test test_factory_empty_records()
+     */
     public function test_factory_empty_records() {
         $this->assertCount(3, envbar_config_set_factory::instances(), 'Factory does not return 3 records');
     }
 
+    /**
+     * Test test_configmodel()
+     */
     public function test_configmodel() {
         global $envbarcolorchoices;
 
@@ -55,6 +77,5 @@ class local_envbar_test extends advanced_testcase{
         }
 
     }
-
 
 }
