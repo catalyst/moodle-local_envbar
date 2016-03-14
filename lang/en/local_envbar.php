@@ -23,4 +23,5 @@ $string['set-enabled'] = 'Enabled';
 $string['set-enabled-text'] = '';
 $string['url-match'] = 'URL Match pattern';
 $string['url-match-placeholder'] = 'e.x. staging';
-$string['header_envbar'] = 'Environmental bar';
+$string['header_envbar'] = 'Environment bar';
+$string['set'] = 'Set';

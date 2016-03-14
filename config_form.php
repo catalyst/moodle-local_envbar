@@ -39,7 +39,7 @@ class local_envbar_form extends moodleform {
         $mform = $this->_form;
         $counter = 1;
         foreach ($this->_customdata['sets'] as $set) {
-            $mform->addElement('html', "<h4>Set #{$counter}</h4>");
+            $mform->addElement('html', "<h4>" . get_string('set', PLUGIN_NAME_ENVBAR) . " #{$counter}</h4>");
             $mform->addElement('hidden', "id[{$set->id}]", $set->id);
             $mform->setType("id[{$set->id}]", PARAM_TEXT);
 
