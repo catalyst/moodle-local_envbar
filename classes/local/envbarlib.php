@@ -184,12 +184,26 @@ class envbarlib {
     }
 
     /**
+     * Helper inject function that is used to set the prodwwwroot to the database if it exists in the $CFG variable.
+     */
+    public static function update_wwwwroot_db() {
+        global $CFG;
+
+        if (empty($CFG->local_envbar_prodwwwroot)) {
+            return false;
+        }
+
+        self::setprodwwwroot($CFG->local_envbar_prodwwwroot);
+        return true;
+    }
+
+    /**
      * Helper inject function that is used in local_envbar_extend_navigation.
      */
     public static function inject() {
         global $CFG, $PAGE;
 
-        require_once(__DIR__.'/../../renderer.php');
+        self::update_wwwwroot_db();
 
         // Check if we should inject the code.
         if (!self::injection_allowed()) {
