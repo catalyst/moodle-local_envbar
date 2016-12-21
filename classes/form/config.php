@@ -246,7 +246,7 @@ class config extends moodleform {
                 "delete[{$id}]",
                 get_string("setdeleted", "local_envbar"),
                 '',
-                $locked ? array('disabled') : array(),
+                $locked ? array('disabled', 'group' => 0) : array('group' => 0),
                 array(0, 1)
             );
 
@@ -327,7 +327,7 @@ class config extends moodleform {
             "repeatdelete",
             get_string("setdeleted", "local_envbar"),
             '',
-            array(),
+            array('group' => 0),
             array(0, 1)
         );
 
