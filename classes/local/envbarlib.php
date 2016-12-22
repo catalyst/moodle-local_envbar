@@ -27,16 +27,14 @@
 namespace local_envbar\local;
 
 use cache;
+use context_system;
 use Exception;
-use local_envbar_renderer;
 use moodle_url;
 use stdClass;
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.'); // It must be included from a Moodle page.
 }
-
-require_once(__DIR__.'/../../lib.php');
 
 class envbarlib {
 
@@ -184,18 +182,21 @@ class envbarlib {
     }
 
     /**
-     * Helper inject function that is used to set the prodwwwroot to the database if it exists in the $CFG variable.
+     * Helper inject function that is used to set the prodwwwroot in the database if it exists as a $CFG variable.
+     * When refreshing the database to another staging/development server, if this config.php file omits this value
+     * then we have saved it to the database.
+     *
+     * @param string $prodwwwroot
+     *
      * @return bool Returns true on update.
      */
-    public static function update_wwwwroot_db() {
+    public static function update_wwwwroot_db($prodwwwroot) {
         global $CFG;
 
         // We will not update the db if the $CFG item is empty.
         if (empty($CFG->local_envbar_prodwwwroot)) {
             return false;
         }
-
-        $prodwwwroot = get_config("local_envbar", "prodwwwroot");
 
         if (empty($prodwwwroot)) {
             // If the db config item is empty then we will update it.
@@ -220,59 +221,69 @@ class envbarlib {
     public static function inject() {
         global $CFG, $PAGE;
 
-        self::update_wwwwroot_db();
-
-        // Check if we should inject the code.
-        if (!self::injection_allowed()) {
-            return;
-        }
-
         // During the initial install we don't want to break the admin gui.
         try {
-            $envs = self::get_records();
-        } catch (Exception $e) {
-            return;
-        }
-
-        // Are we on the production env?
-        if (self::getprodwwwroot() === $CFG->wwwroot) {
-            return;
-        }
-
-        $match = null;
-
-        $here = (new moodle_url('/'))->out();
-
-        // Which env matches?
-        foreach ($envs as $env) {
-            if (self::is_match($here, $env->matchpattern)) {
-                $match = $env;
-                break;
+            // Check if we should inject the code.
+            if (!self::injection_allowed()) {
+                return;
             }
-        }
 
-        // If we stil don't have a match then show a default warning.
-        if (empty($match)) {
-            $match = (object) array(
-                'id' => 0,
-                'showtext' => get_string('notconfigured', 'local_envbar'),
+            $prodwwwroot = self::getprodwwwroot();
+
+            // Sets the prodwwwroot in the database if it exists as a $CFG variable.
+            self::update_wwwwroot_db($prodwwwroot);
+
+            // Do not display on the production environment!
+            if ($prodwwwroot === $CFG->wwwroot) {
+                return;
+            }
+
+            // If the prodwwwroot is not set, only show the bar to admin users.
+            if (empty($prodwwwroot)) {
+                if (!has_capability('moodle/site:config', context_system::instance())) {
+                    return;
+                }
+            }
+
+            $envs = self::get_records();
+            $match = null;
+            $here = (new moodle_url('/'))->out();
+
+            // Which env matches?
+            foreach ($envs as $env) {
+                if (self::is_match($here, $env->matchpattern)) {
+                    $match = $env;
+                    break;
+                }
+            }
+
+            // If we stil don't have a match then show a default warning.
+            if (empty($match)) {
+                $match = (object) array(
+                    'id' => 0,
+                    'showtext' => get_string('notconfigured', 'local_envbar'),
+                    'colourtext' => 'white',
+                    'colourbg' => 'red',
+                    'matchpattern' => '',
+                );
+
+            }
+
+            array_push($envs, (object) array(
+                'id' => -1,
+                'showtext' => get_string('prod', 'local_envbar'),
                 'colourtext' => 'white',
                 'colourbg' => 'red',
-                'matchpattern' => '',
-            );
+                'matchpattern' => self::getprodwwwroot(),
+            ));
 
+            $renderer = $PAGE->get_renderer('local_envbar');
+            $html = $renderer->render_envbar($match, true, $envs);
+            $CFG->additionalhtmltopofbody .= $html;
+
+        } catch (Exception $e) {
+            debugging('Exception occured while injecting our code: '.$e->getMessage(), DEBUG_DEVELOPER);
         }
-        array_push($envs, (object) array(
-            'id' => -1,
-            'showtext' => get_string('prod', 'local_envbar'),
-            'colourtext' => 'white',
-            'colourbg' => 'red',
-            'matchpattern' => self::getprodwwwroot(),
-        ));
-
-        $renderer = $PAGE->get_renderer('local_envbar');
-        $html = $renderer->render_envbar($match, true, $envs);
-        $CFG->additionalhtmltopofbody .= $html;
     }
 
     /**
@@ -308,7 +319,9 @@ class envbarlib {
     }
 
     /**
-     * Checks if we should try to inject the additionalhtmltopofbody
+     * Checks if we should try to inject the additionalhtmltopofbody.
+     * This prevents injecting multiple times if the call has been added to many hooks.
+     * It also prevents injection on the settings.php?section=additionalhtml page.
      *
      * @return bool
      *
@@ -319,6 +332,7 @@ class envbarlib {
         if (self::$injectcalled) {
             return false;
         }
+
         self::$injectcalled = true;
 
         // Do not inject into these pages to prevent duplication of the bar.

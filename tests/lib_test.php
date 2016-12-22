@@ -97,6 +97,8 @@ class local_envbar_lib_test extends advanced_testcase {
         $this->resetAfterTest(true);
         $PAGE->set_url(new moodle_url('/local/envbar/index.php'));
 
+        $this->setAdminUser();
+
         self::assertEmpty($CFG->additionalhtmltopofbody);
 
         $data = new stdClass();
