@@ -180,7 +180,6 @@ EOD;
     }
 
 }
-
 /**
  * Gets some JS which adds the env to the page title
  *

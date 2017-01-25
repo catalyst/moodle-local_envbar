@@ -30,7 +30,7 @@ require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 
 $PAGE->requires->js('/local/envbar/module.js');
-$PAGE->requires->js_init_call('M.local_envbar.init_colourpicker');
+$PAGE->requires->js('/local/envbar/jscolor.min.js');
 
 global $DB;
 
