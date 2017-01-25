@@ -28,6 +28,9 @@ namespace local_envbar\form;
 
 use local_envbar\local\envbarlib;
 use moodleform;
+\MoodleQuickForm::registerElementType('colourpicker',
+    $CFG->dirroot . '/local/envbar/classes/form/colourpicker_form_element.php',
+    '\\local_envbar\\form\\colourpicker_form_element');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.'); // It must be included from a Moodle page.
@@ -200,46 +203,24 @@ class config extends moodleform {
             );
 
             $mform->addElement(
-                "text",
+                "colourpicker",
                 "colourtext[{$id}]",
                 get_string("textcolour", "local_envbar"),
                 array("placeholder" => get_string("colourplaceholder", "local_envbar"),
-                    "size" => 40,
                     "list" => "colours",
                     "name" => "envcolours",
                     $locked ? 'disabled' : 'enabled')
             );
 
-            if (!$locked) {
-                $mform->addRule(
-                    "colourtext[{$id}]",
-                    get_string("colourerror", "local_envbar"),
-                    'regex',
-                    '/#([a-f0-9]{3}){1,2}\b|' . $coloursregex . '\b/i',
-                    'client'
-                );
-            }
-
             $mform->addElement(
-                "text",
+                "colourpicker",
                 "colourbg[{$id}]",
                 get_string("bgcolour", "local_envbar"),
                 array("placeholder" => get_string("colourplaceholder", "local_envbar"),
-                    "size" => 40,
                     "list" => "colours",
                     "name" => "envcolours",
                     $locked ? 'disabled' : 'enabled')
             );
-
-            if (!$locked) {
-                $mform->addRule(
-                    "colourbg[{$id}]",
-                    get_string("colourerror", "local_envbar"),
-                    'regex',
-                    '/#([a-f0-9]{3}){1,2}\b|' . $coloursregex . '\b/i',
-                    'client'
-                );
-            }
 
             $mform->addElement(
                 "advcheckbox",
@@ -302,22 +283,20 @@ class config extends moodleform {
         );
 
         $repeatarray[] = $mform->createElement(
-            "text",
+            "colourpicker",
             "repeatcolourtext",
             get_string("textcolour", "local_envbar"),
             array("placeholder" => get_string("colourplaceholder", "local_envbar"),
-                "size" => 40,
                 "list" => "colours",
                 "name" => "envcolours"
             )
         );
 
         $repeatarray[] = $mform->createElement(
-            "text",
+            "colourpicker",
             "repeatcolourbg",
             get_string("bgcolour", "local_envbar"),
             array("placeholder" => get_string("colourplaceholder", "local_envbar"),
-                "size" => 40,
                 "list" => "colours",
                 "name" => "envcolours")
         );

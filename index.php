@@ -29,6 +29,9 @@ use local_envbar\local\envbarlib;
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 
+$PAGE->requires->js('/local/envbar/module.js');
+$PAGE->requires->js_init_call('M.local_envbar.init_colourpicker');
+
 global $DB;
 
 admin_externalpage_setup('local_envbar');
