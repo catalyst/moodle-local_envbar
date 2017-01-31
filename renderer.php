@@ -63,6 +63,11 @@ class local_envbar_renderer extends plugin_renderer_base {
     background: {$match->colourbg};
     color: {$match->colourtext};
 }
+.envbar.envpreview,
+.envbar.envpreview a {
+    background: red;
+    color: white;
+}
 .envbar.env{$match->id} a {
     text-decoration: underline;
 }

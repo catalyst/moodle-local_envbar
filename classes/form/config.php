@@ -295,6 +295,16 @@ class config extends moodleform {
 
         $repeatarray = array();
 
+        $record = new \stdClass();
+        $record->id = "preview";
+        $record->colourbg = "red";
+        $record->colourtext = "white";
+        $record->matchpattern = "";
+        $record->showtext = "New environment";
+
+        $html = $renderer->render_envbar($record, false);
+        $repeatarray[] = $mform->createElement('html', $html);
+
         $repeatarray[] = $mform->createElement(
             "hidden",
             "repeatid"

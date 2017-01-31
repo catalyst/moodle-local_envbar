@@ -5,18 +5,16 @@ function colourupdate(jscolor) {
 		textfield = document.getElementById(textfieldid),
 		parts = textfieldid.split("_"),
 		colourtype = parts[1],
-		envbarclass = "envbar env" + parts[2];
+		envbarid = parts[2];
 
 	textfield.value = colour;
 
-	var envbars = document.getElementsByClassName(envbarclass);
-	for (var i = 0; i < envbars.length; i++) {
-		if (colourtype == "colourtext") {
-			envbars[i].style.color = colour;
-		} else if (colourtype == "colourbg") {
-			envbars[i].style.background = colour;
-		}
+	var repeatenv = false;
+	if (colourtype.match(/^repeat.*/)) {
+		repeatenv = true;
+		colourtype = colourtype.replace("repeat", "");
 	}
+	envbarupdate(envbarid, colourtype, colour, repeatenv);
 }
 
 function colourtohex(colour) {
@@ -29,6 +27,50 @@ function colourtohex(colour) {
         return colours[colour.toLowerCase()];
 
     return false;
+}
+
+function envbarupdate(id, colourtype, colour, repeatenv) {
+	var envbarclass = (repeatenv === false) ? "envbar env" + id : "envbar envpreview repeatenv" + id ,
+	 	envbars = document.getElementsByClassName(envbarclass);
+
+	for (var i = 0; i < envbars.length; i++) {
+		var links = envbars[i].getElementsByTagName('a');
+		if (colourtype == "colourtext") {
+			envbars[i].style.color = colour;
+			for (var ii = 0; ii < links.length; ii++) {
+				links[ii].style.color = colour;
+			}
+		} else if (colourtype == "colourbg") {
+			envbars[i].style.background = colour;
+			for (var ii = 0; ii < links.length; ii++) {
+				links[ii].style.background = colour;
+			}
+		}
+	}
+}
+
+function colourinputhandler() {
+	var colour = this.value,
+		parts = this.id.split("_"),
+		colourbuttonid = parts[0] + "_" + parts[1] + "_colourbtn_" + parts[2],
+		colourbutton = document.getElementById(colourbuttonid);
+		colourtype = parts[1],
+		envbarid = parts[2];
+
+	if (!colour.match(/^#.{6}/)) {
+		//we're dealing with a non hex colour
+		colour = colourtohex(colour);
+	}
+
+	if (colour) {
+		var repeatenv = false;
+		if (colourtype.match(/^repeat.*/)) {
+			repeatenv = true;
+			colourtype = colourtype.replace("repeat", "");
+		}
+		colourbutton.jscolor.fromString(colour);
+		envbarupdate(envbarid, colourtype, colour, repeatenv);
+	}
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -44,5 +86,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		}
 
 		colourbuttons[i].className += " jscolor {valueElement:null,value:'" + colour + "',onFineChange:'colourupdate(this)'}";
+	}
+
+	var previewbars = document.getElementsByClassName('envpreview');
+	for (var i = 0; i < previewbars.length; i++) {
+		previewbars[i].className += " repeatenv" + i;
+	}
+
+	var colourinputs = document.querySelectorAll('input[id*="colourtext"],input[id*="colourbg"]');
+	for (var i = 0; i < colourinputs.length; i++) {
+		colourinputs[i].addEventListener("keyup", colourinputhandler);
+		colourinputs[i].addEventListener("change", colourinputhandler);
 	}
 })
