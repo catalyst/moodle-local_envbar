@@ -160,10 +160,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     $js
 });
 function envbar_close(el) {
-    if (el.parentElement.parentElement.nodeName == 'BODY') {
-        el.parentElement.parentElement.classList.remove('local_envbar');
-        document.getElementById('envbar_spacer').remove();
-        el.parentElement.remove();
+    var envbar = el.parentElement;
+    var body = envbar.parentElement;
+    if (body.nodeName == 'BODY') {
+        body.classList.remove('local_envbar');
+        body.removeChild(envbar);
+        body.removeChild(document.getElementById('envbar_spacer'));
     }
 }
 </script>
