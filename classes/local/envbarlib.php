@@ -346,8 +346,8 @@ class envbarlib {
             return false;
         }
 
-        // Do not inject if being called in an ajax or cli script.
-        if (CLI_SCRIPT or AJAX_SCRIPT) {
+        // Do not inject if being called in an ajax or cli script unless it's a unit test.
+        if ((CLI_SCRIPT or AJAX_SCRIPT) && !PHPUNIT_TEST) {
             return false;
         }
 
