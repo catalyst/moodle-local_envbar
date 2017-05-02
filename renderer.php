@@ -191,6 +191,12 @@ function envbar_close(el) {
         body.classList.remove('local_envbar');
         body.removeChild(envbar);
         body.removeChild(document.getElementById('envbar_spacer'));
+    } else if (body.getAttribute('id') === 'page-wrapper') {
+        var wrapper = body;
+        body = body.parentElement;
+        body.classList.remove('local_envbar');
+        wrapper.removeChild(envbar);
+        wrapper.removeChild(document.getElementById('envbar_spacer'));
     }
 }
 </script>

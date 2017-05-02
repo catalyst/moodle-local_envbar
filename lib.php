@@ -29,14 +29,25 @@ use local_envbar\local\envbarlib;
 defined('MOODLE_INTERNAL') || die;
 
 /**
+ * This hook was introduced in moodle 3.3.
+ */
+function local_envbar_before_standard_top_of_body_html() {
+
+    return envbarlib::inject();
+}
+
+/**
  * lib.php isn't always called, we need to hook something to ensure it runs.
  */
 function local_envbar_extend_navigation() {
 
-    // Why is this even being called in ajax scripts?
-    if (CLI_SCRIPT or AJAX_SCRIPT) {
-        return;
-    }
+    envbarlib::inject();
+}
+
+/**
+ * This is the hook for pre 2.9 moodle.
+ */
+function local_envbar_extends_navigation() {
 
     envbarlib::inject();
 }
