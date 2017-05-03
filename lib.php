@@ -31,9 +31,9 @@ defined('MOODLE_INTERNAL') || die;
 /**
  * This hook was introduced in moodle 3.3.
  */
-function local_envbar_before_standard_top_of_body_html() {
+function local_envbar_before_http_headers() {
 
-    return envbarlib::inject();
+    envbarlib::inject();
 }
 
 /**
