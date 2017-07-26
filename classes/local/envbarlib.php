@@ -446,22 +446,19 @@ class envbarlib {
             $response = $curl->post($url, $params);
         } catch (Exception $e) {
             mtrace("Error contacting production, error returned was: ".$e->getMessage());
-            if (!$debug) {
-                throw new moodle_exception('connectionfailed');
-            }
         }
 
         $response = json_decode($response);
 
         if ($response->result === 'success') {
             mtrace($response->message);
-            set_config('prodlastping', time(), 'local_envbar');
         } else {
-            mtrace("Error, the lastrefresh was not updated");
-            if (!$debug) {
-                throw new moodle_exception('connectionfailed');
-            }
+            mtrace("Error contacting production, the lastrefresh was not updated");
         }
+
+        // We update the lastping even if it did not work. This is only for
+        // information purposes, we don't want to spam the network constantly.
+        set_config('prodlastping', time(), 'local_envbar');
     }
 
 }
