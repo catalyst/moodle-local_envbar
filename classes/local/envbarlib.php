@@ -366,6 +366,11 @@ class envbarlib {
             return false;
         }
 
+        // Do not inject if it is a behat test, see issue #80 on GitHub.
+        if (defined('BEHAT_SITE_RUNNING') && BEHAT_SITE_RUNNING) {
+            return false;
+        }
+
         self::$injectcalled = true;
 
         // Nothing preventing the injection.
