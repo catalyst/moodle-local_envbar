@@ -174,7 +174,7 @@ class config extends moodleform {
         $mform->addGroup($secretkeygroup, 'secretkeyg', get_string('secretkey', 'local_envbar'), array(' '), false);
 
         $mform->setType("secretkey", PARAM_TEXT);
-        if (isset($config->secretkey)) {
+        if (envbarlib::is_secret_key_overridden()) {
             $mform->setDefault('secretkey', envbarlib::get_secret_key());
         }
         $mform->addHelpButton('secretkeyg', 'secretkey', 'local_envbar');
