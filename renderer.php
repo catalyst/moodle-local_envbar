@@ -132,6 +132,10 @@ EOD;
             $unit = strtok(' ');
             $show = "$num $unit";
             $showtext .= ' ' . $config->stringseparator . ' ' . get_string('refreshedago', 'local_envbar', $show);
+            // Show debugging status to user
+            global $CFG;
+            $debugging = $CFG->debug > 0 ? get_string('debuggingon', 'local_envbar') : get_string('debuggingoff', 'local_envbar');
+            $showtext .=  '<nobr> ' .$debugging .   '</nobr>';
         } else {
             $showtext .= ' ' . $config->stringseparator . ' ' . get_string('refreshednever', 'local_envbar');
         }
@@ -174,6 +178,20 @@ EOD;
                         get_string('configurehere', 'local_envbar'));
             }
             $showtext .= '<nobr> ' . $config->stringseparator . ' ' . $editlink . '</nobr>';
+        }
+
+        // Debugging links
+        if ($canedit && $config->showdebugconfiglink) {
+            global $CFG;
+            $debuglink = html_writer::link(new moodle_url('/admin/settings.php?section=debugging'),
+                        get_string('configuredebugging', 'local_envbar'));
+    
+            $debugging = $CFG->debug > 0 ? get_string('debuggingon', 'local_envbar') : get_string('debuggingoff', 'local_envbar');
+            $query_string = http_build_query($_GET);
+            $currentlink = $_SERVER['PHP_SELF'] .'?'. $query_string;
+            $debugtogglelink = html_writer::link(new moodle_url('/local/envbar/toggle_debugging.php?redirect='.$currentlink),
+                $debugging);
+            $showtext .= '<nobr> ' . $debugtogglelink. ' ' . $debuglink . '</nobr>';
         }
 
         if ($fixed) {
