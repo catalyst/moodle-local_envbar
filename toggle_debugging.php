@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Environment bar settings.
+ * Toggle debugging switch
  *
  * @package   local_envbar
  * @author    Trisha Milan (trishamilan@catalyst-au.net)
@@ -30,21 +30,23 @@ require_once($CFG->libdir . '/moodlelib.php');
 
 /**
  * Toggle debugging switch
+ * 
  * @return void
  */
 function toggle_debugging() {
-	global $CFG;
-	$debug = $CFG->debug;
-	$debug_config = $debug === 0 ? 32767 : 0;
-	set_config('debug', $debug_config); 
+    global $CFG;
+    $debug = $CFG->debug;
+    $debug_config = $debug === 0 ? 32767 : 0;
+    set_config('debug', $debug_config); 
 }
 /**
  * Redirect to current page
+ * 
  * @return void
  */
 function redirect_to_current_page() {
-	$redirect = required_param('redirect', PARAM_URL);
-	redirect($redirect);
+    $redirect = required_param('redirect', PARAM_URL);
+    redirect($redirect);
 }
 
 toggle_debugging();
