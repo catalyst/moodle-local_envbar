@@ -33,12 +33,12 @@ if (!is_siteadmin()) {
 }
 
 global $CFG;
-// Toggle debug config and debug display
-$debug_config = envbarlib::get_toggled_debug_config($CFG->debug);
-$debug_display = envbarlib::get_toggled_debug_display($debug_config);
-// Set debug level and debug display
-set_config('debug', $debug_config);
-set_config('debugdisplay', $debug_display);
-// Go back to current URL
+// Toggles the debug config and debug display.
+$debugconfig = envbarlib::get_toggled_debug_config($CFG->debug);
+$debugdisplay = envbarlib::get_toggled_debug_display($debugconfig);
+// Sets the debug level and debug display.
+set_config('debug', $debugconfig);
+set_config('debugdisplay', $debugdisplay);
+// Go back to current page.
 $redirecturl = required_param('redirect', PARAM_URL);
 redirect($redirecturl);
