@@ -518,7 +518,7 @@ CSS;
 
     /**
      * Returns the toggled value of the debug config.
-     * 
+     *
      * @param  string $debug Debug level
      * @return string $debugconfig Debug level
      */
@@ -534,7 +534,7 @@ CSS;
 
     /**
      * Returns the toggled value of the debug display.
-     * 
+     *
      * @param  string $debug Debug level
      * @return int $debugdisplay Debug display
      */
