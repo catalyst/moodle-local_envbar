@@ -142,7 +142,7 @@ EOD;
             if ($nextrefresh == (1 * $nextrefresh)) {
                 // Does the value look like a timestamp?
                 $nextrefresh = (1 * $nextrefresh);
-            } else if ( ($time = strtotime($nextrefresh)) !== false  ) {
+            } else if (($time = strtotime($nextrefresh)) !== false) {
                 // Does the value look like a date string?
                 $nextrefresh = $time;
 
@@ -167,30 +167,41 @@ EOD;
         $canedit = has_capability('moodle/site:config', $systemcontext);
         if ($canedit && $config->showconfiglink) {
             if ($produrl) {
-                $editlink = html_writer::link($produrl.'/local/envbar/index.php',
-                        get_string('configureinprod', 'local_envbar'), array('target' => 'prod'));
+                $editlink = html_writer::link(
+                    $produrl.'/local/envbar/index.php',
+                    get_string('configureinprod', 'local_envbar'),
+                    array('target' => 'prod')
+                );
             } else {
-                $editlink = html_writer::link(new moodle_url('/local/envbar/index.php'),
-                        get_string('configurehere', 'local_envbar'));
+                $editlink = html_writer::link(
+                    new moodle_url('/local/envbar/index.php'),
+                    get_string('configurehere', 'local_envbar')
+                );
             }
             $showtext .= '<nobr> ' . $config->stringseparator . ' ' . $editlink . '</nobr>';
         }
 
-        // Debugging links
+        // Show debugging links for admins.
+        $debuggingonstr = get_string('debuggingon', 'local_envbar');
+        $debuggingoffstr = get_string('debuggingoff', 'local_envbar');
         if ($canedit && $config->showdebugconfiglink) {
             global $CFG;
-            $debuglink = html_writer::link(new moodle_url('/admin/settings.php?section=debugging'),
-                get_string('configuredebugging', 'local_envbar'));
-            $debugging = $CFG->debug === DEBUG_DEVELOPER ? get_string('debuggingon', 'local_envbar') : get_string('debuggingoff', 'local_envbar');
+            $debuglink = html_writer::link(
+                new moodle_url('/admin/settings.php?section=debugging'),
+                get_string('configuredebugging', 'local_envbar')
+            );
+            $debugging = $CFG->debug === DEBUG_DEVELOPER ? $debuggingonstr : $debuggingoffstr;
             $querystring = http_build_query($_GET);
             $currentlink = $_SERVER['PHP_SELF'] .'?'. $querystring;
-            $debugtogglelink = html_writer::link(new moodle_url('/local/envbar/toggle_debugging.php?redirect='.$currentlink),
-                $debugging);
+            $debugtogglelink = html_writer::link(
+                new moodle_url('/local/envbar/toggle_debugging.php?redirect='.$currentlink),
+                $debugging
+            );
             $showtext .= '<nobr> ' . $debugtogglelink. ' ' . $debuglink . '</nobr>';
         } else {
-            // Show debugging status to user
+            // Show debugging status for users.
             global $CFG;
-            $debugging = $CFG->debug  === DEBUG_DEVELOPER ? get_string('debuggingon', 'local_envbar') : get_string('debuggingoff', 'local_envbar');
+            $debugging = $CFG->debug === DEBUG_DEVELOPER ? $debuggingonstr : $debuggingoffstr;
             $showtext .= '<nobr> ' . $debugging . '</nobr>';
         }
 
