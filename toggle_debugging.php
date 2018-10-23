@@ -28,27 +28,17 @@ use local_envbar\local\envbarlib;
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->libdir . '/moodlelib.php');
 
-/**
- * Toggle debugging switch
- * 
- * @return void
- */
-function toggle_debugging() {
-    global $CFG;
-    $debug = $CFG->debug;
-    $debug_config = $debug === 0 ? 32767 : 0;
-    set_config('debug', $debug_config); 
-}
-/**
- * Redirect to current page
- * 
- * @return void
- */
-function redirect_to_current_page() {
-    $redirect = required_param('redirect', PARAM_URL);
-    redirect($redirect);
+if (!is_siteadmin()) {
+    die;
 }
 
-toggle_debugging();
-redirect_to_current_page();
-
+global $CFG;
+// Toggle debug config and debug display
+$debug_config = envbarlib::get_toggled_debug_config($CFG->debug);
+$debug_display = envbarlib::get_toggled_debug_display($debug_config);
+// Set debug level and debug display
+set_config('debug', $debug_config);
+set_config('debugdisplay', $debug_display);
+// Go back to current URL
+$redirecturl = required_param('redirect', PARAM_URL);
+redirect($redirecturl);
