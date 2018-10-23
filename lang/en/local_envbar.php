@@ -100,3 +100,4 @@ $string['debuggingoff'] = 'Debugging Off';
 $string['configuredebugging'] = 'Debug config';
 $string['showdebugconfiglink'] = 'Show debug config link';
 $string['showdebugconfiglink_desc'] = 'This setting controls if the "Debug config" link is added to the envbar for users who are allowed to edit the envbar config.';
+$string['debuggingdefinedinconfig'] = '(Defined in config.php)';
