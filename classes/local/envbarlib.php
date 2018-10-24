@@ -516,4 +516,36 @@ CSS;
         }
     }
 
+    /**
+     * Returns the toggled value of the debug config.
+     *
+     * @param  string $debug Debug level
+     * @return string $debugconfig Debug level
+     */
+    public static function get_toggled_debug_config($debug) {
+        if ($debug === DEBUG_NORMAL) {
+            $debugconfig = DEBUG_DEVELOPER;
+        } else {
+            // Set to DEBUG_NORMAL in case there's an unknown debug level
+            $debugconfig = DEBUG_NORMAL;
+        }
+        return $debugconfig;
+    }
+
+    /**
+     * Returns the toggled value of the debug display.
+     *
+     * @param  string $debug Debug level
+     * @return int $debugdisplay Debug display
+     */
+    public static function get_toggled_debug_display($debug) {
+        if ($debug === DEBUG_DEVELOPER) {
+            // Output debug messages to the browser.
+            $debugdisplay = 1;
+        } else {
+            // Debug messages will not show on the browser.
+            $debugdisplay = 0;
+        }
+        return $debugdisplay;
+    }
 }

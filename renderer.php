@@ -176,6 +176,34 @@ EOD;
             $showtext .= '<nobr> ' . $config->stringseparator . ' ' . $editlink . '</nobr>';
         }
 
+        $debuggingonstr = get_string('debuggingon', 'local_envbar');
+        $debuggingoffstr = get_string('debuggingoff', 'local_envbar');
+        $debuggingdefinedstr = get_string('debuggingdefinedinconfig', 'local_envbar');
+        // Show debugging links for admins.
+        if ($canedit && $config->showdebugging) {
+            global $CFG;
+            $debugging = $CFG->debug === DEBUG_DEVELOPER ? $debuggingonstr : $debuggingoffstr;
+            $debugtogglestr = $debugging === $debuggingonstr ? get_string('debugtogglelinkoff', 'local_envbar') : get_string('debugtogglelinkon', 'local_envbar');
+            $querystring = http_build_query($_GET);
+            // Get the url of the current page.
+            $currentlink = $_SERVER['PHP_SELF'] .'?'. $querystring;
+            $debugtogglelink = html_writer::link(new moodle_url('/local/envbar/toggle_debugging.php?redirect='.$currentlink), $debugtogglestr);
+            // Check if debug level and debug display is set on config.php.
+            if (!isset($CFG->config_php_settings['debug']) && !isset($CFG->config_php_settings['debugdisplay'])) {
+                $showtext .= '<nobr> ' . $config->stringseparator . ' ' . $debugging. ' ' . $debugtogglelink . '</nobr>';
+            } else {
+                // Remove link to toggle debugging.
+                $showtext .= '<nobr> ' . $config->stringseparator . ' ' . $debugging. ' ' . $debuggingdefinedstr . ' ' . $debugtogglelink . '</nobr>';
+            }
+        } else {
+            if ($config->showdebugging) {
+                // Show debugging status for users.
+                global $CFG;
+                $debugging = $CFG->debug === DEBUG_DEVELOPER ? $debuggingonstr : $debuggingoffstr;
+                $showtext .= '<nobr> ' . $config->stringseparator . ' ' . $debugging . '</nobr>';
+            }
+        }
+
         if ($fixed) {
             $js .= local_envbar_favicon_js($match);
             $js .= local_envbar_user_menu($envs, $match);

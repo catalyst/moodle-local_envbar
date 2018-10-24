@@ -95,4 +95,10 @@ $string['titleheading'] = 'Page title';
 $string['urlmatch'] = 'Non Production URL';
 $string['urlmatch_help'] = 'Add the address for your non prod site.<br />Note: You can use Regular Expressions to match your URL.<br />E.g. http://stage[1,2,3].example.com to match http://stage2.example.com<br />Note that following special characters will be escaped:<br /> / \ - . ? * ^ $';
 $string['urlmatchplaceholder'] = 'eg. staging';
-
+$string['debuggingon'] = 'Debugging On';
+$string['debuggingoff'] = 'Debugging Off';
+$string['debugtogglelinkon'] = 'Turn On';
+$string['debugtogglelinkoff'] = 'Turn Off';
+$string['showdebugging'] = 'Show debugging';
+$string['showdebugging_desc'] = 'This setting controls if the debugging status and toggle link is added to the envbar for users who are allowed to edit the envbar config.';
+$string['debuggingdefinedinconfig'] = '(Defined in config.php)';

@@ -68,6 +68,11 @@ if ($hassiteconfig) {
             get_string('showconfiglink_desc', 'local_envbar', null, true),
             true));
 
+    $presentation->add(new admin_setting_configcheckbox('local_envbar/showdebugging',
+            get_string('showdebugging', 'local_envbar', null, true),
+            get_string('showdebugging_desc', 'local_envbar', null, true),
+            true));
+
     $presentation->add(new admin_setting_heading('local_envbar/menuheading',
             get_string('menuheading', 'local_envbar', null, true),
             ''));

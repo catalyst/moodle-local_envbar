@@ -215,4 +215,21 @@ class local_envbar_lib_test extends advanced_testcase {
         $this->assertEquals('configured', envbarlib::get_secret_key());
     }
 
+    /**
+     * Test get_toggled_debug_config()
+     */
+    public function test_get_toggled_debug_config() {
+        $this->resetAfterTest();
+        $this->assertEquals(DEBUG_DEVELOPER, envbarlib::get_toggled_debug_config(DEBUG_NORMAL));
+        $this->assertEquals(DEBUG_NORMAL, envbarlib::get_toggled_debug_config(DEBUG_DEVELOPER));
+    }
+
+     /**
+     * Test get_toggled_debug_display()
+     */
+    public function test_get_toggled_debug_display() {
+        $this->resetAfterTest();
+        $this->assertEquals(0, envbarlib::get_toggled_debug_display(DEBUG_NORMAL));
+        $this->assertEquals(1, envbarlib::get_toggled_debug_display(DEBUG_DEVELOPER));
+    }
 }
