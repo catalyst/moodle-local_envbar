@@ -47,6 +47,7 @@ class local_envbar_renderer extends plugin_renderer_base {
      * @return string
      */
     public function render_envbar($match, $fixed = true, $envs = array()) {
+        global $CFG, $ME;
 
         $config = get_config('local_envbar');
 
@@ -179,27 +180,31 @@ EOD;
         $debuggingonstr = get_string('debuggingon', 'local_envbar');
         $debuggingoffstr = get_string('debuggingoff', 'local_envbar');
         $debuggingdefinedstr = get_string('debuggingdefinedinconfig', 'local_envbar');
+        $debugging = envbarlib::get_debugging_status_string($CFG->debug);
         // Show debugging links for admins.
         if ($canedit && $config->showdebugging) {
-            global $CFG;
-            $debugging = $CFG->debug === DEBUG_DEVELOPER ? $debuggingonstr : $debuggingoffstr;
-            $debugtogglestr = $debugging === $debuggingonstr ? get_string('debugtogglelinkoff', 'local_envbar') : get_string('debugtogglelinkon', 'local_envbar');
-            $querystring = http_build_query($_GET);
+            if ($debugging === $debuggingonstr) {
+                $debugtogglestr = get_string('debugtogglelinkoff', 'local_envbar');
+            } else {
+                $debugtogglestr = get_string('debugtogglelinkon', 'local_envbar');
+            }
             // Get the url of the current page.
-            $currentlink = $_SERVER['PHP_SELF'] .'?'. $querystring;
-            $debugtogglelink = html_writer::link(new moodle_url('/local/envbar/toggle_debugging.php?redirect='.$currentlink), $debugtogglestr);
+            $currentlink = $CFG->wwwroot . $ME;
+            $debugtogglelink = html_writer::link(
+                new moodle_url('/local/envbar/toggle_debugging.php?redirect='.$currentlink),
+                $debugtogglestr
+            );
             // Check if debug level and debug display is set on config.php.
             if (!isset($CFG->config_php_settings['debug']) && !isset($CFG->config_php_settings['debugdisplay'])) {
                 $showtext .= '<nobr> ' . $config->stringseparator . ' ' . $debugging. ' ' . $debugtogglelink . '</nobr>';
             } else {
                 // Remove link to toggle debugging.
-                $showtext .= '<nobr> ' . $config->stringseparator . ' ' . $debugging. ' ' . $debuggingdefinedstr . ' ' . $debugtogglelink . '</nobr>';
+                $showtext .= '<nobr> ' . $config->stringseparator . ' ' . $debugging;
+                $showtext .= ' ' . $debuggingdefinedstr . '</nobr>';
             }
         } else {
             if ($config->showdebugging) {
                 // Show debugging status for users.
-                global $CFG;
-                $debugging = $CFG->debug === DEBUG_DEVELOPER ? $debuggingonstr : $debuggingoffstr;
                 $showtext .= '<nobr> ' . $config->stringseparator . ' ' . $debugging . '</nobr>';
             }
         }

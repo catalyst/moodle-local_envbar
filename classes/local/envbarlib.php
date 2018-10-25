@@ -548,4 +548,40 @@ CSS;
         }
         return $debugdisplay;
     }
+
+    /**
+     * Returns the debugging status string to be displayed.
+     * @param  string $debug Debug level
+     * @return string
+     */
+    public static function get_debugging_status_string($debug) {
+        if ($debug === DEBUG_DEVELOPER) {
+            $debuggingstr = get_string('debuggingon', 'local_envbar');
+        } else {
+            $debuggingstr = get_string('debuggingoff', 'local_envbar');
+        }
+        return $debuggingstr;
+    }
+
+    /**
+     * Sets the debugconfig and debug display.
+     * @param string $debug Debug level
+     */
+    public static function set_debug_config($debug) {
+        // Toggles the debug config and debug display.
+        $debugconfig = self::get_toggled_debug_config($debug);
+        $debugdisplay = self::get_toggled_debug_display($debugconfig);
+
+        if ($debugconfig === DEBUG_DEVELOPER ||
+                $debugconfig === DEBUG_NORMAL &&
+                $debugdisplay === 1 ||
+                $debugdisplay === 0) {
+            // Sets the debug level and debug display.
+            set_config('debug', $debugconfig);
+            set_config('debugdisplay', $debugdisplay);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

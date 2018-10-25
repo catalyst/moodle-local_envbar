@@ -28,16 +28,10 @@ require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->libdir . '/moodlelib.php');
 
 if (!is_siteadmin()) {
-    die;
+    die('Access denied.');
 }
 
-global $CFG;
-// Toggles the debug config and debug display.
-$debugconfig = envbarlib::get_toggled_debug_config($CFG->debug);
-$debugdisplay = envbarlib::get_toggled_debug_display($debugconfig);
-// Sets the debug level and debug display.
-set_config('debug', $debugconfig);
-set_config('debugdisplay', $debugdisplay);
+envbarlib::set_debug_config($CFG->debug);
 // Go back to current page.
 $redirecturl = required_param('redirect', PARAM_URL);
 redirect($redirecturl);
