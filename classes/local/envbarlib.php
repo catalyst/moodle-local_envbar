@@ -526,7 +526,7 @@ CSS;
         if ($debug === DEBUG_NORMAL) {
             $debugconfig = DEBUG_DEVELOPER;
         } else {
-            // Set to DEBUG_NORMAL in case there's an unknown debug level
+            // Set to DEBUG_NORMAL in case there's an unknown debug level.
             $debugconfig = DEBUG_NORMAL;
         }
         return $debugconfig;

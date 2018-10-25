@@ -216,7 +216,7 @@ class local_envbar_lib_test extends advanced_testcase {
     }
 
     /**
-     * Test get_toggled_debug_config()
+     * Test get_toggled_debug_config().
      */
     public function test_get_toggled_debug_config() {
         $this->resetAfterTest();
@@ -224,8 +224,8 @@ class local_envbar_lib_test extends advanced_testcase {
         $this->assertEquals(DEBUG_NORMAL, envbarlib::get_toggled_debug_config(DEBUG_DEVELOPER));
     }
 
-     /**
-     * Test get_toggled_debug_display()
+    /**
+     * Test get_toggled_debug_display().
      */
     public function test_get_toggled_debug_display() {
         $this->resetAfterTest();
