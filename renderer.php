@@ -177,22 +177,13 @@ EOD;
             $showtext .= '<nobr> ' . $config->stringseparator . ' ' . $editlink . '</nobr>';
         }
 
-        $debuggingonstr = get_string('debuggingon', 'local_envbar');
-        $debuggingoffstr = get_string('debuggingoff', 'local_envbar');
         $debuggingdefinedstr = get_string('debuggingdefinedinconfig', 'local_envbar');
-        $debugging = envbarlib::get_debugging_status_string($CFG->debug);
+        $debugging = envbarlib::get_debugging_status_string();
         // Show debugging links for admins.
         if ($canedit && $config->showdebugging) {
-            if ($debugging === $debuggingonstr) {
-                $debugtogglestr = get_string('debugtogglelinkoff', 'local_envbar');
-            } else {
-                $debugtogglestr = get_string('debugtogglelinkon', 'local_envbar');
-            }
-            // Get the url of the current page.
-            $currentlink = $CFG->wwwroot . $ME;
             $debugtogglelink = html_writer::link(
-                new moodle_url('/local/envbar/toggle_debugging.php?redirect='.$currentlink),
-                $debugtogglestr
+                new moodle_url('/local/envbar/toggle_debugging.php?redirect='.$ME),
+                envbarlib::get_debug_toggle_string()
             );
             // Check if debug level and debug display is set on config.php.
             if (!isset($CFG->config_php_settings['debug']) && !isset($CFG->config_php_settings['debugdisplay'])) {

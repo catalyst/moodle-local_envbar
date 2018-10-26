@@ -28,10 +28,10 @@ require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->libdir . '/moodlelib.php');
 
 if (!is_siteadmin()) {
-    die('Access denied.');
+    print_error('Access denied.');
 }
 
-envbarlib::set_debug_config($CFG->debug);
+envbarlib::set_debug_config();
 // Go back to current page.
 $redirecturl = required_param('redirect', PARAM_URL);
 redirect($redirecturl);
