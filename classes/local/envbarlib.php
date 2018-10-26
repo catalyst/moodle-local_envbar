@@ -552,7 +552,7 @@ CSS;
 
     /**
      * Returns the debugging status string to be displayed.
-     * 
+     *
      * @return string
      */
     public static function get_debugging_status_string() {
@@ -580,7 +580,7 @@ CSS;
 
     /**
      * Returns the debug toggle string to be displayed.
-     * 
+     *
      * @return string
      */
     public static function get_debug_toggle_string() {
