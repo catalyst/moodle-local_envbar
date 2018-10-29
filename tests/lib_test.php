@@ -254,19 +254,11 @@ class local_envbar_lib_test extends advanced_testcase {
         global $CFG;
 
         $this->resetAfterTest();
-        $data = new StdClass();
-        $array = array('DEBUG_DEVELOPER', 'DEBUG_NORMAL');
 
         $CFG->debug = 100;
         $this->assertEquals('Debugging Off', envbarlib::get_debugging_status_string());
 
         $CFG->debug = 'DEVELOPER';
-        $this->assertEquals('Debugging Off', envbarlib::get_debugging_status_string());
-
-        $CFG->debug = $data;
-        $this->assertEquals('Debugging Off', envbarlib::get_debugging_status_string());
-
-        $CFG->debug = $array;
         $this->assertEquals('Debugging Off', envbarlib::get_debugging_status_string());
 
         $CFG->debug = DEBUG_NORMAL;
@@ -283,19 +275,11 @@ class local_envbar_lib_test extends advanced_testcase {
         global $CFG;
 
         $this->resetAfterTest();
-        $data = new StdClass();
-        $array = array('DEBUG_DEVELOPER', 'DEBUG_NORMAL');
 
         $CFG->debug = 100;
         $this->assertEquals('Turn On', envbarlib::get_debug_toggle_string());
 
         $CFG->debug = 'DEVELOPER';
-        $this->assertEquals('Turn On', envbarlib::get_debug_toggle_string());
-
-        $CFG->debug = $data;
-        $this->assertEquals('Turn On', envbarlib::get_debug_toggle_string());
-
-        $CFG->debug = $array;
         $this->assertEquals('Turn On', envbarlib::get_debug_toggle_string());
 
         $CFG->debug = DEBUG_NORMAL;

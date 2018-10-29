@@ -597,7 +597,7 @@ CSS;
     public static function get_debug_toggle_string() {
         global $CFG;
 
-        if (self::is_valid_debug_value($CFG->debug) && $CFG->debug === DEBUG_DEVELOPER) {
+        if (self::is_valid_debug_value($CFG->debug) && $CFG->debug == DEBUG_DEVELOPER) {
             $debugtogglestr = get_string('debugtogglelinkoff', 'local_envbar');
         } else {
             $debugtogglestr = get_string('debugtogglelinkon', 'local_envbar');
