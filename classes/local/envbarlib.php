@@ -519,12 +519,11 @@ CSS;
     /**
      * Returns the toggled value of the debug config.
      *
+     * @param  string $debug Debug level
      * @return string $debugconfig Debug level
      */
-    public static function toggle_debug_config() {
-        global $CFG;
-
-        if ($CFG->debug === DEBUG_NORMAL) {
+    public static function get_toggle_debug_config($debug) {
+        if ($debug === DEBUG_NORMAL) {
             $debugconfig = DEBUG_DEVELOPER;
         } else {
             // Set to DEBUG_NORMAL in case there's an unknown debug level.
@@ -568,10 +567,12 @@ CSS;
 
     /**
      * Sets the debugconfig and debug display.
+     *
+     * @param string $debug Debug level
      */
-    public static function set_debug_config() {
+    public static function set_debug_config($debug) {
         // Toggles the debug config and debug display.
-        $debugconfig = self::toggle_debug_config();
+        $debugconfig = self::get_toggle_debug_config($debug);
         $debugdisplay = self::get_debug_display_config($debugconfig);
 
         set_config('debug', $debugconfig);
@@ -593,4 +594,5 @@ CSS;
         }
         return $debugtogglestr;
     }
+
 }

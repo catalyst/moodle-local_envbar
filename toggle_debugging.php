@@ -31,7 +31,7 @@ if (!is_siteadmin()) {
     print_error('Access denied.');
 }
 
-envbarlib::set_debug_config();
+envbarlib::set_debug_config($CFG->debug);
 // Go back to current page.
 $redirecturl = required_param('redirect', PARAM_URL);
 redirect($redirecturl);

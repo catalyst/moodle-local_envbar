@@ -47,7 +47,6 @@ class local_envbar_renderer extends plugin_renderer_base {
      * @return string
      */
     public function render_envbar($match, $fixed = true, $envs = array()) {
-        global $CFG, $ME;
 
         $config = get_config('local_envbar');
 
@@ -177,27 +176,8 @@ EOD;
             $showtext .= '<nobr> ' . $config->stringseparator . ' ' . $editlink . '</nobr>';
         }
 
-        $debuggingdefinedstr = get_string('debuggingdefinedinconfig', 'local_envbar');
-        $debugging = envbarlib::get_debugging_status_string();
-        // Show debugging links for admins.
-        if ($canedit && $config->showdebugging) {
-            $debugtogglelink = html_writer::link(
-                new moodle_url('/local/envbar/toggle_debugging.php?redirect='.$ME),
-                envbarlib::get_debug_toggle_string()
-            );
-            // Check if debug level and debug display is set on config.php.
-            if (!isset($CFG->config_php_settings['debug']) && !isset($CFG->config_php_settings['debugdisplay'])) {
-                $showtext .= '<nobr> ' . $config->stringseparator . ' ' . $debugging. ' ' . $debugtogglelink . '</nobr>';
-            } else {
-                // Remove link to toggle debugging.
-                $showtext .= '<nobr> ' . $config->stringseparator . ' ' . $debugging;
-                $showtext .= ' ' . $debuggingdefinedstr . '</nobr>';
-            }
-        } else {
-            if ($config->showdebugging) {
-                // Show debugging status for users.
-                $showtext .= '<nobr> ' . $config->stringseparator . ' ' . $debugging . '</nobr>';
-            }
+        if ($config->showdebugging) {
+            $showtext .= $this->get_debug_text($canedit, $config);
         }
 
         if ($fixed) {
@@ -260,6 +240,58 @@ $ebend
 EOD;
 
         return $html;
+    }
+
+    /**
+     * Returns the debug text to be displayed in the envbar.
+     *
+     * @param boolean $canedit Whether editing is allowed
+     * @param object $config Config
+     * @return string Debug text
+     */
+    protected function get_debug_text($canedit = false, $config) {
+
+        global $CFG, $ME;
+
+        $debugtext = '';
+        $debugging = envbarlib::get_debugging_status_string();
+        if ($canedit) {
+            // Get the url of the current page.
+            $currentlink = $ME;
+            $debugtogglelink = html_writer::link(
+                new moodle_url('/local/envbar/toggle_debugging.php?redirect='.$currentlink),
+                envbarlib::get_debug_toggle_string()
+            );
+            $debugtext .= $this->get_debug_text_for_admin($config->stringseparator, $debugging, $debugtogglelink);
+        } else {
+            $debugtext .= '<nobr> ' . $config->stringseparator . ' ' . $debugging . '</nobr>';
+        }
+
+        return $debugtext;
+    }
+
+    /**
+     * Returns the debug text to be displayed for admin.
+     *
+     * @param  string $stringseparator String separator
+     * @param  string $debugging Debugging text
+     * @param  string $debugtogglelink Debug toggle link
+     * @return string Debug text
+     */
+    protected function get_debug_text_for_admin($stringseparator, $debugging, $debugtogglelink) {
+        global $CFG;
+
+        $debugtext = '';
+        // Check if debug level and debug display is set on config.php.
+        if (!isset($CFG->config_php_settings['debug']) && !isset($CFG->config_php_settings['debugdisplay'])) {
+            $debugtext .= '<nobr> ' . $stringseparator . ' ' . $debugging. ' ' . $debugtogglelink . '</nobr>';
+        } else {
+            $debuggingdefinedstr = get_string('debuggingdefinedinconfig', 'local_envbar');
+            // Remove link to toggle debugging.
+            $debugtext .= '<nobr> ' . $stringseparator . ' ' . $debugging;
+            $debugtext .= ' ' . $debuggingdefinedstr . '</nobr>';
+        }
+        return $debugtext;
     }
 
 }

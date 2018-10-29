@@ -218,32 +218,18 @@ class local_envbar_lib_test extends advanced_testcase {
     /**
      * Test get_toggled_debug_config().
      */
-    public function test_toggle_debug_config() {
+    public function test_get_toggle_debug_config() {
         global $CFG;
 
         $this->resetAfterTest();
         $data = new StdClass();
         $array = array('DEBUG_DEVELOPER', 'DEBUG_NORMAL');
-
-        $CFG->debug = 100;
-        $this->assertEquals(DEBUG_NORMAL, envbarlib::toggle_debug_config());
-
-        $CFG->debug = 'DEVELOPER';
-        $this->assertEquals(DEBUG_NORMAL, envbarlib::toggle_debug_config());
-
-        $CFG->debug = $data;
-        $this->assertEquals(DEBUG_NORMAL, envbarlib::toggle_debug_config());
-
-        $CFG->debug = $array;
-        $this->assertEquals(DEBUG_NORMAL, envbarlib::toggle_debug_config());
-
-        $CFG->debug = DEBUG_DEVELOPER;
-        $this->assertEquals(DEBUG_NORMAL, envbarlib::toggle_debug_config());
-
-        $CFG->debug = DEBUG_NORMAL;
-        $this->assertEquals(DEBUG_DEVELOPER, envbarlib::toggle_debug_config());
-
-        unset($CFG->debug);
+        $this->assertEquals(DEBUG_NORMAL, envbarlib::get_toggle_debug_config(100));
+        $this->assertEquals(DEBUG_NORMAL, envbarlib::get_toggle_debug_config('DEVELOPER'));
+        $this->assertEquals(DEBUG_NORMAL, envbarlib::get_toggle_debug_config($data));
+        $this->assertEquals(DEBUG_NORMAL, envbarlib::get_toggle_debug_config($array));
+        $this->assertEquals(DEBUG_NORMAL, envbarlib::get_toggle_debug_config(DEBUG_DEVELOPER));
+        $this->assertEquals(DEBUG_DEVELOPER, envbarlib::get_toggle_debug_config(DEBUG_NORMAL));
     }
 
     /**
@@ -288,8 +274,6 @@ class local_envbar_lib_test extends advanced_testcase {
 
         $CFG->debug = DEBUG_DEVELOPER;
         $this->assertEquals('Debugging On', envbarlib::get_debugging_status_string());
-
-        unset($CFG->debug);
     }
 
     /**
@@ -319,7 +303,58 @@ class local_envbar_lib_test extends advanced_testcase {
 
         $CFG->debug = DEBUG_DEVELOPER;
         $this->assertEquals('Turn Off', envbarlib::get_debug_toggle_string());
-
-        unset($CFG->debug);
     }
+
+    /**
+     * Test set_debug_config().
+     */
+    public function test_set_debug_config() {
+        global $DB;
+
+        $this->resetAfterTest();
+        $data = new StdClass();
+        $array = array('DEBUG_DEVELOPER', 'DEBUG_NORMAL');
+        // Check debugging config in the DB because Moodle forces to use debugging in unit tests.
+        $debug = $DB->get_field('config', 'value', ['name' => 'debug']);
+        $debugdisplay = $DB->get_field('config', 'value', ['name' => 'debugdisplay']);
+        $this->assertEquals(0, $debug);
+        $this->assertEquals(0, $debugdisplay);
+
+        envbarlib::set_debug_config(100);
+        $debug = $DB->get_field('config', 'value', ['name' => 'debug']);
+        $debugdisplay = $DB->get_field('config', 'value', ['name' => 'debugdisplay']);
+        $this->assertEquals(DEBUG_NORMAL, $debug);
+        $this->assertEquals(0, $debugdisplay);
+
+        envbarlib::set_debug_config('DEVELOPER');
+        $debug = $DB->get_field('config', 'value', ['name' => 'debug']);
+        $debugdisplay = $DB->get_field('config', 'value', ['name' => 'debugdisplay']);
+        $this->assertEquals(DEBUG_NORMAL, $debug);
+        $this->assertEquals(0, $debugdisplay);
+
+        envbarlib::set_debug_config($data);
+        $debug = $DB->get_field('config', 'value', ['name' => 'debug']);
+        $debugdisplay = $DB->get_field('config', 'value', ['name' => 'debugdisplay']);
+        $this->assertEquals(DEBUG_NORMAL, $debug);
+        $this->assertEquals(0, $debugdisplay);
+
+        envbarlib::set_debug_config($array);
+        $debug = $DB->get_field('config', 'value', ['name' => 'debug']);
+        $debugdisplay = $DB->get_field('config', 'value', ['name' => 'debugdisplay']);
+        $this->assertEquals(DEBUG_NORMAL, $debug);
+        $this->assertEquals(0, $debugdisplay);
+
+        envbarlib::set_debug_config(DEBUG_DEVELOPER);
+        $debug = $DB->get_field('config', 'value', ['name' => 'debug']);
+        $debugdisplay = $DB->get_field('config', 'value', ['name' => 'debugdisplay']);
+        $this->assertEquals(DEBUG_NORMAL, $debug);
+        $this->assertEquals(0, $debugdisplay);
+
+        envbarlib::set_debug_config(DEBUG_NORMAL);
+        $debug = $DB->get_field('config', 'value', ['name' => 'debug']);
+        $debugdisplay = $DB->get_field('config', 'value', ['name' => 'debugdisplay']);
+        $this->assertEquals(DEBUG_DEVELOPER, $debug);
+        $this->assertEquals(1, $debugdisplay);
+    }
+
 }
