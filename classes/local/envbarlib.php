@@ -523,7 +523,7 @@ CSS;
      * @return boolean
      */
     protected static function is_valid_debug_value($debug) {
-        return is_number($debug);
+        return is_number($debug) && !is_object($debug) && !is_array($debug);
     }
 
     /**
@@ -533,7 +533,7 @@ CSS;
      * @return string $debugconfig Debug level
      */
     public static function get_toggle_debug_config($debug) {
-        if (self::is_valid_debug_value($debug) && $debug === DEBUG_NORMAL) {
+        if (self::is_valid_debug_value($debug) && $debug == DEBUG_NORMAL) {
             $debugconfig = DEBUG_DEVELOPER;
         } else {
             // Set to DEBUG_NORMAL in case there's an unknown debug level.
@@ -549,7 +549,7 @@ CSS;
      * @return int $debugdisplay Debug display
      */
     public static function get_debug_display_config($debug) {
-        if (self::is_valid_debug_value($debug) && $debug === DEBUG_DEVELOPER) {
+        if (self::is_valid_debug_value($debug) && $debug == DEBUG_DEVELOPER) {
             // Output debug messages to the browser.
             $debugdisplay = 1;
         } else {
@@ -567,7 +567,7 @@ CSS;
     public static function get_debugging_status_string() {
         global $CFG;
 
-        if (self::is_valid_debug_value($CFG->debug) && $CFG->debug === DEBUG_DEVELOPER) {
+        if (self::is_valid_debug_value($CFG->debug) && $CFG->debug == DEBUG_DEVELOPER) {
             $debuggingstr = get_string('debuggingon', 'local_envbar');
         } else {
             $debuggingstr = get_string('debuggingoff', 'local_envbar');
