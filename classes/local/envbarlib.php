@@ -517,13 +517,23 @@ CSS;
     }
 
     /**
+     * Check if the debug value is a number.
+     *
+     * @param  mixed $debug Debug level
+     * @return boolean
+     */
+    protected static function is_valid_debug_value($debug) {
+        return is_number($debug);
+    }
+
+    /**
      * Returns the toggled value of the debug config.
      *
-     * @param  string $debug Debug level
+     * @param  mixed $debug Debug level
      * @return string $debugconfig Debug level
      */
     public static function get_toggle_debug_config($debug) {
-        if ($debug === DEBUG_NORMAL) {
+        if (self::is_valid_debug_value($debug) && $debug == DEBUG_NORMAL) {
             $debugconfig = DEBUG_DEVELOPER;
         } else {
             // Set to DEBUG_NORMAL in case there's an unknown debug level.
@@ -535,11 +545,11 @@ CSS;
     /**
      * Returns the value of the debug display.
      *
-     * @param  string $debug Debug level
+     * @param  mixed $debug Debug level
      * @return int $debugdisplay Debug display
      */
     public static function get_debug_display_config($debug) {
-        if ($debug === DEBUG_DEVELOPER) {
+        if (self::is_valid_debug_value($debug) && $debug == DEBUG_DEVELOPER) {
             // Output debug messages to the browser.
             $debugdisplay = 1;
         } else {
@@ -557,7 +567,7 @@ CSS;
     public static function get_debugging_status_string() {
         global $CFG;
 
-        if ($CFG->debug === DEBUG_DEVELOPER) {
+        if (self::is_valid_debug_value($CFG->debug) && $CFG->debug == DEBUG_DEVELOPER) {
             $debuggingstr = get_string('debuggingon', 'local_envbar');
         } else {
             $debuggingstr = get_string('debuggingoff', 'local_envbar');
@@ -568,7 +578,7 @@ CSS;
     /**
      * Sets the debugconfig and debug display.
      *
-     * @param string $debug Debug level
+     * @param mixed $debug Debug level
      */
     public static function set_debug_config($debug) {
         // Toggles the debug config and debug display.
@@ -587,7 +597,7 @@ CSS;
     public static function get_debug_toggle_string() {
         global $CFG;
 
-        if ($CFG->debug === DEBUG_DEVELOPER) {
+        if (self::is_valid_debug_value($CFG->debug) && $CFG->debug == DEBUG_DEVELOPER) {
             $debugtogglestr = get_string('debugtogglelinkoff', 'local_envbar');
         } else {
             $debugtogglestr = get_string('debugtogglelinkon', 'local_envbar');
