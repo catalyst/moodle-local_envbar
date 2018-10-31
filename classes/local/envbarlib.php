@@ -364,7 +364,7 @@ CSS;
                 'showtext' => get_string('prod', 'local_envbar'),
                 'colourtext' => get_config('local_envbar', 'prodtextcolour'),
                 'colourbg' => get_config('local_envbar', 'prodbgcolour'),
-                'matchpattern' => self::getprodwwwroot(),
+                'matchpattern' => rtrim(self::getprodwwwroot(), '/') . '/',
             ));
 
             $renderer = $PAGE->get_renderer('local_envbar');
