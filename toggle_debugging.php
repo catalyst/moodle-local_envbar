@@ -33,5 +33,5 @@ if (!is_siteadmin()) {
 
 envbarlib::set_debug_config($CFG->debug);
 // Go back to current page.
-$redirecturl = required_param('redirect', PARAM_URL);
+$redirecturl = base64_decode(required_param('redirect', PARAM_RAW));
 redirect($redirecturl);

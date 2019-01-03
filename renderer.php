@@ -250,8 +250,7 @@ EOD;
      * @return string Debug text
      */
     protected function get_debug_text($canedit = false, $config) {
-
-        global $CFG, $ME;
+        global $ME;
 
         $debugtext = '';
         $debugging = envbarlib::get_debugging_status_string();
@@ -259,7 +258,7 @@ EOD;
             // Get the url of the current page.
             $currentlink = $ME;
             $debugtogglelink = html_writer::link(
-                new moodle_url('/local/envbar/toggle_debugging.php?redirect='.$currentlink),
+                new moodle_url('/local/envbar/toggle_debugging.php?redirect=' . base64_encode($currentlink)),
                 envbarlib::get_debug_toggle_string()
             );
             $debugtext .= $this->get_debug_text_for_admin($config->stringseparator, $debugging, $debugtogglelink);
