@@ -88,7 +88,7 @@ EOD;
         // If passed a list of env's, then for any env in the list which
         // isn't the one we are on, and which isn't production, add some
         // css which highlights broken links which jump between env's.
-        if ($config->highlightlinks) {
+        if (isset($config->highlightlinks) && $config->highlightlinks) {
             foreach ($envs as $env) {
                 if ($env->matchpattern != $match->matchpattern) {
                     $css .= <<<EOD
@@ -108,7 +108,7 @@ EOD;
                 }
             }
         }
-        if ($config->highlightlinks && !$config->highlightlinksenvbar) {
+        if (isset($config->highlightlinks) && $config->highlightlinks && !$config->highlightlinksenvbar) {
             $css .= <<<EOD
 
 /* Restricting the rules above for elements outside the envbar with :not() does not work reliably,
