@@ -73,13 +73,28 @@ class envbarlib {
 }
 
 /* Shrink nav drawer by another 50px. */
-[data-region="drawer"] {
+.local_envbar #nav-drawer {
+    height: calc(100% - 100px);
+}
+
+/* Move message drawer down by another 50px. */
+.local_envbar .message-drawer {
+    top: 100px;
+}
+
+/* Shrink message drawer by another 50px. */
+.local_envbar .message-drawer {
     height: calc(100% - 100px);
 }
 
 /* Move modal dialogues down by 50px. */
 .local_envbar .modal-dialog {
     top: 50px;
+}
+
+/* Revert the last rule for user tour modal dialogs which are placed correctly even with the envbar. */
+.local_envbar span[data-flexitour="container"] .modal-dialog {
+    top: inherit;
 }
 CSS;
     }

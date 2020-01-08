@@ -74,12 +74,21 @@ class local_envbar_renderer extends plugin_renderer_base {
     left: 0px;
     z-index: 9999;
 }
+
+@media screen and (max-width: 700px) {
+    .envbar {
+        font-size: 12px;
+        line-height: 12px;
+        padding: 10px;
+    }
+}
+
 EOD;
 
         // If passed a list of env's, then for any env in the list which
         // isn't the one we are on, and which isn't production, add some
         // css which highlights broken links which jump between env's.
-        if ($config->highlightlinks) {
+        if (isset($config->highlightlinks) && $config->highlightlinks) {
             foreach ($envs as $env) {
                 if ($env->matchpattern != $match->matchpattern) {
                     $css .= <<<EOD
@@ -88,7 +97,7 @@ a[href^="{$env->matchpattern}"]:not(.no-envbar-highlight) {
     outline: 2px solid {$env->colourbg};
     padding-right: 4px;
 }
-a[href^="{$env->matchpattern}"]::before {
+a[href^="{$env->matchpattern}"]:not(.no-envbar-highlight)::before {
     content: '{$env->showtext}';
     background-color: {$env->colourbg};
     color: {$env->colourtext};
@@ -99,7 +108,7 @@ EOD;
                 }
             }
         }
-        if ($config->highlightlinks && !$config->highlightlinksenvbar) {
+        if (isset($config->highlightlinks) && $config->highlightlinks && !$config->highlightlinksenvbar) {
             $css .= <<<EOD
 
 /* Restricting the rules above for elements outside the envbar with :not() does not work reliably,
@@ -139,9 +148,9 @@ EOD;
         $nextrefresh = isset($config->nextrefresh) ? $config->nextrefresh : null;
         if (isset($nextrefresh)) {
 
-            if ($nextrefresh == (1 * $nextrefresh)) {
+            if ($nextrefresh === intval($nextrefresh)) {
                 // Does the value look like a timestamp?
-                $nextrefresh = (1 * $nextrefresh);
+                $nextrefresh = intval($nextrefresh);
             } else if ( ($time = strtotime($nextrefresh)) !== false  ) {
                 // Does the value look like a date string?
                 $nextrefresh = $time;
@@ -168,7 +177,8 @@ EOD;
         if ($canedit && $config->showconfiglink) {
             if ($produrl) {
                 $editlink = html_writer::link($produrl.'/local/envbar/index.php',
-                        get_string('configureinprod', 'local_envbar'), array('target' => 'prod'));
+                        get_string('configureinprod', 'local_envbar'),
+                        array('target' => 'prod', 'class' => 'no-envbar-highlight'));
             } else {
                 $editlink = html_writer::link(new moodle_url('/local/envbar/index.php'),
                         get_string('configurehere', 'local_envbar'));
@@ -197,8 +207,8 @@ EOD;
 
         $html = <<<EOD
 <div class="envbar $class">
-    $showtext
     <button type="button" class="close" onclick="envbar_close(this);">×</button>
+    $showtext
 </div>
 <style>
 $css
