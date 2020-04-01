@@ -3,7 +3,7 @@ language: php
 sudo: required
 
 addons:
-  postgresql: "9.4"
+  postgresql: "9.5"
 
 cache:
   directories:
@@ -11,6 +11,9 @@ cache:
 
 php:
 - 7.1
+
+services:
+- mysql
 
 env:
   global:
@@ -27,6 +30,7 @@ matrix:
   # Some additional tests including MOODLE 27..30 and php 5.5.
   # This plugin is not database intensive, just a few tests in mysqli should be enough.
   - php: 5.5
+    dist: trusty
     env: DB=mysqli MOODLE_BRANCH=MOODLE_27_STABLE
   - php: 5.6
     env: DB=mysqli MOODLE_BRANCH=MOODLE_28_STABLE
@@ -34,15 +38,13 @@ matrix:
     env: DB=mysqli MOODLE_BRANCH=MOODLE_29_STABLE
   - php: 5.6
     env: DB=mysqli MOODLE_BRANCH=MOODLE_31_STABLE
-  - php: 7.0
-    env: DB=mysqli MOODLE_BRANCH=master
-  # Test with PHP 7.1
-  - php: 7.1
+  - php: 7.2
     env: DB=pgsql MOODLE_BRANCH=master
   # Moodle 3.4+ requires PHP 7.
   exclude:
-  - php: 5.6
-  - MOODLE_BRANCH=master
+  - php: 7.1
+    env: MOODLE_BRANCH=master
+
 
 before_install:
 - cd ../..
