@@ -135,7 +135,7 @@ EOD;
         $showtext = format_string(htmlspecialchars($match->showtext));
 
         // Just show the biggest time unit instead of 2.
-        if ($match->lastrefresh > 0) {
+        if (isset($match->lastrefresh) && $match->lastrefresh > 0) {
             $show = format_time(time() - $match->lastrefresh);
             $num = strtok($show, ' ');
             $unit = strtok(' ');
