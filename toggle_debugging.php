@@ -27,11 +27,16 @@ use local_envbar\local\envbarlib;
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->libdir . '/moodlelib.php');
 
+require_login();
+
 if (!is_siteadmin()) {
     print_error('Access denied.');
 }
+
+require_sesskey();
 
 envbarlib::set_debug_config($CFG->debug);
 // Go back to current page.
 $redirecturl = base64_decode(required_param('redirect', PARAM_RAW));
 redirect($redirecturl);
+

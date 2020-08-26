@@ -271,7 +271,7 @@ EOD;
             // Get the url of the current page.
             $currentlink = $ME;
             $debugtogglelink = html_writer::link(
-                new moodle_url('/local/envbar/toggle_debugging.php?redirect=' . base64_encode($currentlink)),
+                new moodle_url('/local/envbar/toggle_debugging.php', ['redirect' => base64_encode($currentlink), 'sesskey' => sesskey()] ),
                 envbarlib::get_debug_toggle_string()
             );
             $debugtext .= $this->get_debug_text_for_admin($config->stringseparator, $debugging, $debugtogglelink);
