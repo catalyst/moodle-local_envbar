@@ -15,7 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package   local_objectfs
+ * Tests
+ *
+ * @package   local_envbar
  * @copyright Moodle
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -95,6 +97,12 @@ foreach ($list->good as $component) {
 
 echo "\n\n== Done ==\n";
 
+/**
+ * Test
+ * @param $component
+ * @param $interface
+ * @return
+ */
 function check_implements($component, $interface) {
         $manager = new \core_privacy\manager();
         $rc = new \ReflectionClass(\core_privacy\manager::class);
@@ -103,3 +111,4 @@ function check_implements($component, $interface) {
 
         return $rcm->invoke($manager, $component, $interface);
 }
+

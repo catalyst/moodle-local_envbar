@@ -16,8 +16,9 @@
 
 /**
  * This page is pinged to update an env lastrefresh time.
+ *
  * This simple rest point was created outside of moodle's ws to avoid
- *  the overhead and config that comes with it.
+ * the overhead and config that comes with it.
  *
  * @package   local_envbar
  * @author    Rossco Hellmans <rosscohellmans@catalyst-au.net>

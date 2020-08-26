@@ -37,6 +37,14 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.'); // It must be included from a Moodle page.
 }
 
+/**
+ * Environment bar config.
+ *
+ * @package   local_envbar
+ * @author    Nicholas Hoobin <nicholashoobin@catalyst-au.net>
+ * @copyright Catalyst IT
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class envbarlib {
 
     const ENVBAR_START = '<!-- ENVBARSTART -->';
