@@ -677,8 +677,11 @@ CSS;
 
         // Email subject prefix.
         if (get_config('local_envbar', 'enableemailprefix')) {
-            $origprefix = $CFG->emailsubjectprefix;
-            $CFG->emailsubjectprefix = '[' . substr($match->showtext, 0, 4) . '] ' . $origprefix;
+            // Only do something if this config exists.
+            if (isset($CFG->emailsubjectprefix)) {
+                $origprefix = $CFG->emailsubjectprefix;
+                $CFG->emailsubjectprefix = '[' . substr($match->showtext, 0, 4) . '] ' . $origprefix;
+            }
         }
     }
 
