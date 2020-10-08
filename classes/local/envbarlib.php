@@ -397,7 +397,11 @@ CSS;
      */
     public static function setprodwwwroot($prodwwwroot) {
         $root = base64_encode($prodwwwroot);
-        set_config('prodwwwroot', $root, 'local_envbar');
+
+        $current = get_config('local_envbar', 'prodwwwroot');
+        if ($current != $root) {
+            set_config('prodwwwroot', $root, 'local_envbar');
+        }
     }
 
     /**
