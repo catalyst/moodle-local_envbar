@@ -320,7 +320,7 @@ function local_envbar_title($match) {
         return '';
     }
 
-    $prefix = substr($match->showtext, 0, 4);
+    $prefix = addslashes(substr($match->showtext, 0, 4));
     $js = <<<EOD
 
     var title = document.querySelector('title');
