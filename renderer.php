@@ -200,7 +200,7 @@ EOD;
         }
 
         $envclass = strtolower($match->showtext);
-        $envclass = preg_replace('/\s+/', '', $envclass);
+        $envclass = s(preg_replace('/\s+/', '', $envclass));
 
         if ($fixed) {
             $js .= <<<EOD
