@@ -311,6 +311,7 @@ EOD;
 /**
  * Gets some JS which adds the env to the page title
  *
+ * @param object $match
  * @return string A chunk of JS to set the title
  */
 function local_envbar_title($match) {
@@ -334,6 +335,7 @@ EOD;
 /**
  * Gets some JS which colorizes the favicon according to the env
  *
+ * @param object $match
  * @return string A chunk of JS to set the favicon
  */
 function local_envbar_favicon_js($match) {
@@ -390,6 +392,7 @@ EOD;
 /**
  * Gets some JS which inserts env jump links into the user menu
  *
+ * @param array $envs
  * @return string A chunk of JS
  */
 function local_envbar_user_menu($envs) {

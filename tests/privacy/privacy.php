@@ -99,9 +99,9 @@ echo "\n\n== Done ==\n";
 
 /**
  * Test
- * @param $component
- * @param $interface
- * @return
+ * @param string $component
+ * @param object $interface
+ * @return mixed
  */
 function check_implements($component, $interface) {
         $manager = new \core_privacy\manager();

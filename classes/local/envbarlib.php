@@ -47,10 +47,25 @@ if (!defined('MOODLE_INTERNAL')) {
  */
 class envbarlib {
 
+    /**
+     * Constant string variable - <!-- ENVBARSTART -->
+     *
+     * @var string
+     */
     const ENVBAR_START = '<!-- ENVBARSTART -->';
 
+    /**
+     * Constant string variable - <!-- ENVBAREND -->
+     *
+     * @var string
+     */
     const ENVBAR_END = '<!-- ENVBAREND -->';
 
+    /**
+     * Boolean to check that hold status if inject has been called
+     *
+     * @var boolean
+     */
     private static $injectcalled = false;
 
     /**
@@ -453,7 +468,7 @@ CSS;
     /**
      * Sets prodlastcheck with the current or a passed time.
      *
-     * @param int epoch to set prodlastcheck, current time by default
+     * @param string $time current time by default
      */
     public static function updatelastcheck($time = null) {
         // Update the prodlastcheck and clear the cache to make it effective.
