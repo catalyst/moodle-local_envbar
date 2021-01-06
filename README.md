@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/catalyst/moodle-local_envbar.svg?branch=master)](https://travis-ci.org/catalyst/moodle-local_envbar)
+[![Build Status](https://github.com/catalyst/moodle-local_aws/workflows/Moodle%20plugin%20CI/badge.svg)](https://github.com/catalyst/moodle-local_envbar/actions)
 
 Environment bar - Moodle local plugin
 ====================
@@ -93,8 +93,8 @@ The colours available are,
     orange
     darkorange
 
-Please configure a secret key which is needed to let the environments talk to each other. If no secret key is set, 
-the non production environments won't be able to detect their last reset time. Please set it to some random alphanumeric string 
+Please configure a secret key which is needed to let the environments talk to each other. If no secret key is set,
+the non production environments won't be able to detect their last reset time. Please set it to some random alphanumeric string
 of your choice or press the 'Generate' button.
 Or you can define the secret key in config.php:
 
