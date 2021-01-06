@@ -32,9 +32,9 @@ Branches
 --------
 | Moodle version     | Branch      | PHP  |
 | ----------------- | ----------- | ---- |
-| Moodle 2.7 to 3.2 | VERSION_1 | 5.5+ |
-| Moodle 3.3 to 3.9 | VERSION_2 | 7.0+ |
-| Moodle 3.10+ | VERSION_3 | 7.2+ |
+| Moodle 2.7 to 3.2 | VERSION1 | 5.5+ |
+| Moodle 3.3 to 3.9 | VERSION2 | 7.0+ |
+| Moodle 3.10+ | VERSION3 | 7.2+ |
 
 Installation
 ------------
