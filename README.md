@@ -28,6 +28,14 @@ and show a default fail safe warning.
 It will also automatically detect and show you when the environment was last
 refreshed from production, which is a common question testers ask.
 
+Branches
+--------
+| Moodle version     | Branch      | PHP  |
+| ----------------- | ----------- | ---- |
+| Moodle 2.7 to 3.2 | VERSION_1 | 5.5+ |
+| Moodle 3.3 to 3.9 | VERSION_2 | 7.0+ |
+| Moodle 3.10+ | VERSION_3 | 7.2+ |
+
 Installation
 ------------
 
