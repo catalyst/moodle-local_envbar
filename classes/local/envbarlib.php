@@ -69,13 +69,13 @@ class envbarlib {
     private static $injectcalled = false;
 
     /**
-     * Calls inject even if it was already called before.
+     * Resets inject called even if it was already called before.
      *
      * @return string the injected content
      */
-    public static function reinject() {
+    public static function reset_injectcalled() {
         self::$injectcalled = false;
-        return self::inject();
+        return self::get_inject_code();
     }
 
     /**
@@ -303,11 +303,11 @@ CSS;
     }
 
     /**
-     * Helper inject function that is used in local_envbar_extend_navigation.
+     * Function that returns the value for all hooks defined in lib.php
      *
-     * @return string the injected content
+     * @return string the additional top of body html
      */
-    public static function inject() {
+    public static function get_inject_code() {
         global $CFG, $PAGE;
 
         // During the initial install we don't want to break the admin gui.
@@ -316,9 +316,6 @@ CSS;
             if (!self::injection_allowed()) {
                 return '';
             }
-
-            // Remove envbars saved in $CFG->additionalhtmltopofbody.
-            self::clean_envbars();
 
             $prodwwwroot = self::getprodwwwroot();
 
@@ -371,10 +368,7 @@ CSS;
             ));
 
             $renderer = $PAGE->get_renderer('local_envbar');
-            $html = $renderer->render_envbar($match, true, $envs);
-            $CFG->additionalhtmltopofbody .= $html;
-
-            return $html;
+            return $renderer->render_envbar($match, true, $envs);
 
         } catch (Exception $e) {
             debugging('Exception occured while injecting our code: '.$e->getMessage(), DEBUG_DEVELOPER);
@@ -420,9 +414,8 @@ CSS;
     }
 
     /**
-     * Checks if we should try to inject the additionalhtmltopofbody.
+     * Checks if we should try to inject the envbar.
      * This prevents injecting multiple times if the call has been added to many hooks.
-     * It also cleans up additionalhtmltopofbody if there are multiple envbars present.
      *
      * @return bool
      *
@@ -441,28 +434,6 @@ CSS;
 
         // Nothing preventing the injection.
         return true;
-    }
-
-    /**
-     * Checks $CFG->additionalhtmltopofbody for saved environment bars and removes them.
-     * We should only be temporarily injecting into that variable and not saving them to the database.
-     *
-     * @return string the cleaned content
-     */
-    public static function clean_envbars() {
-        global $CFG;
-
-        // Replace the content to clean up pages that do not have the injection. eg. the login page.
-        $re = '/' . self::ENVBAR_START . '[\s\S]*' . self::ENVBAR_END . '/m';
-        $replaced = preg_replace($re, '', $CFG->additionalhtmltopofbody);
-
-        // We have removed the environment bars and any duplicates as it should be injected and not saved to $CFG.
-        if ($CFG->additionalhtmltopofbody != $replaced) {
-            set_config('additionalhtmltopofbody', $replaced);
-            return $replaced;
-        }
-
-        return '';
     }
 
     /**
