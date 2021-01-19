@@ -29,11 +29,11 @@ refreshed from production, which is a common question testers ask.
 
 Branches
 --------
-| Moodle version     | Branch      | PHP  |
-| ----------------- | ----------- | ---- |
-| Moodle 2.7 to 3.2 | VERSION1 | 5.5+ |
-| Moodle 3.3 to 3.9 | VERSION2 | 7.0+ |
-| Moodle 3.10+ | VERSION3 | 7.2+ |
+| Moodle version    | Totara version   | Branch   | PHP  |
+| ----------------- | ---------------- | -------- | ---- |
+| Moodle 2.7 to 3.2 | Totara 2.7 to 11 | VERSION1 | 5.5+ |
+| Moodle 3.3 to 3.9 | Totara 12        | VERSION2 | 7.0+ |
+| Moodle 3.10+      | Totara 13        | VERSION3 | 7.3+ |
 
 Installation
 ------------
