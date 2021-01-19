@@ -29,33 +29,10 @@ use local_envbar\local\envbarlib;
 defined('MOODLE_INTERNAL') || die;
 
 /**
- * This hook was introduced in moodle 3.3.
+ * This is the hook enables the plugin to insert a chunk of html at the start of the html document.
  */
-function local_envbar_before_http_headers() {
-
-    envbarlib::inject();
-}
-
-/**
- * lib.php isn't always called, we need to hook something to ensure it runs.
- */
-function local_envbar_extend_navigation() {
-    global $CFG;
-
-    if (isset($CFG->branch) && $CFG->branch < 33) {
-        envbarlib::inject();
-    }
-}
-
-/**
- * This is the hook for pre 2.9 moodle.
- */
-function local_envbar_extends_navigation() {
-    global $CFG;
-
-    if ($CFG->branch < 33) {
-        envbarlib::inject();
-    }
+function local_envbar_before_standard_top_of_body_html() {
+    return envbarlib::get_inject_code();
 }
 
 /**

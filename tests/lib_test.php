@@ -93,16 +93,14 @@ class local_envbar_lib_test extends advanced_testcase {
     }
 
     /**
-     * Check envbarlib::inject() works as expected.
+     * Check envbarlib::get_inject_code() works as expected.
      */
     public function test_inject() {
-        global $CFG, $PAGE;
+        global $CFG, $PAGE, $OUTPUT;
         $this->resetAfterTest(true);
         $PAGE->set_url(new moodle_url('/local/envbar/index.php'));
 
         $this->setAdminUser();
-
-        self::assertEmpty($CFG->additionalhtmltopofbody);
 
         $data = new stdClass();
         $data->colourbg = '000000';
@@ -111,66 +109,16 @@ class local_envbar_lib_test extends advanced_testcase {
         $data->showtext = 'Test Inject';
         envbarlib::update_envbar($data);
 
-        envbarlib::reinject();
-        self::assertContains('<style>', $CFG->additionalhtmltopofbody);
-        self::assertContains('<script>', $CFG->additionalhtmltopofbody);
+        $injected = envbarlib::reset_injectcalled();
+        self::assertContains('<style>', $injected);
+        self::assertContains('<script>', $injected);
 
         // Should not inject more than once with the inject() function.
-        $size = strlen($CFG->additionalhtmltopofbody);
+        $size = strlen($OUTPUT->standard_top_of_body_html());
+        self::assertSame($size, strlen($OUTPUT->standard_top_of_body_html()));
 
-        envbarlib::inject();
-        self::assertSame($size, strlen($CFG->additionalhtmltopofbody));
-    }
-
-    /**
-     * Check envbarlib::clean_envbars() works as expected.
-     */
-    public function test_clean_envbars() {
-        global $CFG, $PAGE;
-        $this->resetAfterTest(true);
-        $PAGE->set_url(new moodle_url('/local/envbar/index.php'));
-
-        $this->setAdminUser();
-
-        // Setting the database config additionalhtmltopofbody.
-        $testhtml = '<a href="#">Test</a>';
-        set_config('additionalhtmltopofbody', $testhtml);
-
-        // Create basic data object to inject an envbar.
-        $data = new stdClass();
-        $data->colourbg = '000000';
-        $data->colourtext = '000000';
-        $data->matchpattern = $CFG->wwwroot;
-        $data->showtext = 'Test Inject';
-        envbarlib::update_envbar($data);
-
-        $injected = envbarlib::reinject();
-
-        // An envbar is not in the database get_config('additionalhtmltopofbody').
-        $additional = get_config('core', 'additionalhtmltopofbody');
-        self::assertEquals($testhtml, $additional);
-
-        // An envbar now exists in $CFG->additionalhtmltopofbody with our $testhtml.
-        self::assertContains($injected, $CFG->additionalhtmltopofbody);
-
-        // Which equals the $testhtml . $injected.
-        self::assertEquals($testhtml . $injected, $CFG->additionalhtmltopofbody);
-
-        // Which has no trace of any $injected.
-        self::assertNotContains($injected, $additional);
-
-        $cleaned = envbarlib::clean_envbars();
-        self::assertEquals($testhtml, $cleaned);
-
-        // Lets put the envbar back in, and saved it to the DB.
-        $injected = envbarlib::reinject();
-        $additional = get_config('core', 'additionalhtmltopofbody');
-        set_config('additionalhtmltopofbody', $additional . $injected);
-
-        // With an envbar saved to the db, lets clean it out.
-        $cleaned = envbarlib::clean_envbars();
-        self::assertEquals($testhtml, $cleaned);
-        self::assertEquals($testhtml, $CFG->additionalhtmltopofbody);
+        // Injected should be in $OUTPUT.
+        self::assertContains(envbarlib::get_inject_code(), $OUTPUT->standard_top_of_body_html());
     }
 
     /**
@@ -301,11 +249,6 @@ class local_envbar_lib_test extends advanced_testcase {
         $this->resetAfterTest();
         $data = new StdClass();
         $array = array('DEBUG_DEVELOPER', 'DEBUG_NORMAL');
-        // Check debugging config in the DB because Moodle forces to use debugging in unit tests.
-        $debug = $DB->get_field('config', 'value', ['name' => 'debug']);
-        $debugdisplay = $DB->get_field('config', 'value', ['name' => 'debugdisplay']);
-        $this->assertEquals(0, $debug);
-        $this->assertEquals(0, $debugdisplay);
 
         envbarlib::set_debug_config(100);
         $debug = $DB->get_field('config', 'value', ['name' => 'debug']);
