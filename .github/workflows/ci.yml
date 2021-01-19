@@ -45,7 +45,9 @@ jobs:
         database: ['pgsql', 'mariadb']
         moodle-branch: ['MOODLE_310_STABLE', 'MOODLE_311_STABLE', 'master']
         node: ['14.15.1']
-        php: ['7.2', '7.3', '7.4']
+        php: ['7.3', '7.4']
+        exclude:
+          - {database: 'mariadb', moodle-branch: 'MOODLE_310_STABLE', node: '14.15.1', php: '7.4'}
 
     steps:
       - name: Check out repository code
