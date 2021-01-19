@@ -3,6 +3,8 @@
 Environment bar - Moodle local plugin
 ====================
 
+![image](https://user-images.githubusercontent.com/187449/105100285-32c81380-5b01-11eb-9e12-30d1ae312b77.png)
+
 This displays a prominment header across across the top of your NON PROD Moodle
 environments which can be configured to have different colors and messages for
 each environent, and also automatically detects and show you when the DB was
