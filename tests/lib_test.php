@@ -249,11 +249,6 @@ class local_envbar_lib_test extends advanced_testcase {
         $this->resetAfterTest();
         $data = new StdClass();
         $array = array('DEBUG_DEVELOPER', 'DEBUG_NORMAL');
-        // Check debugging config in the DB because Moodle forces to use debugging in unit tests.
-        $debug = $DB->get_field('config', 'value', ['name' => 'debug']);
-        $debugdisplay = $DB->get_field('config', 'value', ['name' => 'debugdisplay']);
-        $this->assertEquals(0, $debug);
-        $this->assertEquals(0, $debugdisplay);
 
         envbarlib::set_debug_config(100);
         $debug = $DB->get_field('config', 'value', ['name' => 'debug']);
