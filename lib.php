@@ -28,11 +28,16 @@ use local_envbar\local\envbarlib;
 
 defined('MOODLE_INTERNAL') || die;
 
+require_once(__DIR__ . '/../../lib/behat/lib.php');
+
 /**
  * This is the hook enables the plugin to insert a chunk of html at the start of the html document.
  */
 function local_envbar_before_standard_top_of_body_html() {
-    return envbarlib::get_inject_code();
+    // Hack to avoid breaking behat tests.
+    if (!behat_is_test_site()) {
+        return envbarlib::get_inject_code();
+    }
 }
 
 /**
