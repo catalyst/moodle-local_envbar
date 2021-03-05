@@ -138,7 +138,7 @@ EOD;
         if (!isset($config->stringseparator)) {
             $config->stringseparator = '-'; // Set default.
         }
-        if ($match->lastrefresh > 0) {
+        if (property_exists($match, 'lastrefresh') && $match->lastrefresh > 0) {
             $show = format_time(time() - $match->lastrefresh);
             $num = strtok($show, ' ');
             $unit = strtok(' ');
