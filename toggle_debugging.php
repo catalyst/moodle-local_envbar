@@ -38,5 +38,9 @@ require_sesskey();
 envbarlib::set_debug_config($CFG->debug);
 // Go back to current page.
 $redirecturl = base64_decode(required_param('redirect', PARAM_RAW));
+$redirecturl = clean_param($redirecturl, PARAM_URL);
+if (strpos($redirecturl, '/') !== 0) {
+    print_error('Access denied.');
+}
 redirect($redirecturl);
 
