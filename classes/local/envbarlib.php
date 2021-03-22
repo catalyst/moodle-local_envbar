@@ -230,8 +230,10 @@ CSS;
 
             // Converting them to stdClass and adding a local flag.
             foreach ($items as $key => $value) {
-                $value['local'] = true;
-                $items[$key] = (object) $value;
+                $record = (object) $value;
+                $record->id = $key . 'LOCAL';
+                $record->local = true;
+                $items[$key] = $record;
             }
 
             $result = array_merge($items, $result);

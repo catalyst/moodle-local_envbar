@@ -177,24 +177,20 @@ class config extends moodleform {
         $mform->setDefault('secretkey', envbarlib::get_secret_key());
         $mform->addHelpButton('secretkeyg', 'secretkey', 'local_envbar');
 
-        $localid = -1;
-
         foreach ($records as $record) {
 
             $locked = false;
 
             // Local records set in config.php will be locked for editing.
             if (isset($record->local)) {
-                $record->id = $localid;
                 $locked = true;
 
                 $mform->addElement(
                     "hidden",
-                    "locked[{$localid}]",
+                    "locked[{$record->id}]",
                     $locked
                 );
-                $mform->setType("locked[{$localid}]", PARAM_INT);
-                $localid--;
+                $mform->setType("locked[{$record->id}]", PARAM_INT);
             }
 
             $id = $record->id;
