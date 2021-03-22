@@ -145,24 +145,20 @@ class config extends moodleform {
             $mform->setDefault('dividerselector', 'filler');
         }
 
-        $localid = -1;
-
         foreach ($records as $record) {
 
             $locked = false;
 
             // Local records set in config.php will be locked for editing.
             if (isset($record->local)) {
-                $record->id = $localid;
                 $locked = true;
 
                 $mform->addElement(
                     "hidden",
-                    "locked[{$localid}]",
+                    "locked[{$record->id}]",
                     $locked
                 );
-                $mform->setType("locked[{$localid}]", PARAM_INT);
-                $localid--;
+                $mform->setType("locked[{$record->id}]", PARAM_INT);
             }
 
             $id = $record->id;
