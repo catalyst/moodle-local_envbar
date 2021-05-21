@@ -423,12 +423,19 @@ CSS;
      *
      */
     public static function injection_allowed() {
+        global $PAGE;
+
         if (self::$injectcalled) {
             return false;
         }
 
         // Do not inject if being called in an ajax or cli script unless it's a unit test.
         if ((CLI_SCRIPT or AJAX_SCRIPT) && !PHPUNIT_TEST) {
+            return false;
+        }
+
+        // Do not inject if the page layout is set to 'embedded'.
+        if ($PAGE->pagelayout === 'embedded') {
             return false;
         }
 
