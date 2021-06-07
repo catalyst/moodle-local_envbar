@@ -74,12 +74,21 @@ class local_envbar_renderer extends plugin_renderer_base {
     left: 0px;
     z-index: 9999;
 }
-
+.envbar .showtext {
+    display: inline-block;
+}
 @media screen and (max-width: 700px) {
     .envbar {
         font-size: 12px;
         line-height: 12px;
         padding: 10px;
+    }
+    .envbar .showtext {
+        display: block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
 
@@ -132,7 +141,7 @@ EOD;
         $class .= $fixed ? ' fixed' : '';
 
         // Show the configured env message.
-        $showtext = format_string(htmlspecialchars($match->showtext));
+        $showtext = \html_writer::tag('div', format_string(htmlspecialchars($match->showtext)), ['class' => 'showtext']);
 
         // Just show the biggest time unit instead of 2.
         if (!isset($config->stringseparator)) {
