@@ -472,6 +472,7 @@ CSS;
 
         // Skip if prodwwwroot hasn't been set.
         if (empty($prodwwwroot)) {
+            mtrace("Error, the production wwwroot has not been set.");
             return;
         }
 
