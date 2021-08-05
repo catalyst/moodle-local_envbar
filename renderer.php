@@ -231,18 +231,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 function envbar_close(el) {
     var envbar = el.parentElement;
-    var body = envbar.parentElement;
-    if (body.nodeName == 'BODY') {
-        body.classList.remove('local_envbar');
-        body.removeChild(envbar);
-        body.removeChild(document.getElementById('envbar_spacer'));
-    } else if (body.getAttribute('id') === 'page-wrapper') {
-        var wrapper = body;
-        body = body.parentElement;
-        body.classList.remove('local_envbar');
-        wrapper.removeChild(envbar);
-        wrapper.removeChild(document.getElementById('envbar_spacer'));
-    }
+    var parent = envbar.parentElement;
+    var body = document.body;
+    body.classList.remove('local_envbar');
+    parent.removeChild(envbar);
+    parent.removeChild(document.getElementById('envbar_spacer'));
 }
 </script>
 EOD;
