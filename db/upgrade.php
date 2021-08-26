@@ -95,5 +95,16 @@ function xmldb_local_envbar_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2017062800, 'local', 'envbar');
     }
 
+    if ($oldversion < 2021011911) {
+        $table = new xmldb_table('local_envbar');
+        // Define field to be dropped.
+        $field = new xmldb_field('enabled');
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+        // Envbar savepoint reached.
+        upgrade_plugin_savepoint(true, 2021011911, 'local', 'envbar');
+    }
+
     return true;
 }
