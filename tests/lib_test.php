@@ -115,8 +115,10 @@ class local_envbar_lib_test extends advanced_testcase {
         $size = strlen($OUTPUT->standard_top_of_body_html());
         self::assertSame($size, strlen($OUTPUT->standard_top_of_body_html()));
 
-        // Injected should be in $OUTPUT.
-        self::assertContains(envbarlib::get_inject_code(), $OUTPUT->standard_top_of_body_html());
+        if (envbarlib::get_inject_code()) {
+            // Injected should be in $OUTPUT.
+            self::assertContains(envbarlib::get_inject_code(), $OUTPUT->standard_top_of_body_html());
+        }
     }
 
     /**
