@@ -25,8 +25,6 @@
 
 use local_envbar\local\envbarlib;
 
-defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden');
-
 /**
  * Unit testing class for envbar_lib
  */
