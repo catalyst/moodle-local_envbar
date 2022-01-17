@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/catalyst/moodle-local_envbar.svg?branch=master)](https://travis-ci.org/catalyst/moodle-local_envbar)
-
 Environment bar - Moodle local plugin
 ====================
 
