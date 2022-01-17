@@ -34,3 +34,4 @@ $plugin->release   = 2021073000;      // Same as version
 $plugin->requires  = 2014051200;      // Requires Moodle 2.7 or later.
 $plugin->component = "local_envbar";
 $plugin->maturity  = MATURITY_STABLE;
+$plugin->supported = [33, 39];       // A range of branch numbers of supported moodle versions.

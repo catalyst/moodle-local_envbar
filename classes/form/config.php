@@ -29,10 +29,6 @@ namespace local_envbar\form;
 use local_envbar\local\envbarlib;
 use moodleform;
 
-if (!defined('MOODLE_INTERNAL')) {
-    die('Direct access to this script is forbidden.'); // It must be included from a Moodle page.
-}
-
 /**
  * Form for editing an Enviroment bar.
  *

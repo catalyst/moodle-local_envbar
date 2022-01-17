@@ -24,8 +24,6 @@
  */
 namespace local_envbar\task;
 
-defined('MOODLE_INTERNAL') || die();
-
 use local_envbar\local\envbarlib;
 use moodle_url;
 

@@ -26,8 +26,6 @@
 
 use local_envbar\local\envbarlib;
 
-defined('MOODLE_INTERNAL') || die;
-
 /**
  * This is the hook enables the plugin to insert a chunk of html at the start of the html document.
  */

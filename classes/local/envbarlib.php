@@ -33,10 +33,6 @@ use moodle_url;
 use moodle_exception;
 use stdClass;
 
-if (!defined('MOODLE_INTERNAL')) {
-    die('Direct access to this script is forbidden.'); // It must be included from a Moodle page.
-}
-
 /**
  * Environment bar config.
  *
