@@ -38,7 +38,7 @@ function local_envbar_before_standard_top_of_body_html() {
  */
 function local_envbar_after_config() {
     // Hack to avoid breaking messaging tests, as this setting defaults on.
-    if (!PHPUNIT_TEST) {
+    if (!PHPUNIT_TEST && !WS_SERVER) {
         try {
             envbarlib::config();
         } catch (Exception $e) {        // @codingStandardsIgnoreStart
