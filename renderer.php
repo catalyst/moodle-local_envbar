@@ -186,7 +186,7 @@ EOD;
         }
 
         if (!empty($config->showdebugging)) {
-            $showtext .= $this->get_debug_text($canedit, $config);
+            $showtext .= $this->get_debug_text($config, $canedit);
         }
 
         if ($fixed) {
@@ -247,11 +247,11 @@ EOD;
     /**
      * Returns the debug text to be displayed in the envbar.
      *
-     * @param boolean $canedit Whether editing is allowed
-     * @param object $config Config
+     * @param stdClass $config Config
+     * @param bool $canedit Whether editing is allowed
      * @return string Debug text
      */
-    protected function get_debug_text($canedit = false, $config) {
+    protected function get_debug_text(stdClass $config, bool $canedit): string {
         global $ME;
 
         $debugtext = '';
@@ -260,7 +260,8 @@ EOD;
             // Get the url of the current page.
             $currentlink = $ME;
             $debugtogglelink = html_writer::link(
-                new moodle_url('/local/envbar/toggle_debugging.php', ['redirect' => base64_encode($currentlink), 'sesskey' => sesskey()] ),
+                new moodle_url('/local/envbar/toggle_debugging.php',
+                    ['redirect' => base64_encode($currentlink), 'sesskey' => sesskey()] ),
                 envbarlib::get_debug_toggle_string()
             );
             $debugtext .= $this->get_debug_text_for_admin($config->stringseparator, $debugging, $debugtogglelink);

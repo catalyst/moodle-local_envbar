@@ -55,28 +55,7 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('header_envbar', 'local_envbar'));
 echo $form->display();
 if (isset($debug)) {
-    // The curl debug is a var_dump of the variables, so we need to do a regex to retrieve them.
-    $commonstr = "<font color='#888a85'>=&gt;<\/font> <small>string<\/small> <font color='#cc0000'>'";
-    $commonint = "<font color='#888a85'>=&gt;<\/font> <small>int<\/small> <font color='#4e9a06'>";
-    $matches = array();
-
-    $regex = "/'http_code' {$commonint}(.*?)<\/font>/s";
-    $preg = preg_match($regex, $debug, $matches);
-    $httpcode = $matches[1];
-    echo "<h1>HTTP code</h1>";
-    echo "<pre>{$httpcode}</pre>";
-
-    $regex = "/'CURLOPT_URL' {$commonstr}(.*?)'/s";
-    $preg = preg_match($regex, $debug, $matches);
-    $curlurl = $matches[1];
-    $regex = "/'CURLOPT_POSTFIELDS' {$commonstr}(.*?)'/s";
-    $preg = preg_match($regex, $debug, $matches);
-    $postfields = $matches[1];
-
-    echo "<h1>Curl command</h1>";
-    echo "<pre>curl \"{$curlurl}?{$postfields}\"</pre>";
-
-    echo $debug;
+    echo "<pre>{$debug}</pre>";
 }
 echo $OUTPUT->footer();
 

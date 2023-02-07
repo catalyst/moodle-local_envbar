@@ -25,8 +25,6 @@
 
 namespace local_envbar\check;
 
-defined('MOODLE_INTERNAL') || die();
-
 use core\check\check;
 use core\check\result;
 use local_envbar\local\envbarlib;

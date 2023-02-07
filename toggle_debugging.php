@@ -30,7 +30,7 @@ require_once($CFG->libdir . '/moodlelib.php');
 require_login();
 
 if (!is_siteadmin()) {
-    print_error('Access denied.');
+    throw new \moodle_exception('accessdenied');
 }
 
 require_sesskey();
@@ -40,7 +40,7 @@ envbarlib::set_debug_config($CFG->debug);
 $redirecturl = base64_decode(required_param('redirect', PARAM_RAW));
 $redirecturl = clean_param($redirecturl, PARAM_URL);
 if (strpos($redirecturl, '/') !== 0) {
-    print_error('Access denied.');
+    throw new \moodle_exception('accessdenied');
 }
 redirect($redirecturl);
 

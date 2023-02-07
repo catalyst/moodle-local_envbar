@@ -164,7 +164,8 @@ class config extends moodleform {
             "button",
             "secretkeygen",
             get_string("secretkeygenbutton", "local_envbar"),
-            array("onclick" => "document.getElementById('secretkey').value = '$gensecretkey'", envbarlib::is_secret_key_overridden() ? 'disabled' : 'enabled')
+            array("onclick" => "document.getElementById('secretkey').value = '$gensecretkey'",
+                envbarlib::is_secret_key_overridden() ? 'disabled' : 'enabled')
         );
 
         $mform->addGroup($secretkeygroup, 'secretkeyg', get_string('secretkey', 'local_envbar'), array(' '), false);

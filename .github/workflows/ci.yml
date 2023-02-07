@@ -1,7 +1,11 @@
-name: Run all tests for Moodle 3.10+
+# .github/workflows/ci.yml
+name: ci
 
 on: [push, pull_request]
 
 jobs:
-  workflow_group_310_plus_ci:
-    uses: catalyst/catalyst-moodle-workflows/.github/workflows/group-310-plus-ci.yml@main
+  ci:
+    uses: catalyst/catalyst-moodle-workflows/.github/workflows/ci.yml@main
+    with:
+      disable_behat: true
+      disable_grunt: true

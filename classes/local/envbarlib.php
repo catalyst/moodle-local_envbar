@@ -424,7 +424,7 @@ CSS;
         }
 
         // Do not inject if being called in an ajax or cli script unless it's a unit test.
-        if ((CLI_SCRIPT or AJAX_SCRIPT) && !PHPUNIT_TEST) {
+        if ((CLI_SCRIPT || AJAX_SCRIPT) && !PHPUNIT_TEST) {
             return false;
         }
 
@@ -473,7 +473,8 @@ CSS;
 
         // Ping prod with the env and lastrefresh.
         $url = $prodwwwroot."/local/envbar/service/updatelastrefresh.php";
-        $params = "wwwroot=".urlencode($CFG->wwwroot)."&lastrefresh=".urlencode($lastrefresh)."&secretkey=".urlencode(self::get_secret_key());
+        $params = "wwwroot=".urlencode($CFG->wwwroot)."&lastrefresh=".
+            urlencode($lastrefresh)."&secretkey=".urlencode(self::get_secret_key());
         $options = array();
         if ($debug) {
             $options['debug'] = true;

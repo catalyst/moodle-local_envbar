@@ -23,12 +23,15 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace local_envbar;
+
 use local_envbar\local\envbarlib;
+use stdClass;
 
 /**
  * Unit testing class for envbar_lib
  */
-class local_envbar_lib_test extends advanced_testcase {
+class lib_test extends \advanced_testcase {
 
     /**
      * Initial set up.
@@ -96,7 +99,7 @@ class local_envbar_lib_test extends advanced_testcase {
     public function test_inject() {
         global $CFG, $PAGE, $OUTPUT;
         $this->resetAfterTest(true);
-        $PAGE->set_url(new moodle_url('/local/envbar/index.php'));
+        $PAGE->set_url(new \moodle_url('/local/envbar/index.php'));
 
         $this->setAdminUser();
 
@@ -139,7 +142,7 @@ class local_envbar_lib_test extends advanced_testcase {
         $CFG->local_envbar_secretkey = array(1);
         $this->assertFalse(envbarlib::is_secret_key_overridden());
 
-        $CFG->local_envbar_secretkey = new StdClass();
+        $CFG->local_envbar_secretkey = new stdClass();
         $this->assertFalse(envbarlib::is_secret_key_overridden());
 
         unset($CFG->local_envbar_secretkey);
@@ -171,7 +174,7 @@ class local_envbar_lib_test extends advanced_testcase {
         global $CFG;
 
         $this->resetAfterTest();
-        $data = new StdClass();
+        $data = new stdClass();
         $array = array('DEBUG_DEVELOPER', 'DEBUG_NORMAL');
         $this->assertEquals(DEBUG_NORMAL, envbarlib::get_toggle_debug_config(100));
         $this->assertEquals(DEBUG_NORMAL, envbarlib::get_toggle_debug_config('DEVELOPER'));
@@ -186,7 +189,7 @@ class local_envbar_lib_test extends advanced_testcase {
      */
     public function test_get_debug_display_config() {
         $this->resetAfterTest();
-        $data = new StdClass();
+        $data = new stdClass();
         $array = array('DEBUG_DEVELOPER', 'DEBUG_NORMAL');
         $this->assertEquals(0, envbarlib::get_debug_display_config(1));
         $this->assertEquals(0, envbarlib::get_debug_display_config('DEVELOPER'));
@@ -245,7 +248,7 @@ class local_envbar_lib_test extends advanced_testcase {
         global $DB;
 
         $this->resetAfterTest();
-        $data = new StdClass();
+        $data = new stdClass();
         $array = array('DEBUG_DEVELOPER', 'DEBUG_NORMAL');
 
         envbarlib::set_debug_config(100);
