@@ -136,9 +136,12 @@ EOD;
         }
         if (property_exists($match, 'lastrefresh') && $match->lastrefresh > 0) {
             $show = format_time(time() - $match->lastrefresh);
+            $title = userdate($match->lastrefresh, get_string('refreshedagoformat', 'local_envbar'));
+            $title = get_string('refreshedagotitle', 'local_envbar', $title);
+
             $num = strtok($show, ' ');
             $unit = strtok(' ');
-            $show = "$num $unit";
+            $show = html_writer::tag('span', "$num $unit", ['title' => $title, ]);
             $showtext .= ' ' . $config->stringseparator . ' ' . get_string('refreshedago', 'local_envbar', $show);
         } else {
             $showtext .= ' ' . $config->stringseparator . ' ' . get_string('refreshednever', 'local_envbar');
