@@ -380,9 +380,9 @@ CSS;
      * This also base64_dencodes the value to obtain it.
      *
      * @return string $prodwwwroot if it is set either in plugin config via UI or
-     *         in config.php. Returns nothing if prodwwwroot is net set anywhere.
+     *         in config.php. Returns an empty string if prodwwwroot is not set anywhere.
      */
-    public static function getprodwwwroot() {
+    public static function getprodwwwroot(): string {
         global $CFG;
 
         $prodwwwroot = base64_decode(get_config("local_envbar", "prodwwwroot"));
@@ -394,6 +394,9 @@ CSS;
         if ($prodwwwroot) {
             return $prodwwwroot;
         }
+
+        // Not set - return empty string.
+        return '';
     }
 
     /**
