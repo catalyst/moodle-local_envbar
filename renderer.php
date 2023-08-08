@@ -144,7 +144,7 @@ EOD;
             $config->stringseparator = '-'; // Set default.
         }
 
-        if ($config->showrefresh) {
+        if (isset($config->showrefresh) && $config->showrefresh) {
             if (property_exists($match, 'lastrefresh') && $match->lastrefresh > 0) {
                 $show = format_time(time() - $match->lastrefresh);
                 $title = userdate($match->lastrefresh, get_string('refreshedagoformat', 'local_envbar'));
