@@ -264,7 +264,7 @@ EOD;
         $debugging = envbarlib::get_debugging_status_string();
         if ($canedit) {
             // Get the url of the current page.
-            $currentlink = $ME;
+            $currentlink = $ME ?? '/';
             $debugtogglelink = html_writer::link(
                 new moodle_url('/local/envbar/toggle_debugging.php',
                     ['redirect' => base64_encode($currentlink), 'sesskey' => sesskey()] ),
