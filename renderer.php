@@ -449,7 +449,7 @@ EOD;
     $html = str_replace("\n", '', $html);
     $html = str_replace("\"", "\\\"", $html);
 
-    $url = (new moodle_url('/local/envbar/'))->out();
+    $url = (new moodle_url('/admin/settings.php?section=local_envbar_presentation'))->out();
     $isadmin = (is_siteadmin() ) ? '1' : '0';
 
     $js = <<<EOD
