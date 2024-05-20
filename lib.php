@@ -39,6 +39,9 @@ function local_envbar_security_checks(): array {
 
 /**
  * This is the hook enables the plugin to insert a chunk of html at the start of the html document.
+ *
+ * This is a legacy callback that is used for compatibility with older Moodle versions.
+ * Moodle 4.4+ will use local_envbar\hook_callbacks::before_standard_top_of_body_html_generation instead.
  */
 function local_envbar_before_standard_top_of_body_html() {
     return envbarlib::get_inject_code();
