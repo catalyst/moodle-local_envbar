@@ -15,21 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information.
+ * Hook callbacks for local_envbar
  *
  * @package   local_envbar
- * @author    Brendan Heywood (brendan@catalyst-au.net)
- * @author    Grigory Baleevskiy (grigory@catalyst-au.net)
- * @author    Nicholas Hoobin <nicholashoobin@catalyst-au.net>
- * @copyright Catalyst IT
+ * @author    Benjamin Walker (benjaminwalker@catalyst-au.net)
+ * @copyright 2024 Catalyst IT
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2024052000;      // The current plugin version (Date: YYYYMMDDXX).
-$plugin->release   = 2024052000;      // Same as version
-$plugin->requires  = 2014051200;      // Requires Moodle 2.7 or later.
-$plugin->component = 'local_envbar';
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->supported = [310, 404];      // A range of branch numbers of supported moodle versions.
+$callbacks = [
+    [
+        'hook' => \core\hook\output\before_standard_top_of_body_html_generation::class,
+        'callback' => [\local_envbar\hook_callbacks::class, 'before_standard_top_of_body_html_generation'],
+        'priority' => 0,
+    ],
+];

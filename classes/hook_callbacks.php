@@ -14,22 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace local_envbar;
+
+use core\hook\output\before_standard_top_of_body_html_generation;
+use local_envbar\local\envbarlib;
+
 /**
- * Version information.
+ * Hook callbacks for local_envbar.
  *
  * @package   local_envbar
- * @author    Brendan Heywood (brendan@catalyst-au.net)
- * @author    Grigory Baleevskiy (grigory@catalyst-au.net)
- * @author    Nicholas Hoobin <nicholashoobin@catalyst-au.net>
- * @copyright Catalyst IT
+ * @author    Benjamin Walker (benjaminwalker@catalyst-au.net)
+ * @copyright 2024 Catalyst IT
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+class hook_callbacks {
 
-defined('MOODLE_INTERNAL') || die;
-
-$plugin->version   = 2024052000;      // The current plugin version (Date: YYYYMMDDXX).
-$plugin->release   = 2024052000;      // Same as version
-$plugin->requires  = 2014051200;      // Requires Moodle 2.7 or later.
-$plugin->component = 'local_envbar';
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->supported = [310, 404];      // A range of branch numbers of supported moodle versions.
+    /**
+     * This is the hook enables the plugin to insert a chunk of html at the start of the html document.
+     *
+     * @param before_standard_top_of_body_html_generation $hook
+     */
+    public static function before_standard_top_of_body_html_generation(before_standard_top_of_body_html_generation $hook): void {
+        // Get code to inject.
+        $hook->add_html(envbarlib::get_inject_code());
+    }
+}
