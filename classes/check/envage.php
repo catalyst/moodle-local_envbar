@@ -39,15 +39,6 @@ use local_envbar\local\envbarlib;
 class envage extends check {
 
     /**
-     * Constructor
-     */
-    public function __construct() {
-        global $CFG;
-        $this->id = 'envage';
-        $this->name = get_string('checkenvage', 'local_envbar');
-    }
-
-    /**
      * A link to a place to action this
      *
      * @return \action_link|null
