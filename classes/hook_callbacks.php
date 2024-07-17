@@ -21,6 +21,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/local/envbar/lib.php');
 
 use core\hook\output\before_standard_top_of_body_html_generation;
+use core_user\hook\extend_user_menu;
 use local_envbar\local\envbarlib;
 
 /**
@@ -41,6 +42,19 @@ class hook_callbacks {
     public static function before_standard_top_of_body_html_generation(before_standard_top_of_body_html_generation $hook): void {
         // Get code to inject.
         $hook->add_html(envbarlib::get_inject_code());
+    }
+
+    /**
+     * This is the hook enables the plugin to add one or more menu item.
+     *
+     * @param extend_user_menu $hook
+     */
+    public static function extend_user_menu(extend_user_menu $hook): void {
+        // Get items to add.
+        $navitems = envbarlib::add_menuuser();
+        foreach ($navitems as $item) {
+            $hook->add_navitem($item);
+        }
     }
 
     /**
