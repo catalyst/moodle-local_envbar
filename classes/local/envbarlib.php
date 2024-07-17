@@ -684,4 +684,34 @@ CSS;
         }
     }
 
+    /**
+     * Add items to the menu navigation.
+     *
+     * @return array New menu items.
+     */
+    public static function add_menuuser(): array {
+        $userfirstmenu = new stdClass();
+        $userfirstmenu->itemtype = 'divider';
+        $envs = self::get_records();
+        $here = (new moodle_url('/'))->out();
+        $prodwwwroot = self::getprodwwwroot();
+        $prodenv = new stdClass();
+        $prodenv->matchpattern = $prodwwwroot;
+        $prodenv->showtext = get_string('prod', 'local_envbar');
+        $envs[] = $prodenv;
+        $navitem[] = $userfirstmenu;
+        foreach ($envs as $env) {
+            $usermenu = new stdClass();
+            $usermenu->itemtype = 'link';
+            $usermenu->title = $env->showtext;
+            $usermenu->url = new moodle_url($env->matchpattern);
+            // Which env matches?
+            if (self::is_match($here, $env->matchpattern)) {
+                $usermenu->pix = 'e/tick';
+            }
+            $navitem[] = $usermenu;
+        }
+        return $navitem;
+    }
+
 }
