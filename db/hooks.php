@@ -31,4 +31,9 @@ $callbacks = [
         'callback' => '\local_envbar\hook_callbacks::before_standard_top_of_body_html_generation',
         'priority' => 0,
     ],
+    [
+        'hook' => core_user\hook\update_navigation_menuuser::class,
+        'callback' => '\local_envbar\hook_callbacks::update_navigation_menuuser',
+        'priority' => 0,
+    ]
 ];
