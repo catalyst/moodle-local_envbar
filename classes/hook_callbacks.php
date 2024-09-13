@@ -47,6 +47,9 @@ class hook_callbacks {
      */
     public static function extend_user_menu(extend_user_menu $hook): void {
         // Get items to add.
-        $hook->add_navitems(envbarlib::add_menuuser());
+        $navitems = envbarlib::add_menuuser();
+        foreach ($navitems as $item) {
+            $hook->add_navitem($item);
+        }
     }
 }
