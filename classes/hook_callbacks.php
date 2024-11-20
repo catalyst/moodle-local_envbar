@@ -17,6 +17,7 @@
 namespace local_envbar;
 
 use core\hook\output\before_standard_top_of_body_html_generation;
+use Exception;
 use local_envbar\local\envbarlib;
 
 /**
@@ -37,5 +38,28 @@ class hook_callbacks {
     public static function before_standard_top_of_body_html_generation(before_standard_top_of_body_html_generation $hook): void {
         // Get code to inject.
         $hook->add_html(envbarlib::get_inject_code());
+    }
+
+    /**
+     * Listener for the after_config hook.
+     *
+     * @param \core\hook\after_config $hook
+     */
+    public static function after_config(\core\hook\after_config $hook): void {
+        global $CFG;
+
+        if (during_initial_install() || isset($CFG->upgraderunning)) {
+            // Do nothing during installation or upgrade.
+            return;
+        }
+
+        // Hack to avoid breaking messaging tests, as this setting defaults on.
+        if (!PHPUNIT_TEST && !WS_SERVER) {
+            try {
+                envbarlib::config();
+            } catch (Exception $e) {        // @codingStandardsIgnoreStart
+                // Catch exceptions from stuff not existing during installation process, fail silently.
+            }                               // @codingStandardsIgnoreEnd
+        }
     }
 }
