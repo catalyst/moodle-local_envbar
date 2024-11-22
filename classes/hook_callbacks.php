@@ -16,6 +16,10 @@
 
 namespace local_envbar;
 
+defined('MOODLE_INTERNAL') || die();
+
+require_once($CFG->dirroot . '/local/envbar/lib.php');
+
 use core\hook\output\before_standard_top_of_body_html_generation;
 use local_envbar\local\envbarlib;
 
@@ -37,5 +41,21 @@ class hook_callbacks {
     public static function before_standard_top_of_body_html_generation(before_standard_top_of_body_html_generation $hook): void {
         // Get code to inject.
         $hook->add_html(envbarlib::get_inject_code());
+    }
+
+    /**
+     * Listener for the after_config hook.
+     *
+     * @param \core\hook\after_config $hook
+     */
+    public static function after_config(\core\hook\after_config $hook): void {
+        global $CFG;
+
+        if (during_initial_install() || isset($CFG->upgraderunning)) {
+            // Do nothing during installation or upgrade.
+            return;
+        }
+
+        local_envbar_after_config();
     }
 }

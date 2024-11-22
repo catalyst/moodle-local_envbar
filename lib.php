@@ -49,6 +49,7 @@ function local_envbar_before_standard_top_of_body_html() {
 
 /**
  * We need to override some settings very early in the load process.
+ * This is a legacy callback that is used for compatibility with older Moodle versions.
  */
 function local_envbar_after_config() {
     // Hack to avoid breaking messaging tests, as this setting defaults on.
