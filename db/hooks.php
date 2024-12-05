@@ -33,6 +33,6 @@ $callbacks = [
     ],
     [
         'hook' => \core\hook\after_config::class,
-        'callback' => [\local_envbar\hook_callbacks::class, 'after_config'],
+        'callback' => '\local_envbar\hook_callbacks::after_config',
     ],
 ];
