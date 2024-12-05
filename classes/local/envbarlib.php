@@ -692,15 +692,17 @@ CSS;
     public static function add_menuuser(): array {
         $userfirstmenu = new stdClass();
         $userfirstmenu->itemtype = 'divider';
-        $envs = self::get_records();
         $here = (new moodle_url('/'))->out();
         $prodwwwroot = self::getprodwwwroot();
+        // Get prod Environment.
         $prodenv = new stdClass();
         $prodenv->matchpattern = $prodwwwroot;
         $prodenv->showtext = get_string('prod', 'local_envbar');
-        $envs[] = $prodenv;
+        $envsprod[] = $prodenv;
+        // Attached the list of Environments to the prod one.
+        $envslistfinal = array_merge($envsprod, self::get_records());
         $navitem[] = $userfirstmenu;
-        foreach ($envs as $env) {
+        foreach ($envslistfinal as $env) {
             $usermenu = new stdClass();
             $usermenu->itemtype = 'link';
             $usermenu->title = $env->showtext;

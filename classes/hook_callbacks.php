@@ -20,6 +20,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/local/envbar/lib.php');
 
+use context_system;
 use core\hook\output\before_standard_top_of_body_html_generation;
 use core_user\hook\extend_user_menu;
 use local_envbar\local\envbarlib;
@@ -50,6 +51,21 @@ class hook_callbacks {
      * @param extend_user_menu $hook
      */
     public static function extend_user_menu(extend_user_menu $hook): void {
+        global $CFG;
+        $prodwwwroot = envbarlib::getprodwwwroot();
+
+        // Do not display on the production environment!
+        if ($prodwwwroot === $CFG->wwwroot) {
+            return;
+        }
+
+        // If the prodwwwroot is not set, only show the bar to admin users.
+        if (empty($prodwwwroot)) {
+            if (!has_capability('moodle/site:config', context_system::instance())) {
+                return;
+            }
+        }
+
         // Get items to add.
         $navitems = envbarlib::add_menuuser();
         foreach ($navitems as $item) {
