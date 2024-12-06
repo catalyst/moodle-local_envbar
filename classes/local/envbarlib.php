@@ -690,6 +690,7 @@ CSS;
      * @return array New menu items.
      */
     public static function add_menuuser(): array {
+        global $PAGE;
         $userfirstmenu = new stdClass();
         $userfirstmenu->itemtype = 'divider';
         $here = (new moodle_url('/'))->out();
@@ -706,7 +707,9 @@ CSS;
             $usermenu = new stdClass();
             $usermenu->itemtype = 'link';
             $usermenu->title = $env->showtext;
-            $usermenu->url = new moodle_url($env->matchpattern);
+            $pathurl = (new moodle_url( $PAGE->__get('url')))->get_path();
+            $currenturl = $env->matchpattern.$pathurl;
+            $usermenu->url = new moodle_url($currenturl);
             // Which env matches?
             if (self::is_match($here, $env->matchpattern)) {
                 $usermenu->pix = 'e/tick';
