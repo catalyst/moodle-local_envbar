@@ -197,7 +197,6 @@ EOD;
 
         if ($fixed) {
             $js .= local_envbar_favicon_js($match);
-            $js .= local_envbar_user_menu($envs, $match);
             $js .= local_envbar_title($match);
         }
 
@@ -384,86 +383,3 @@ EOD;
 
     return $js;
 }
-
-/**
- * Gets some JS which inserts env jump links into the user menu
- *
- * @param array $envs
- * @return string A chunk of JS
- */
-function local_envbar_user_menu($envs) {
-
-    global $CFG, $PAGE;
-
-    $config = get_config('local_envbar');
-
-    if (empty($config->enablemenu)) {
-        return '';
-    }
-
-    if (isset($config->menuselector)) {
-        $menuselector = $config->menuselector;
-    } else {
-        $menuselector = '.usermenu .menu';
-    }
-
-    if (empty($menuselector)) {
-        return ''; // Not using user menu, nothing to do.
-    }
-
-    $html = '';
-
-    if ($PAGE->has_set_url()) {
-        $url = $PAGE->url->out();
-
-        foreach ($envs as $env) {
-            $jump = $url;
-            $jump = str_replace($CFG->wwwroot, $env->matchpattern, $jump);
-            if ($jump == $url) {
-                continue;
-            }
-            $jump = s($jump);
-            $show = s($env->showtext);
-            $link = <<<EOD
-<li role="presentation">
-  <a class="icon menu-action no-envbar-highlight" role="menuitem" href="{$jump}">
-    <span class="menu-action-text">$show</span>
-  </a>
-</li>
-EOD;
-            $html .= $link;
-        }
-    }
-
-    if (!$html) {
-        return '';
-    }
-
-    if (isset($config->dividerselector)) {
-        $divider = $config->dividerselector;
-    } else {
-        $divider = 'filler';
-    }
-    $html = '<li role="presentation"><span class="'. $divider .'">&nbsp;</span></li>' . $html;
-
-    $html = str_replace("\n", '', $html);
-    $html = str_replace("\"", "\\\"", $html);
-
-    $url = (new moodle_url('/admin/settings.php?section=local_envbar_presentation'))->out();
-    $isadmin = (is_siteadmin() ) ? '1' : '0';
-
-    $js = <<<EOD
-
-    var menu = document.querySelector('$menuselector');
-    var html = "$html";
-    if (menu) {
-        menu.insertAdjacentHTML('beforeend', html);
-    } else {
-        $isadmin && console.error(
-            "local_envbar: Menu selector is misconfigured '$menuselector' \\n Please configure it here: $url");
-    }
-EOD;
-    return $js;
-
-}
-
