@@ -35,4 +35,9 @@ $callbacks = [
         'hook' => \core\hook\after_config::class,
         'callback' => [\local_envbar\hook_callbacks::class, 'after_config'],
     ],
+    [
+        'hook' => core_user\hook\extend_user_menu::class,
+        'callback' => '\local_envbar\hook_callbacks::extend_user_menu',
+        'priority' => 0,
+    ],
 ];

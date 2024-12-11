@@ -85,18 +85,6 @@ if ($hassiteconfig) {
             get_string('enablemenu_desc', 'local_envbar', null, true),
             true));
 
-    $presentation->add(new admin_setting_configtext('local_envbar/menuselector',
-            get_string('menuselector', 'local_envbar', null, true),
-            get_string('menuselector_desc', 'local_envbar', null, true),
-            '.usermenu .menu',
-            PARAM_RAW));
-
-    $presentation->add(new admin_setting_configtext('local_envbar/dividerselector',
-            get_string('dividerselector', 'local_envbar', null, true),
-            get_string('dividerselector_desc', 'local_envbar', null, true),
-            'filler',
-            PARAM_RAW));
-
     $presentation->add(new admin_setting_heading('local_envbar/linksheading',
             get_string('linksheading', 'local_envbar', null, true),
             ''));

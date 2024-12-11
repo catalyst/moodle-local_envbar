@@ -684,4 +684,39 @@ CSS;
         }
     }
 
+    /**
+     * Add items to the menu navigation.
+     *
+     * @return array New menu items.
+     */
+    public static function add_menuuser(): array {
+        global $PAGE;
+        $userfirstmenu = new stdClass();
+        $userfirstmenu->itemtype = 'divider';
+        $here = (new moodle_url('/'))->out();
+        $prodwwwroot = self::getprodwwwroot();
+        // Get prod Environment.
+        $prodenv = new stdClass();
+        $prodenv->matchpattern = $prodwwwroot;
+        $prodenv->showtext = get_string('prod', 'local_envbar');
+        $envsprod[] = $prodenv;
+        // Attached the list of Environments to the prod one.
+        $envslistfinal = array_merge($envsprod, self::get_records());
+        $navitem[] = $userfirstmenu;
+        foreach ($envslistfinal as $env) {
+            $usermenu = new stdClass();
+            $usermenu->itemtype = 'link';
+            $usermenu->title = $env->showtext;
+            $pathurl = (new moodle_url( $PAGE->__get('url')))->get_path();
+            $currenturl = $env->matchpattern.$pathurl;
+            $usermenu->url = new moodle_url($currenturl);
+            // Which env matches?
+            if (self::is_match($here, $env->matchpattern)) {
+                $usermenu->pix = 'e/tick';
+            }
+            $navitem[] = $usermenu;
+        }
+        return $navitem;
+    }
+
 }
