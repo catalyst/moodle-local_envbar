@@ -83,7 +83,7 @@ if ($hassiteconfig) {
     $presentation->add(new admin_setting_configcheckbox('local_envbar/enablemenu',
             get_string('enablemenu', 'local_envbar', null, true),
             get_string('enablemenu_desc', 'local_envbar', null, true),
-            true));
+            false));
 
     $presentation->add(new admin_setting_heading('local_envbar/linksheading',
             get_string('linksheading', 'local_envbar', null, true),
