@@ -41,6 +41,9 @@ class lib_test extends \advanced_testcase {
 
         require_once($CFG->dirroot . '/local/envbar/lib.php');
 
+        // Switch on for envbar unit tests.
+        set_config('enablemenu', true, 'local_envbar');
+
         parent::setup();
         $this->resetAfterTest(true);
     }
@@ -77,6 +80,17 @@ class lib_test extends \advanced_testcase {
             array('https://my_moodle6.com/', '\D', false),
             array('\-/.?*+^$', '\-/.?*+^$', true),
         );
+    }
+
+    /**
+     * The env swapper feature introduced in issue #215 can cause core unit tests to fail. The setting is enablemenu is switched to
+     * off for unit testing. Test that it's been switched on for these unit tests.
+     */
+    public function test_usermenu_has_been_set_to_true_in_setup() {
+        $config = get_config('local_envbar');
+
+        $this->assertNotEmpty($config->enablemenu);
+        $this->assertTrue((bool) $config->enablemenu);
     }
 
     /**
