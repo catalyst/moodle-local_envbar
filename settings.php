@@ -80,10 +80,13 @@ if ($hassiteconfig) {
             get_string('menuheading', 'local_envbar', null, true),
             ''));
 
+    // This setting defaults to false only in PHPUnit tests.
+    // We do this because \core\user_menu_test::test_custom_user_menu() expect a certain number of user menu items.
+    // The test doesn't account for plugins, future test may not account for this too.
     $presentation->add(new admin_setting_configcheckbox('local_envbar/enablemenu',
             get_string('enablemenu', 'local_envbar', null, true),
             get_string('enablemenu_desc', 'local_envbar', null, true),
-            true));
+            PHPUNIT_TEST ? false : true));
 
     $presentation->add(new admin_setting_heading('local_envbar/linksheading',
             get_string('linksheading', 'local_envbar', null, true),
