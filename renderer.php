@@ -153,7 +153,7 @@ EOD;
         $nextrefresh = isset($config->nextrefresh) ? $config->nextrefresh : null;
         if (isset($nextrefresh)) {
 
-            if ($nextrefresh === intval($nextrefresh)) {
+            if ($nextrefresh == intval($nextrefresh)) {
                 // Does the value look like a timestamp?
                 $nextrefresh = intval($nextrefresh);
             } else if ( ($time = strtotime($nextrefresh)) !== false  ) {
@@ -168,10 +168,13 @@ EOD;
             if ($nextrefresh) {
                 $show = format_time($nextrefresh - time());
 
+                $title = userdate($nextrefresh, get_string('refreshedagoformat', 'local_envbar'));
+                $title = get_string('nextrefreshtitle', 'local_envbar', $title);
+
                 $num = strtok($show, ' ');
                 $unit = strtok(' ');
-                $show = "$num $unit";
-                $showtext .= ' ' . $config->stringseparator . ' ' . get_string('nextrefreshin', 'local_envbar', $show);
+                $show = $config->stringseparator . ' ' . get_string('nextrefreshin', 'local_envbar', "$num $unit");
+                $showtext .= ' ' . html_writer::tag('span', $show, ['title' => $title, ]);
             }
         }
 

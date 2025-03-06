@@ -71,6 +71,13 @@ if ($hassiteconfig) {
             get_string('showrefresh_desc', 'local_envbar', null, true),
             true));
 
+    // Show time to next refresh.
+    $presentation->add(new admin_setting_configtext('local_envbar/nextrefresh',
+            get_string('nextrefresh', 'local_envbar', null, true),
+            get_string('nextrefresh_desc', 'local_envbar', null, true),
+            '',
+            PARAM_TEXT));
+
     $presentation->add(new admin_setting_configcheckbox('local_envbar/showdebugging',
             get_string('showdebugging', 'local_envbar', null, true),
             get_string('showdebugging_desc', 'local_envbar', null, true),

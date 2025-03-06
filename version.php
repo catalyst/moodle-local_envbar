@@ -27,7 +27,7 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version   = 2024112001;      // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2024112002;      // The current plugin version (Date: YYYYMMDDXX).
 $plugin->release   = 2024112001;      // Same as version
 $plugin->requires  = 2014051200;      // Requires Moodle 2.7 or later.
 $plugin->component = 'local_envbar';
