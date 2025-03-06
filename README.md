@@ -107,7 +107,7 @@ $CFG->local_envbar_secretkey = 'SomeRandomAlphanumericalString';
 ```
 
 In your non production environments it is also useful to inform your users when the
-next refresh will be. This time can be injected into the DB or set via config.php
+next refresh will be. This time can be set via the settings page or via config.php
 and can be flexibly set in a variety of ways:
 
 
