@@ -34,6 +34,7 @@ use local_envbar\local\envbarlib;
 function local_envbar_security_checks(): array {
     return [
         new \local_envbar\check\envage(),
+        new \local_envbar\check\refresh(),
     ];
 }
 

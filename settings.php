@@ -72,7 +72,7 @@ if ($hassiteconfig) {
             true));
 
     // Show time to next refresh.
-    $presentation->add(new admin_setting_configtext('local_envbar/nextrefresh',
+    $presentation->add($setting = new admin_setting_configtext('local_envbar/nextrefresh',
             get_string('nextrefresh', 'local_envbar', null, true),
             get_string('nextrefresh_desc', 'local_envbar', null, true),
             '',

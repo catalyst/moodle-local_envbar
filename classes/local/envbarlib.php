@@ -453,6 +453,7 @@ CSS;
         // Update the prodlastcheck and clear the cache to make it effective.
         $time = is_null($time) ? time() : $time;
         set_config('prodlastcheck', $time, 'local_envbar');
+        self::reset_next_refresh_timestamp();
         $cache = cache::make('local_envbar', 'records');
         $cache->delete('records');
     }
@@ -719,4 +720,63 @@ CSS;
         return $navitem;
     }
 
+    /**
+     * Checks if the refresh config has been updated and, if so, forces a timestamp reset.
+     */
+    public static function check_refresh_timestamp() {
+        $config = get_config('local_envbar');
+        $nextrefresh = $config->nextrefresh ?? null;
+        $nextrefreshold = $config->nextrefreshold ?? null;
+        if ($nextrefresh !== $nextrefreshold) {
+            set_config('nextrefreshold', $nextrefresh, 'local_envbar');
+            self::reset_next_refresh_timestamp();
+        }
+    }
+
+    /**
+     * Updates the stored timestamp for the next expected refresh. Called when last refresh is upadted and when
+     * the config is changed.
+     *
+     * @return void
+     * @throws \dml_exception
+     */
+    public static function reset_next_refresh_timestamp() {
+        $config = get_config('local_envbar');
+
+        $nextrefresh = $config->nextrefresh ?? null;
+
+        if ($nextrefresh == intval($nextrefresh)) {
+            // Does the value look like a timestamp?
+            $nextrefresh = intval($nextrefresh);
+        } else if ( ($time = strtotime($nextrefresh)) !== false  ) {
+            // Does the value look like a date string?
+            $nextrefresh = $time;
+        } else {
+            // Dunno just ignore it.
+            $nextrefresh = null;
+        }
+        // Save the next refresh time as a timestamp.
+        set_config('nextrefreshasts', $nextrefresh, 'local_envbar');
+    }
+
+    /**
+     * Gets a test suitable for UI display for the next expected refresh time.
+     *
+     * @param int $nextrefresh
+     * @return string
+     */
+    public static function get_next_refresh_as_text(int $nextrefresh): string {
+        $timetorefresh = $nextrefresh - time();
+        $inpast = false;
+        // Use different text if refresh is overdue.
+        if ($timetorefresh < 0) {
+            $inpast = true;
+            $timetorefresh = -$timetorefresh;
+        }
+        $show = format_time($timetorefresh);
+
+        $num = strtok($show, ' ');
+        $unit = strtok(' ');
+        return get_string($inpast ? 'nextrefreshwas' : 'nextrefreshin', 'local_envbar', "$num $unit");
+    }
 }
