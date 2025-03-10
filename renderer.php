@@ -150,32 +150,17 @@ EOD;
             }
         }
 
-        $nextrefresh = isset($config->nextrefresh) ? $config->nextrefresh : null;
-        if (isset($nextrefresh)) {
+        // Display the next expected refresh time, if any.
+        envbarlib::check_refresh_timestamp();
+        // Get it fresh from the database as it may have been updated.
+        $nextrefresh = get_config('local_envbar', 'nextrefreshasts');
+        if ($nextrefresh) {
+            $title = userdate($nextrefresh, get_string('refreshedagoformat', 'local_envbar'));
+            $title = get_string('nextrefreshtitle', 'local_envbar', $title);
 
-            if ($nextrefresh == intval($nextrefresh)) {
-                // Does the value look like a timestamp?
-                $nextrefresh = intval($nextrefresh);
-            } else if ( ($time = strtotime($nextrefresh)) !== false  ) {
-                // Does the value look like a date string?
-                $nextrefresh = $time;
-
-            } else {
-                // Dunno just ignore it.
-                $nextrefresh = null;
-            }
-
-            if ($nextrefresh) {
-                $show = format_time($nextrefresh - time());
-
-                $title = userdate($nextrefresh, get_string('refreshedagoformat', 'local_envbar'));
-                $title = get_string('nextrefreshtitle', 'local_envbar', $title);
-
-                $num = strtok($show, ' ');
-                $unit = strtok(' ');
-                $show = $config->stringseparator . ' ' . get_string('nextrefreshin', 'local_envbar', "$num $unit");
-                $showtext .= ' ' . html_writer::tag('span', $show, ['title' => $title, ]);
-            }
+            $show = envbarlib::get_next_refresh_as_text($nextrefresh);
+            $show = html_writer::tag('span', $show, ['title' => $title, ]);
+            $showtext .= ' ' . $config->stringseparator . ' ' . $show;
         }
 
         // Optionally also show the config links for admins.
