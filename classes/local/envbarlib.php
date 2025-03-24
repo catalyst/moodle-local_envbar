@@ -353,6 +353,7 @@ CSS;
                     'colourbg' => 'red',
                     'matchpattern' => '',
                     'lastrefresh' => get_config('local_envbar', 'prodlastcheck'),
+                    'refreshschedule' => '',
                 );
 
             }
@@ -453,7 +454,6 @@ CSS;
         // Update the prodlastcheck and clear the cache to make it effective.
         $time = is_null($time) ? time() : $time;
         set_config('prodlastcheck', $time, 'local_envbar');
-        self::reset_next_refresh_timestamp();
         $cache = cache::make('local_envbar', 'records');
         $cache->delete('records');
     }
@@ -672,6 +672,7 @@ CSS;
                 'colourbg' => 'red',
                 'matchpattern' => '',
                 'lastrefresh' => get_config('local_envbar', 'prodlastcheck'),
+                'refreshschedule' => '',
             );
         }
 
@@ -686,42 +687,108 @@ CSS;
     }
 
     /**
-     * Checks if the refresh config has been updated and, if so, forces a timestamp reset.
+     * Gets the database record for the current non prod site.
+     *
+     * @return stdClass|null Environment record
      */
-    public static function check_refresh_timestamp() {
-        $config = get_config('local_envbar');
-        $nextrefresh = $config->nextrefresh ?? null;
-        $nextrefreshold = $config->nextrefreshold ?? null;
-        if ($nextrefresh !== $nextrefreshold) {
-            set_config('nextrefreshold', $nextrefresh, 'local_envbar');
-            self::reset_next_refresh_timestamp();
+    public static function get_match() {
+        $envs = self::get_records();
+        $match = null;
+        $here = (new moodle_url('/'))->out();
+
+        // Which env matches?
+        foreach ($envs as $env) {
+            if (self::is_match($here, $env->matchpattern)) {
+                $match = $env;
+                break;
+            }
+        }
+        return $match;
+    }
+
+    /**
+     * Checks if the refresh times have been updated and, if so, forces a timestamp reset.
+     *
+     * @param stdClass|null $match Environment record
+     * @return void
+     */
+    public static function check_refresh_timestamp($match = null) {
+        if (!isset($match) && !$match = self::get_match()) {
+            return;
+        }
+
+        // Need to update the refresh timestamp when either the refresh schedule or lastrefresh changes.
+        $refreshhash = md5(($match->refreshschedule ?? '') . ($match->lastrefresh ?? 0));
+        if ($refreshhash !== get_config('local_envbar', 'refreshhash')) {
+            set_config('refreshhash', $refreshhash, 'local_envbar');
+            self::update_next_refresh_timestamp($match);
         }
     }
 
     /**
-     * Updates the stored timestamp for the next expected refresh. Called when last refresh is upadted and when
+     * Updates the stored timestamp for the next expected refresh. Called when last refresh is updated and when
      * the config is changed.
      *
+     * @param stdClass $match Environment record
      * @return void
      * @throws \dml_exception
      */
-    public static function reset_next_refresh_timestamp() {
-        $config = get_config('local_envbar');
+    public static function update_next_refresh_timestamp($match) {
 
-        $nextrefresh = $config->nextrefresh ?? null;
-
-        if ($nextrefresh == intval($nextrefresh)) {
+        $refreshschedule = $match->refreshschedule ?? '';
+        if (is_numeric($refreshschedule)) {
             // Does the value look like a timestamp?
-            $nextrefresh = intval($nextrefresh);
-        } else if ( ($time = strtotime($nextrefresh)) !== false  ) {
+            $nextrefresh = intval($refreshschedule);
+        } else if (strtotime($refreshschedule) !== false) {
             // Does the value look like a date string?
-            $nextrefresh = $time;
+            $nextrefresh = self::calculate_next_refresh($match);
         } else {
             // Dunno just ignore it.
             $nextrefresh = null;
         }
         // Save the next refresh time as a timestamp.
         set_config('nextrefreshasts', $nextrefresh, 'local_envbar');
+    }
+
+    /**
+     * Calculates the next scheduled refresh time based on the refresh schedule.
+     *
+     * @param stdClass $match Environment record
+     * @return int|null Next refresh timestamp
+     */
+    public static function calculate_next_refresh($match) {
+        $refreshschedule = $match->refreshschedule ?? '';
+        $lastrefresh = $match->lastrefresh ?? 0;
+        if (empty($refreshschedule) || empty($lastrefresh)) {
+            return null;
+        }
+
+        // We want the next scheduled refresh after lastrefresh, allowing for a small buffer.
+        $lastrefresh += 4 * HOURSECS;
+        $nextrefresh = strtotime($refreshschedule, $lastrefresh);
+        if ($nextrefresh === false) {
+            return null;
+        }
+
+        // Any schedules with 'ago' cannot be adjusted to the future.
+        if (strpos($refreshschedule, 'ago') !== false) {
+            // Also remove the buffer.
+            return strtotime($refreshschedule, $match->lastrefresh);
+        }
+
+        // Incrementally adjust the time until a date after the lastrefresh is found or cap is reached.
+        $adjustedtime = $lastrefresh;
+        $maxtime = $lastrefresh + YEARSECS;
+        while ($adjustedtime < $maxtime) {
+            if ($nextrefresh > $lastrefresh) {
+                return $nextrefresh;
+            }
+            $adjustedtime = strtotime("+1 day", $adjustedtime);
+            $nextrefresh = strtotime($refreshschedule, $adjustedtime);
+        }
+
+        // If we can't find any future value within a reasonable time, fallback to the original.
+        return strtotime($refreshschedule, $lastrefresh);;
     }
 
     /**

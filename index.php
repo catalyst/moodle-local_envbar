@@ -58,6 +58,7 @@ if ($data = $form->get_data()) {
             $item->colourtext = $data->colourtext[$value];
             $item->matchpattern = $data->matchpattern[$value];
             $item->showtext = $data->showtext[$value];
+            $item->refreshschedule = $data->refreshschedule[$value];
 
             // Do not update the database with manual set config.php items.
             if (!empty($data->locked[$value])) {
@@ -83,6 +84,7 @@ if ($data = $form->get_data()) {
             $item->colourtext = $data->repeatcolourtext[$value];
             $item->matchpattern = $data->repeatmatchpattern[$value];
             $item->showtext = $data->repeatshowtext[$value];
+            $item->refreshschedule = $data->repeatrefreshschedule[$value];
 
             envbarlib::update_envbar($item);
         }

@@ -288,4 +288,66 @@ class lib_test extends \advanced_testcase {
         $this->assertEquals(1, $debugdisplay);
     }
 
+    /**
+     * Test refresh schedule
+     *
+     * @covers ::check_refresh_timestamp
+     */
+    public function test_check_refresh_timestamp() {
+        global $CFG;
+
+        $CFG->wwwroot = 'https://staging.moodle.edu';
+        $env = (object) [
+            'matchpattern'    => $CFG->wwwroot,
+            'showtext'        => 'Staging environment',
+            'colourbg'        => 'red',
+            'colourtext'      => 'white',
+            'refreshschedule' => 'third sunday of this month 12 pm',
+        ];
+
+        // Clone the env to avoid double encoding.
+        $env->id = envbarlib::update_envbar(clone $env);
+
+        // Confirm no update if the site has never been refreshed.
+        envbarlib::check_refresh_timestamp();
+        $this->assertEquals(false, get_config('local_envbar', 'nextrefreshasts'));
+
+        // Confirm it updates after a reset.
+        $lastrefresh = strtotime('2025-03-14 00:00:00');
+        set_config('prodlastcheck', $lastrefresh, 'local_envbar');
+        envbarlib::update_envbar(clone $env);
+        envbarlib::check_refresh_timestamp();
+        $this->assertEquals(strtotime('2025-03-16 12:00:00'), get_config('local_envbar', 'nextrefreshasts'));
+
+        // Confirm it updates when refreshschedule changes.
+        $env->refreshschedule = 'fourth sunday of this month 12 pm';
+        envbarlib::update_envbar(clone $env);
+        envbarlib::check_refresh_timestamp();
+        $this->assertEquals(strtotime('2025-03-23 12:00:00'), get_config('local_envbar', 'nextrefreshasts'));
+
+        // Confirm the calculated refresh time is in the future when the relative strtotime returns a past date.
+        $env->refreshschedule = 'second sunday of this month 12 pm';
+        $this->assertEquals(strtotime('2025-03-09 12:00:00'), strtotime($env->refreshschedule));
+        envbarlib::update_envbar(clone $env);
+        envbarlib::check_refresh_timestamp();
+        $this->assertEquals(strtotime('2025-04-13 12:00:00'), get_config('local_envbar', 'nextrefreshasts'));
+
+        // Confirm handling of a relative timestamp in the past.
+        $env->refreshschedule = '10 months ago';
+        envbarlib::update_envbar(clone $env);
+        envbarlib::check_refresh_timestamp();
+        $this->assertEquals(strtotime('10 months ago', $lastrefresh), get_config('local_envbar', 'nextrefreshasts'));
+
+        // Confirm time strings are handled appropriately.
+        $env->refreshschedule = strtotime('2025-03-09 12:00:00');
+        envbarlib::update_envbar(clone $env);
+        envbarlib::check_refresh_timestamp();
+        $this->assertEquals($env->refreshschedule, get_config('local_envbar', 'nextrefreshasts'));
+
+        // Confirm unix timestamps are handled appropriately.
+        $env->refreshschedule = 1741485600;
+        envbarlib::update_envbar(clone $env);
+        envbarlib::check_refresh_timestamp();
+        $this->assertEquals($env->refreshschedule, get_config('local_envbar', 'nextrefreshasts'));
+    }
 }
