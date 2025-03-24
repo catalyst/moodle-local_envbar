@@ -267,6 +267,16 @@ class config extends moodleform {
             }
 
             $mform->addElement(
+                "text",
+                "refreshschedule[{$id}]",
+                get_string("refreshschedule", "local_envbar"),
+                ["placeholder" => get_string("refreshscheduleplaceholder", "local_envbar"),
+                    "size" => 40,
+                    $locked ? 'disabled' : 'enabled',
+                ]
+            );
+
+            $mform->addElement(
                 "advcheckbox",
                 "delete[{$id}]",
                 get_string("setdeleted", "local_envbar"),
@@ -281,12 +291,15 @@ class config extends moodleform {
             $mform->setType("showtext[{$id}]", PARAM_TEXT);
             $mform->setType("colourtext[{$id}]", PARAM_TEXT);
             $mform->setType("colourbg[{$id}]", PARAM_TEXT);
+            $mform->setType("refreshschedule[{$id}]", PARAM_TEXT);
+            $mform->addHelpButton("refreshschedule[{$id}]", 'refreshschedule', 'local_envbar');
 
             $mform->setDefault("id[{$id}]", $record->id);
             $mform->setDefault("matchpattern[{$id}]", $record->matchpattern);
             $mform->setDefault("showtext[{$id}]", $record->showtext);
             $mform->setDefault("colourtext[{$id}]", $record->colourtext);
             $mform->setDefault("colourbg[{$id}]", $record->colourbg);
+            $mform->setDefault("refreshschedule[{$id}]", $record->refreshschedule);
             $mform->setDefault("delete[{$id}]", 0);
 
         }
@@ -348,6 +361,15 @@ class config extends moodleform {
         );
 
         $repeatarray[] = $mform->createElement(
+            "text",
+            "repeatrefreshschedule",
+            get_string("refreshschedule", "local_envbar"),
+            ["placeholder" => get_string("refreshscheduleplaceholder", "local_envbar"),
+                "size" => 40,
+            ]
+        );
+
+        $repeatarray[] = $mform->createElement(
             "advcheckbox",
             "repeatdelete",
             get_string("setdeleted", "local_envbar"),
@@ -386,6 +408,10 @@ class config extends moodleform {
 
         $repeatoptions["repeatshowtext"]["default"] = "";
         $repeatoptions["repeatshowtext"]["type"] = PARAM_TEXT;
+
+        $repeatoptions["repeatrefreshschedule"]["default"] = "";
+        $repeatoptions["repeatrefreshschedule"]["type"] = PARAM_TEXT;
+        $repeatoptions["repeatrefreshschedule"]["helpbutton"] = ['refreshschedule', 'local_envbar'];
 
         $addstring = get_string("addfields", "local_envbar");
         $this->repeat_elements($repeatarray, $repeatnumber, $repeatoptions, "repeats", "envbar_add", 1, $addstring, false);

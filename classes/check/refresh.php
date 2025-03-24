@@ -36,7 +36,7 @@ class refresh extends check {
      * @return \action_link|null
      */
     public function get_action_link(): ?\action_link {
-        $url = new \moodle_url('/admin/search.php?query=nextrefresh');
+        $url = new \moodle_url('/local/envbar/index.php');
         return new \action_link($url, get_string('menuenvsettings', 'local_envbar'));
     }
 
@@ -53,13 +53,21 @@ class refresh extends check {
             return new result(result::NA, get_string('prodwwwroottext', 'local_envbar'), '');
         }
 
-        envbarlib::check_refresh_timestamp();
+        $match = envbarlib::get_match();
+        envbarlib::check_refresh_timestamp($match);
         $lastrefresh = get_config('local_envbar', 'prodlastcheck');
         $nextrefresh = get_config('local_envbar', 'nextrefreshasts');
 
         // Notify if there is no refresh time set.
         if (empty($nextrefresh)) {
-            return new result(result::OK, get_string('nextrefreshnoset', 'local_envbar'));
+            if (empty($match->refreshschedule)) {
+                return new result(result::OK, get_string('nextrefreshnoset', 'local_envbar'));
+            } else if (empty($lastrefresh)) {
+                // The schedule requires lastrefresh to calculate the next refresh date.
+                return new result(result::WARNING, get_string('nextrefreshnever', 'local_envbar'));
+            } else {
+                return new result(result::ERROR, get_string('nextrefreshscheduleerror', 'local_envbar'));
+            }
         }
 
         // Warn if the last refresh time is ahead of the expected next refresh time.

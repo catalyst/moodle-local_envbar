@@ -151,7 +151,7 @@ EOD;
         }
 
         // Display the next expected refresh time, if any.
-        envbarlib::check_refresh_timestamp();
+        envbarlib::check_refresh_timestamp($match);
         // Get it fresh from the database as it may have been updated.
         $nextrefresh = get_config('local_envbar', 'nextrefreshasts');
         if ($nextrefresh) {
