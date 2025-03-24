@@ -65,18 +65,21 @@ $CFG->local_envbar_items = array(
         'showtext'     => 'Staging environment',
         'colourbg'     => 'orange',
         'colourtext'   => 'white',
+        'refreshschedule' => 'third sunday of this month 12 pm',
     ),
     array(
         'matchpattern' => 'https://qa.moodle.edu',
         'showtext'     => 'QA environment',
         'colourbg'     => 'purple',
         'colourtext'   => 'white',
+        'refreshschedule' => '2025-03-16 12:00pm',
     ),
     array(
         'matchpattern' => 'http://moodle.local',
         'showtext'     => 'Localhost environment',
         'colourbg'     => 'black',
         'colourtext'   => 'white',
+        'refreshschedule' => 1742090400,
     ),
 );
 ```
@@ -107,18 +110,5 @@ $CFG->local_envbar_secretkey = 'SomeRandomAlphanumericalString';
 ```
 
 In your non production environments it is also useful to inform your users when the
-next refresh will be. This time can be set via the settings page or via config.php
-and can be flexibly set in a variety of ways:
-
-
-```php
-// A unix timestamp:
-$CFG->forced_plugin_settings['local_envbar']['nextrefresh'] = 1490946920;
-
-// Any date string:
-$CFG->forced_plugin_settings['local_envbar']['nextrefresh'] = '2017-04-03 4:00pm';
-
-// Any valid strtotime string eg 2am every night:
-$CFG->forced_plugin_settings['local_envbar']['nextrefresh'] = '2:00am';
-```
+next refresh will be. This time can be set via the environment refresh schedule.
 

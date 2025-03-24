@@ -104,5 +104,27 @@ function xmldb_local_envbar_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2021011911, 'local', 'envbar');
     }
 
+    if ($oldversion < 2025033100) {
+
+        // Define field refreshschedule to be added to local_envbar.
+        $table = new xmldb_table('local_envbar');
+        $field = new xmldb_field('refreshschedule', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'lastrefresh');
+
+        // Conditionally launch add field refreshschedule.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Remove deprecated config.
+        unset_config('nextrefresh', 'local_envbar');
+        unset_config('nextrefreshold', 'local_envbar');
+
+        // Force nextrefreshasts to be recalculated.
+        unset_config('nextrefreshasts', 'local_envbar');
+
+        // Envbar savepoint reached.
+        upgrade_plugin_savepoint(true, 2025033100, 'local', 'envbar');
+    }
+
     return true;
 }

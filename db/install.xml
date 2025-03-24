@@ -12,6 +12,7 @@
         <FIELD NAME="matchpattern" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Match pattern"/>
         <FIELD NAME="showtext" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Text to show"/>
         <FIELD NAME="lastrefresh" TYPE="int" LENGTH="20" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="refreshschedule" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Refresh schedule"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
