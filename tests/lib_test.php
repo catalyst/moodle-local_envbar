@@ -341,7 +341,7 @@ class lib_test extends \advanced_testcase {
 
         // Confirm the calculated refresh time is in the future when the relative strtotime returns a past date.
         $env->refreshschedule = 'second sunday of this month 12 pm';
-        $this->assertEquals(strtotime('2025-03-09 12:00:00'), strtotime($env->refreshschedule));
+        $this->assertEquals(strtotime('2025-03-09 12:00:00'), strtotime($env->refreshschedule, $lastrefresh));
         envbarlib::update_envbar(clone $env);
         envbarlib::check_refresh_timestamp();
         $this->assertEquals(strtotime('2025-04-13 12:00:00'), get_config('local_envbar', 'nextrefreshasts'));
