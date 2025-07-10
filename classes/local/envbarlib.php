@@ -423,7 +423,9 @@ CSS;
      *
      */
     public static function injection_allowed() {
-        global $PAGE;
+        global $PAGE, $CFG;
+
+        require_once($CFG->libdir . '/behat/lib.php');
 
         if (self::$injectcalled) {
             return false;
@@ -431,6 +433,11 @@ CSS;
 
         // Do not inject if being called in an ajax or cli script unless it's a unit test.
         if ((CLI_SCRIPT || AJAX_SCRIPT) && !PHPUNIT_TEST) {
+            return false;
+        }
+
+        // Do not inject if in behat test.
+        if (behat_is_test_site()) {
             return false;
         }
 
