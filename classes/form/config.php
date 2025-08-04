@@ -276,6 +276,17 @@ class config extends moodleform {
                 ]
             );
 
+            $targeturl = $record->matchpattern ?? '';
+            $mform->addElement(
+                "button",
+                "autofill",
+                get_string('gotolastrefresh', 'local_envbar'),
+                [
+                    "onclick" => "window.location.href='" .  rtrim($targeturl, '/') . "/local/envbar/last_refresh.php'",
+                    empty(trim($targeturl)) ? 'disabled' : 'enabled',
+                ]
+            );
+
             $mform->addElement(
                 "advcheckbox",
                 "delete[{$id}]",
