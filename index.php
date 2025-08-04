@@ -35,7 +35,7 @@ admin_externalpage_setup('local_envbar_settings');
 
 $records = envbarlib::get_records();
 $gensecretkey = random_string(25);
-$form = new \local_envbar\form\config(null, array('records' => $records, 'gensecretkey' => $gensecretkey));
+$form = new \local_envbar\form\config(null, ['records' => $records, 'gensecretkey' => $gensecretkey]);
 
 if ($data = $form->get_data()) {
 
@@ -52,13 +52,6 @@ if ($data = $form->get_data()) {
         $keys = array_keys($data->id);
 
         foreach ($keys as $key => $value) {
-            $item = new stdClass();
-            $item->id = $data->id[$value];
-            $item->colourbg = $data->colourbg[$value];
-            $item->colourtext = $data->colourtext[$value];
-            $item->matchpattern = $data->matchpattern[$value];
-            $item->showtext = $data->showtext[$value];
-            $item->refreshschedule = $data->refreshschedule[$value];
 
             // Do not update the database with manual set config.php items.
             if (!empty($data->locked[$value])) {
@@ -68,6 +61,14 @@ if ($data = $form->get_data()) {
             if ($data->delete[$value] == 1) {
                 envbarlib::delete_envbar($value);
             } else {
+                $item = new stdClass();
+                $item->id = $data->id[$value];
+                $item->colourbg = $data->colourbg[$value];
+                $item->colourtext = $data->colourtext[$value];
+                $item->matchpattern = $data->matchpattern[$value];
+                $item->matchpattern = rtrim($item->matchpattern, '/');
+                $item->showtext = $data->showtext[$value];
+                $item->refreshschedule = $data->refreshschedule[$value];
                 // Update an item as the id has been set.
                 envbarlib::update_envbar($item);
             }

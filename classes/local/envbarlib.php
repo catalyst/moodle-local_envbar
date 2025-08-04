@@ -407,6 +407,7 @@ CSS;
      * @param string $prodwwwroot
      */
     public static function setprodwwwroot($prodwwwroot) {
+        $prodwwwroot = rtrim($prodwwwroot, '/');
         $root = base64_encode($prodwwwroot);
 
         $current = get_config('local_envbar', 'prodwwwroot');
