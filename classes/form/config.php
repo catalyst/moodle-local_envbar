@@ -44,7 +44,7 @@ class config extends moodleform {
     public function definition() {
         global $CFG, $PAGE;
 
-        $colours = array(
+        $colours = [
             "black",
             "white",
             "red",
@@ -57,8 +57,8 @@ class config extends moodleform {
             "chocolate",
             "crimson",
             "orange",
-            "darkorange"
-        );
+            "darkorange",
+        ];
 
         // Construct datalist HTML element for later injection.
         $datalisthtml = '<datalist id="colours">';
@@ -87,34 +87,34 @@ class config extends moodleform {
         // When this is not set, a warning message will be displayed.
         // If it has been manually set as $CFG->local_envbar_prodwwwroot it will be locked from further edits.
 
-        $wwwrootgroup = array();
+        $wwwrootgroup = [];
 
         $wwwrootgroup[] =& $mform->createElement(
             "text",
             "prodwwwroot",
             get_string("prodwwwroottext", "local_envbar"),
-            array("placeholder" => get_string("prodwwwrootplaceholder", "local_envbar"),
+            ["placeholder" => get_string("prodwwwrootplaceholder", "local_envbar"),
                   "id" => "prodwwwroot",
                   "size" => 40,
-                  $urlset ? 'disabled' : 'enabled')
+                  $urlset ? 'disabled' : 'enabled']
         );
 
         $wwwrootgroup[] =& $mform->createElement(
             "button",
             "autofill",
             get_string("prodwwwrootautobutton", "local_envbar"),
-            array("onclick" => "document.getElementById('prodwwwroot').value = '$CFG->wwwroot'", $urlset ? 'disabled' : 'enabled')
+            ["onclick" => "document.getElementById('prodwwwroot').value = '$CFG->wwwroot'", $urlset ? 'disabled' : 'enabled']
         );
 
-        $mform->addGroup($wwwrootgroup, 'wwwrootg', get_string('prodwwwroottext', 'local_envbar'), array(' '), false);
+        $mform->addGroup($wwwrootgroup, 'wwwrootg', get_string('prodwwwroottext', 'local_envbar'), [' '], false);
 
         $mform->setType("prodwwwroot", PARAM_URL);
         $mform->setDefault("prodwwwroot", envbarlib::getprodwwwroot());
 
         $config = get_config('local_envbar');
         $mform->addElement('text', 'prodtextcolour', get_string('prodtextcolour', 'local_envbar'),
-                array('placeholder' => 'white',
-                      'size' => 40));
+                ['placeholder' => 'white',
+                      'size' => 40]);
         $mform->setType('prodtextcolour', PARAM_TEXT);
         $mform->addHelpButton('prodtextcolour', 'prodtextcolour', 'local_envbar');
         if (isset($config->prodtextcolour)) {
@@ -131,8 +131,8 @@ class config extends moodleform {
         );
 
         $mform->addElement('text', 'prodbgcolour', get_string('prodbgcolour', 'local_envbar'),
-                array('placeholder' => 'red',
-                      'size' => 40));
+                ['placeholder' => 'red',
+                      'size' => 40]);
         $mform->setType('prodbgcolour', PARAM_TEXT);
         $mform->addHelpButton('prodbgcolour', 'prodbgcolour', 'local_envbar');
         if (isset($config->prodbgcolour)) {
@@ -148,27 +148,27 @@ class config extends moodleform {
                 'client'
         );
 
-        $secretkeygroup = array();
+        $secretkeygroup = [];
 
         $secretkeygroup[] =& $mform->createElement(
             "text",
             "secretkey",
             get_string("secretkey", "local_envbar"),
-            array("placeholder" => get_string("secretkeyplaceholder", "local_envbar"),
+            ["placeholder" => get_string("secretkeyplaceholder", "local_envbar"),
                 "id" => "secretkey",
                 "size" => 40,
-                envbarlib::is_secret_key_overridden() ? 'disabled' : 'enabled')
+                envbarlib::is_secret_key_overridden() ? 'disabled' : 'enabled']
         );
 
         $secretkeygroup[] =& $mform->createElement(
             "button",
             "secretkeygen",
             get_string("secretkeygenbutton", "local_envbar"),
-            array("onclick" => "document.getElementById('secretkey').value = '$gensecretkey'",
-                envbarlib::is_secret_key_overridden() ? 'disabled' : 'enabled')
+            ["onclick" => "document.getElementById('secretkey').value = '$gensecretkey'",
+                envbarlib::is_secret_key_overridden() ? 'disabled' : 'enabled']
         );
 
-        $mform->addGroup($secretkeygroup, 'secretkeyg', get_string('secretkey', 'local_envbar'), array(' '), false);
+        $mform->addGroup($secretkeygroup, 'secretkeyg', get_string('secretkey', 'local_envbar'), [' '], false);
 
         $mform->setType("secretkey", PARAM_TEXT);
         $mform->setDefault('secretkey', envbarlib::get_secret_key());
@@ -205,18 +205,18 @@ class config extends moodleform {
                 "text",
                 "matchpattern[{$id}]",
                 get_string("urlmatch", "local_envbar"),
-                array("placeholder" => get_string("urlmatchplaceholder", "local_envbar"),
+                ["placeholder" => get_string("urlmatchplaceholder", "local_envbar"),
                     "size" => 40,
-                    $locked ? 'disabled' : 'enabled')
+                    $locked ? 'disabled' : 'enabled']
             );
 
             $mform->addElement(
                 "text",
                 "showtext[{$id}]",
                 get_string("showtext", "local_envbar"),
-                array("placeholder" => get_string("showtextplaceholder", "local_envbar"),
+                ["placeholder" => get_string("showtextplaceholder", "local_envbar"),
                       "size" => 40,
-                      $locked ? 'disabled' : 'enabled')
+                      $locked ? 'disabled' : 'enabled']
             );
 
             $mform->addElement(
@@ -228,11 +228,11 @@ class config extends moodleform {
                 "text",
                 "colourtext[{$id}]",
                 get_string("textcolour", "local_envbar"),
-                array("placeholder" => get_string("colourplaceholder", "local_envbar"),
+                ["placeholder" => get_string("colourplaceholder", "local_envbar"),
                     "size" => 40,
                     "list" => "colours",
                     "name" => "envcolours",
-                    $locked ? 'disabled' : 'enabled')
+                    $locked ? 'disabled' : 'enabled']
             );
 
             if (!$locked) {
@@ -249,11 +249,11 @@ class config extends moodleform {
                 "text",
                 "colourbg[{$id}]",
                 get_string("bgcolour", "local_envbar"),
-                array("placeholder" => get_string("colourplaceholder", "local_envbar"),
+                ["placeholder" => get_string("colourplaceholder", "local_envbar"),
                     "size" => 40,
                     "list" => "colours",
                     "name" => "envcolours",
-                    $locked ? 'disabled' : 'enabled')
+                    $locked ? 'disabled' : 'enabled']
             );
 
             if (!$locked) {
@@ -292,8 +292,8 @@ class config extends moodleform {
                 "delete[{$id}]",
                 get_string("setdeleted", "local_envbar"),
                 '',
-                $locked ? array('disabled') : array(),
-                array(0, 1)
+                $locked ? ['disabled'] : [],
+                [0, 1]
             );
 
             $mform->setType("id[{$id}]", PARAM_INT);
@@ -322,7 +322,7 @@ class config extends moodleform {
             $repeatnumber = 0;
         }
 
-        $repeatarray = array();
+        $repeatarray = [];
 
         $repeatarray[] = $mform->createElement(
             "hidden",
@@ -338,37 +338,37 @@ class config extends moodleform {
             "text",
             "repeatmatchpattern",
             get_string("urlmatch", "local_envbar"),
-            array("placeholder" => get_string("urlmatchplaceholder", "local_envbar"),
-                  "size" => 40)
+            ["placeholder" => get_string("urlmatchplaceholder", "local_envbar"),
+                  "size" => 40]
         );
 
         $repeatarray[] = $mform->createElement(
             "text",
             "repeatshowtext",
             get_string("showtext", "local_envbar"),
-            array("placeholder" => get_string("showtextplaceholder", "local_envbar"),
-                  "size" => 40)
+            ["placeholder" => get_string("showtextplaceholder", "local_envbar"),
+                  "size" => 40]
         );
 
         $repeatarray[] = $mform->createElement(
             "text",
             "repeatcolourtext",
             get_string("textcolour", "local_envbar"),
-            array("placeholder" => get_string("colourplaceholder", "local_envbar"),
+            ["placeholder" => get_string("colourplaceholder", "local_envbar"),
                 "size" => 40,
                 "list" => "colours",
-                "name" => "envcolours"
-            )
+                "name" => "envcolours",
+            ]
         );
 
         $repeatarray[] = $mform->createElement(
             "text",
             "repeatcolourbg",
             get_string("bgcolour", "local_envbar"),
-            array("placeholder" => get_string("colourplaceholder", "local_envbar"),
+            ["placeholder" => get_string("colourplaceholder", "local_envbar"),
                 "size" => 40,
                 "list" => "colours",
-                "name" => "envcolours")
+                "name" => "envcolours"]
         );
 
         $repeatarray[] = $mform->createElement(
@@ -385,37 +385,37 @@ class config extends moodleform {
             "repeatdelete",
             get_string("setdeleted", "local_envbar"),
             '',
-            array(),
-            array(0, 1)
+            [],
+            [0, 1]
         );
 
         $repeatarray[] = $mform->addElement("html", "<hr>");
 
-        $repeatoptions = array();
+        $repeatoptions = [];
         $repeatoptions["repeatid"]["default"] = "{no}";
         $repeatoptions["repeatid"]["type"] = PARAM_INT;
 
         $repeatoptions["repeatcolourbg"]["default"] = "red";
         $repeatoptions["repeatcolourbg"]["type"] = PARAM_TEXT;
-        $repeatoptions["repeatcolourbg"]["rule"] = array(
+        $repeatoptions["repeatcolourbg"]["rule"] = [
             get_string("colourerror", "local_envbar"),
             'regex',
             '/#([a-f0-9]{3}){1,2}\b|' . $coloursregex . '\b/i',
-            'client'
-        );
+            'client',
+        ];
 
         $repeatoptions["repeatcolourtext"]["default"] = "white";
         $repeatoptions["repeatcolourtext"]["type"] = PARAM_TEXT;
-        $repeatoptions["repeatcolourtext"]["rule"] = array(
+        $repeatoptions["repeatcolourtext"]["rule"] = [
             get_string("colourerror", "local_envbar"),
             'regex',
             '/#([a-f0-9]{3}){1,2}\b|' . $coloursregex . '\b/i',
-            'client'
-        );
+            'client',
+        ];
 
         $repeatoptions["repeatmatchpattern"]["default"] = "";
         $repeatoptions["repeatmatchpattern"]["type"] = PARAM_TEXT;
-        $repeatoptions["repeatmatchpattern"]["helpbutton"] = array('urlmatch', 'local_envbar');
+        $repeatoptions["repeatmatchpattern"]["helpbutton"] = ['urlmatch', 'local_envbar'];
 
         $repeatoptions["repeatshowtext"]["default"] = "";
         $repeatoptions["repeatshowtext"]["type"] = PARAM_TEXT;
