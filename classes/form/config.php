@@ -112,9 +112,10 @@ class config extends moodleform {
         $mform->setDefault("prodwwwroot", envbarlib::getprodwwwroot());
 
         $config = get_config('local_envbar');
-        $mform->addElement('text', 'prodtextcolour', get_string('prodtextcolour', 'local_envbar'),
-                ['placeholder' => 'white',
-                      'size' => 40]);
+        $mform->addElement('text', 'prodtextcolour', get_string('prodtextcolour', 'local_envbar'), [
+            'placeholder' => 'white',
+            'size' => 12,
+        ]);
         $mform->setType('prodtextcolour', PARAM_TEXT);
         $mform->addHelpButton('prodtextcolour', 'prodtextcolour', 'local_envbar');
         if (isset($config->prodtextcolour)) {
@@ -130,9 +131,10 @@ class config extends moodleform {
                 'client'
         );
 
-        $mform->addElement('text', 'prodbgcolour', get_string('prodbgcolour', 'local_envbar'),
-                ['placeholder' => 'red',
-                      'size' => 40]);
+        $mform->addElement('text', 'prodbgcolour', get_string('prodbgcolour', 'local_envbar'), [
+            'placeholder' => 'red',
+            'size' => 12,
+        ]);
         $mform->setType('prodbgcolour', PARAM_TEXT);
         $mform->addHelpButton('prodbgcolour', 'prodbgcolour', 'local_envbar');
         if (isset($config->prodbgcolour)) {
@@ -206,7 +208,7 @@ class config extends moodleform {
                 "matchpattern[{$id}]",
                 get_string("urlmatch", "local_envbar"),
                 ["placeholder" => get_string("urlmatchplaceholder", "local_envbar"),
-                    "size" => 40,
+                    "size" => 60,
                     $locked ? 'disabled' : 'enabled']
             );
 
@@ -215,7 +217,7 @@ class config extends moodleform {
                 "showtext[{$id}]",
                 get_string("showtext", "local_envbar"),
                 ["placeholder" => get_string("showtextplaceholder", "local_envbar"),
-                      "size" => 40,
+                      "size" => 12,
                       $locked ? 'disabled' : 'enabled']
             );
 
@@ -229,7 +231,7 @@ class config extends moodleform {
                 "colourtext[{$id}]",
                 get_string("textcolour", "local_envbar"),
                 ["placeholder" => get_string("colourplaceholder", "local_envbar"),
-                    "size" => 40,
+                    "size" => 12,
                     "list" => "colours",
                     "name" => "envcolours",
                     $locked ? 'disabled' : 'enabled']
@@ -250,7 +252,7 @@ class config extends moodleform {
                 "colourbg[{$id}]",
                 get_string("bgcolour", "local_envbar"),
                 ["placeholder" => get_string("colourplaceholder", "local_envbar"),
-                    "size" => 40,
+                    "size" => 12,
                     "list" => "colours",
                     "name" => "envcolours",
                     $locked ? 'disabled' : 'enabled']
