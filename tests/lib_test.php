@@ -140,6 +140,39 @@ final class lib_test extends \advanced_testcase {
     }
 
     /**
+     * Check envbarlib::get_inject_code() bypass if we are in production environment.
+     * @covers \local_envbar\local\envbarlib
+     */
+    public function test_inject_bypass(): void {
+        global $CFG, $PAGE, $OUTPUT;
+        $this->resetAfterTest(true);
+        $PAGE->set_url(new \moodle_url('/local/envbar/index.php'));
+        $this->setAdminUser();
+
+        $data = new stdClass();
+        $data->colourbg = '000000';
+        $data->colourtext = '000000';
+        $data->matchpattern = $CFG->wwwroot;
+        $data->showtext = 'Test Inject';
+        envbarlib::update_envbar($data);
+        // Banner being displayed if allowmultipledomains off.
+        $injected = envbarlib::reset_injectcalled();
+        self::assertStringContainsString('<style>', $injected);
+        self::assertStringContainsString('<script>', $injected);
+
+        // Banner being displayed if allowmultipledomains on but url not in the secondary list.
+        set_config('allowmultipledomains', true);
+        $injected = envbarlib::reset_injectcalled();
+        self::assertStringContainsString('<style>', $injected);
+        self::assertStringContainsString('<script>', $injected);
+
+        // Bypass if url in the secondary list.
+        envbarlib::setprodsecondaryurls($CFG->wwwroot);
+        $injected = envbarlib::reset_injectcalled();
+        self::assertEquals('', $injected);
+    }
+
+    /**
      * Test is_secret_key_overridden() function.
      * @covers \local_envbar\local\envbarlib
      */
