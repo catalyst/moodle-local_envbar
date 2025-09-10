@@ -66,7 +66,7 @@ function xmldb_local_envbar_upgrade($oldversion) {
 
         // Define index idx_match (unique) to be dropped form local_envbar.
         $table = new xmldb_table('local_envbar');
-        $index = new xmldb_index('idx_match', XMLDB_INDEX_UNIQUE, array('matchpattern'));
+        $index = new xmldb_index('idx_match', XMLDB_INDEX_UNIQUE, ['matchpattern']);
 
         // Conditionally launch drop index idx_match.
         if ($dbman->index_exists($table, $index)) {
@@ -85,7 +85,7 @@ function xmldb_local_envbar_upgrade($oldversion) {
             $dbman->add_field($table, $field);
         }
 
-        if (!$DB->record_exists('config_plugins', array('plugin' => 'local_envbar', 'name' => 'secretkey'))) {
+        if (!$DB->record_exists('config_plugins', ['plugin' => 'local_envbar', 'name' => 'secretkey'])) {
             set_config('secretkey', random_string(25), 'local_envbar');
         }
 

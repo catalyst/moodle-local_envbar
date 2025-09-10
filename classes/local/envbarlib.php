@@ -60,7 +60,7 @@ class envbarlib {
     /**
      * Boolean to check that hold status if inject has been called
      *
-     * @var boolean
+     * @var bool
      */
     private static $injectcalled = false;
 
@@ -154,7 +154,7 @@ CSS;
         $cache = cache::make('local_envbar', 'records');
         $cache->delete('records');
 
-        $ret = $DB->delete_records('local_envbar', array('id' => $id));
+        $ret = $DB->delete_records('local_envbar', ['id' => $id]);
         return $ret;
     }
 
@@ -252,7 +252,7 @@ CSS;
             return false;
         }
 
-        $keywords = array('\\', '/', '-', '.', '?', '*', '+', '^', '$');
+        $keywords = ['\\', '/', '-', '.', '?', '*', '+', '^', '$'];
 
         foreach ($keywords as $keyword) {
             // Escape special a keyword to treat it as a part of the string.
@@ -356,7 +356,7 @@ CSS;
 
             // If we stil don't have a match then show a default warning.
             if (empty($match)) {
-                $match = (object) array(
+                $match = (object) [
                     'id' => 0,
                     'showtext' => get_string('notconfigured', 'local_envbar'),
                     'colourtext' => 'white',
@@ -364,17 +364,17 @@ CSS;
                     'matchpattern' => '',
                     'lastrefresh' => get_config('local_envbar', 'prodlastcheck'),
                     'refreshschedule' => '',
-                );
+                ];
 
             }
 
-            array_push($envs, (object) array(
+            array_push($envs, (object) [
                 'id' => -1,
                 'showtext' => get_string('prod', 'local_envbar'),
                 'colourtext' => get_config('local_envbar', 'prodtextcolour'),
                 'colourbg' => get_config('local_envbar', 'prodbgcolour'),
                 'matchpattern' => rtrim(self::getprodwwwroot(), '/') . '/',
-            ));
+            ]);
 
             $renderer = $PAGE->get_renderer('local_envbar');
             return $renderer->render_envbar($match, true, $envs);
@@ -530,7 +530,7 @@ CSS;
         $url = $prodwwwroot."/local/envbar/service/updatelastrefresh.php";
         $params = "wwwroot=".urlencode($CFG->wwwroot)."&lastrefresh=".
             urlencode($lastrefresh)."&secretkey=".urlencode(self::get_secret_key());
-        $options = array();
+        $options = [];
         if ($debug) {
             $options['debug'] = true;
         }
@@ -709,7 +709,7 @@ CSS;
 
         // If we stil don't have a match then use a default environment.
         if (empty($match)) {
-            $match = (object) array(
+            $match = (object) [
                 'id' => 0,
                 'showtext' => get_string('notconfigured', 'local_envbar'),
                 'colourtext' => 'white',
@@ -717,7 +717,7 @@ CSS;
                 'matchpattern' => '',
                 'lastrefresh' => get_config('local_envbar', 'prodlastcheck'),
                 'refreshschedule' => '',
-            );
+            ];
         }
 
         // Email subject prefix.

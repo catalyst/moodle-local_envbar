@@ -42,7 +42,7 @@ class local_envbar_renderer extends plugin_renderer_base {
      *
      * @return string
      */
-    public function render_envbar($match, $fixed = true, $envs = array()) {
+    public function render_envbar($match, $fixed = true, $envs = []) {
 
         $config = get_config('local_envbar');
 
@@ -143,7 +143,7 @@ EOD;
 
                 $num = strtok($show, ' ');
                 $unit = strtok(' ');
-                $show = html_writer::tag('span', "$num $unit", ['title' => $title, ]);
+                $show = html_writer::tag('span', "$num $unit", ['title' => $title ]);
                 $showtext .= ' ' . $config->stringseparator . ' ' . get_string('refreshedago', 'local_envbar', $show);
             } else {
                 $showtext .= ' ' . $config->stringseparator . ' ' . get_string('refreshednever', 'local_envbar');
@@ -159,7 +159,7 @@ EOD;
             $title = get_string('nextrefreshtitle', 'local_envbar', $title);
 
             $show = envbarlib::get_next_refresh_as_text($nextrefresh);
-            $show = html_writer::tag('span', $show, ['title' => $title, ]);
+            $show = html_writer::tag('span', $show, ['title' => $title ]);
             $showtext .= ' ' . $config->stringseparator . ' ' . $show;
         }
 
@@ -171,7 +171,7 @@ EOD;
             if ($produrl) {
                 $editlink = html_writer::link($produrl.'/local/envbar/index.php',
                         get_string('configureinprod', 'local_envbar'),
-                        array('target' => 'prod', 'class' => 'no-envbar-highlight'));
+                        ['target' => 'prod', 'class' => 'no-envbar-highlight']);
             } else {
                 $editlink = html_writer::link(new moodle_url('/local/envbar/index.php'),
                         get_string('configurehere', 'local_envbar'));

@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$definitions = array(
-    'records' => array(
-        'mode' => cache_store::MODE_APPLICATION
-    )
-);
+$definitions = [
+    'records' => [
+        'mode' => cache_store::MODE_APPLICATION,
+    ],
+];
