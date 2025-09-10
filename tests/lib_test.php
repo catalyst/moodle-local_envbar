@@ -43,6 +43,7 @@ class lib_test extends \advanced_testcase {
 
         // Switch on for envbar unit tests.
         set_config('enablemenu', true, 'local_envbar');
+        set_config('allowmultipledomains', false);
 
         parent::setup();
         $this->resetAfterTest(true);

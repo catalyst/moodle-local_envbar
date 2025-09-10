@@ -322,7 +322,17 @@ CSS;
 
             // Do not display on the production environment!
             if ($prodwwwroot === $CFG->wwwroot) {
-                return;
+                return '';
+            }
+
+            // Do not display on the production secondary urls!
+            if ($CFG->allowmultipledomains) {
+                $customdomains = explode("\n", self::getprodsecondaryurls());
+                foreach ($customdomains as $customdomain) {
+                    if ($customdomain === $CFG->wwwroot) {
+                        return '';
+                    }
+                }
             }
 
             // If the prodwwwroot is not set, only show the bar to admin users.
@@ -414,6 +424,39 @@ CSS;
         if ($current != $root) {
             set_config('prodwwwroot', $root, 'local_envbar');
         }
+    }
+
+    /**
+     * Sets the secondaryurls.
+     * This also base64_encodes the value to prevent datawashing from removing the values.
+     *
+     * @param string $secondaryurls
+     */
+    public static function setprodsecondaryurls($secondaryurls) {
+        $domains = explode("\n", $secondaryurls);
+        $trimmeddomains = [];
+        foreach ($domains as $domain) {
+            $tdomain = rtrim(trim($domain), '/');
+            $trimmeddomains[] = $tdomain;
+        }
+        $encodeddomains = base64_encode(implode("\n", $trimmeddomains));
+        set_config('secondaryurls', $encodeddomains, 'local_envbar');
+    }
+
+
+    /**
+     * Gets the secondaryurls.
+     * This also base64_decodes the value to obtain it.
+     *
+     * @return string
+     */
+    public static function getprodsecondaryurls(): string {
+        $domains = base64_decode(get_config("local_envbar", "secondaryurls"));
+        if ($domains) {
+            return $domains;
+        }
+        // Not set - return empty string.
+        return '';
     }
 
     /**

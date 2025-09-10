@@ -95,6 +95,7 @@ $string['refreshednever'] = 'Never been refreshed';
 $string['refreshschedule'] = 'Refresh schedule';
 $string['refreshschedule_help'] = 'The schedule for the next refresh, expressed in natural language. See <a target=_blank href="https://www.php.net/manual/en/datetime.formats.php#datetime.formats.relative">PHP relative dates</a>';
 $string['refreshscheduleplaceholder'] = 'PHP relative date, e.g. third sunday of this month 12 pm';
+$string['secondaryurls'] = 'Secondary URLs';
 $string['secretkey'] = 'Secret key';
 $string['secretkey_help'] = 'The secret key is needed to let the environments talk to each other. Please set it to some random alphanumeric string of your choice or press the \'Generate\' button. If no secret key is set, the non production environments won\'t be able to detect their last reset time.';
 $string['secretkey_invalid'] = 'The secret key provided was missing or invalid.';

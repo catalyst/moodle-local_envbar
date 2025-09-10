@@ -40,7 +40,9 @@ $form = new \local_envbar\form\config(null, ['records' => $records, 'gensecretke
 if ($data = $form->get_data()) {
 
     envbarlib::setprodwwwroot($data->prodwwwroot);
-
+    if ($CFG->allowmultipledomains) {
+        envbarlib::setprodsecondaryurls($data->secondaryurls);
+    }
     set_config('prodbgcolour', $data->prodbgcolour, 'local_envbar');
     set_config('prodtextcolour', $data->prodtextcolour, 'local_envbar');
     if (!envbarlib::is_secret_key_overridden()) {
