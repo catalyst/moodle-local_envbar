@@ -37,7 +37,7 @@ $lastrefresh = required_param('lastrefresh', PARAM_INT);
 $secretkey = required_param('secretkey', PARAM_TEXT);
 $config = get_config('local_envbar');
 
-$response = array();
+$response = [];
 
 if ($secretkey !== envbarlib::get_secret_key()) {
     $response['result'] = 'secretkey_invalid';
@@ -69,8 +69,8 @@ if (isset($data)) {
     // We have to do some matching between prod and this new environment
     // to get a difference to use as the showtext.
     // Remove http and https in case both environments are different.
-    $pattern = array('/https:\/\//', '/http:\/\//');
-    $replacement = array('', '');
+    $pattern = ['/https:\/\//', '/http:\/\//'];
+    $replacement = ['', ''];
 
     $here = preg_replace($pattern, $replacement, $CFG->wwwroot);
     $there = preg_replace($pattern, $replacement, $wwwroot);

@@ -33,7 +33,7 @@ global $DB;
 
 admin_externalpage_setup('local_envbar_lastrefresh');
 
-$form = new \local_envbar\form\lastrefresh(null, array('prodlastcheck' => get_config('local_envbar', 'prodlastcheck')));
+$form = new \local_envbar\form\lastrefresh(null, ['prodlastcheck' => get_config('local_envbar', 'prodlastcheck')]);
 
 if ($data = $form->get_data()) {
     envbarlib::updatelastcheck($data->lastrefresh);

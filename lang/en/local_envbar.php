@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
+
 /**
  * Strings for component 'local_envbar', language 'en'.
  *
@@ -65,12 +66,12 @@ $string['menuheading'] = 'Environment swapper menu';
 $string['menulastrefresh'] = 'Last refresh';
 $string['menupresentation'] = 'Presentation';
 $string['missing_required_parameter'] = 'A required parameter was missing. Required params are wwwroot and lastrefresh.';
-$string['nextrefreshscheduleerror'] = 'A refresh schedule is set and is most likely invalid';
 $string['nextrefreshbehindlast'] = 'Last refresh time is ahead of next refresh time';
+$string['nextrefreshin'] = 'Next refresh in {$a}';
 $string['nextrefreshnever'] = 'A refresh schedule is set but the site has never been refreshed';
 $string['nextrefreshnoset'] = 'There is no expected time for the next refresh';
+$string['nextrefreshscheduleerror'] = 'A refresh schedule is set and is most likely invalid';
 $string['nextrefreshtitle'] = 'The next refresh is due at {$a}';
-$string['nextrefreshin'] = 'Next refresh in {$a}';
 $string['nextrefreshwas'] = 'Next refresh was due {$a} ago';
 $string['notconfigured'] = 'UNKNOWN';
 $string['pingprod'] = 'Update production';

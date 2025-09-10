@@ -31,7 +31,7 @@ use stdClass;
 /**
  * Unit testing class for envbar_lib
  */
-class lib_test extends \advanced_testcase {
+final class lib_test extends \advanced_testcase {
 
     /**
      * Initial set up.
@@ -40,12 +40,11 @@ class lib_test extends \advanced_testcase {
         global $CFG;
 
         require_once($CFG->dirroot . '/local/envbar/lib.php');
+        parent::setUp();
 
         // Switch on for envbar unit tests.
         set_config('enablemenu', true, 'local_envbar');
         set_config('allowmultipledomains', false);
-
-        parent::setup();
         $this->resetAfterTest(true);
     }
 
@@ -54,40 +53,41 @@ class lib_test extends \advanced_testcase {
      *
      * @return array of test cases
      */
-    public function get_data_for_pattern_matching() {
-        return array(
-            array('https://my_moodle.com/', 'https://my_moodle.com/', true),
-            array('https://my_moodle.com/', 'https://my_moodle.com', true),
-            array('https://my_moodle.com/', '://my_moodle.com', true),
-            array('https://my_moodle.com/', '//my_moodle.com', true),
-            array('https://my_moodle.com/', 'my_moodle.com', true),
-            array('https://my_moodle.com/', '/', true),
-            array('https://my_moodle.com/', ':', true),
-            array('https://my_moodle.com/', '.', true),
-            array('https://my_moodle.com/', '.com', true),
-            array('https://my_moodle.com/', '', false),
-            array('https://my_moodle.com/', null, false),
-            array('https://my_moodle.com/', ' ', false),
-            array('https://my_moodle.com/', '     ', false),
-            array('https://my_moodle.com/', 'https://my_moodle.com//', false),
-            array('https://my_moodle.com/', 'http://my_moodle.com', false),
-            array('https://my_moodle.com/', 'http://my_moodle.com', false),
-            array('https://my_moodle.com/', '/', true),
-            array('https://my_moodle.com/', 'o{2}', true),
-            array('https://my_moodle.com/', 'o{3}', false),
-            array('https://my_moodle3.com/', 'https://my_moodle[1,2,3].com', true),
-            array('https://my_moodle6.com/', 'https://my_moodle[1-9].com', false),
-            array('https://my_moodle6.com/', '([a-zA-Z](([a-zA-Z0-9-])[a-zA-Z0-9]))', false),
-            array('https://my_moodle6.com/', '\D', false),
-            array('\-/.?*+^$', '\-/.?*+^$', true),
-        );
+    public static function get_data_for_pattern_matching(): array {
+        return [
+            ['https://my_moodle.com/', 'https://my_moodle.com/', true],
+            ['https://my_moodle.com/', 'https://my_moodle.com', true],
+            ['https://my_moodle.com/', '://my_moodle.com', true],
+            ['https://my_moodle.com/', '//my_moodle.com', true],
+            ['https://my_moodle.com/', 'my_moodle.com', true],
+            ['https://my_moodle.com/', '/', true],
+            ['https://my_moodle.com/', ':', true],
+            ['https://my_moodle.com/', '.', true],
+            ['https://my_moodle.com/', '.com', true],
+            ['https://my_moodle.com/', '', false],
+            ['https://my_moodle.com/', null, false],
+            ['https://my_moodle.com/', ' ', false],
+            ['https://my_moodle.com/', '     ', false],
+            ['https://my_moodle.com/', 'https://my_moodle.com//', false],
+            ['https://my_moodle.com/', 'http://my_moodle.com', false],
+            ['https://my_moodle.com/', 'http://my_moodle.com', false],
+            ['https://my_moodle.com/', '/', true],
+            ['https://my_moodle.com/', 'o{2}', true],
+            ['https://my_moodle.com/', 'o{3}', false],
+            ['https://my_moodle3.com/', 'https://my_moodle[1,2,3].com', true],
+            ['https://my_moodle6.com/', 'https://my_moodle[1-9].com', false],
+            ['https://my_moodle6.com/', '([a-zA-Z](([a-zA-Z0-9-])[a-zA-Z0-9]))', false],
+            ['https://my_moodle6.com/', '\D', false],
+            ['\-/.?*+^$', '\-/.?*+^$', true],
+        ];
     }
 
     /**
      * The env swapper feature introduced in issue #215 can cause core unit tests to fail. The setting is enablemenu is switched to
      * off for unit testing. Test that it's been switched on for these unit tests.
+     * @covers \local_envbar\local\envbarlib
      */
-    public function test_usermenu_has_been_set_to_true_in_setup() {
+    public function test_usermenu_has_been_set_to_true_in_setup(): void {
         $config = get_config('local_envbar');
 
         $this->assertNotEmpty($config->enablemenu);
@@ -102,16 +102,18 @@ class lib_test extends \advanced_testcase {
      * @param string $value A value to test on.
      * @param string  $pattern A pattern to test on.
      * @param bool $expected Expected result.
+     * @covers \local_envbar\local\envbarlib
      */
-    public function test_pattern_matching($value, $pattern, $expected) {
+    public function test_pattern_matching($value, $pattern, $expected): void {
         $actual = envbarlib::is_match($value, $pattern);
         $this->assertEquals($expected, $actual);
     }
 
     /**
      * Check envbarlib::get_inject_code() works as expected.
+     * @covers \local_envbar\local\envbarlib
      */
-    public function test_inject() {
+    public function test_inject(): void {
         global $CFG, $PAGE, $OUTPUT;
         $this->resetAfterTest(true);
         $PAGE->set_url(new \moodle_url('/local/envbar/index.php'));
@@ -139,8 +141,9 @@ class lib_test extends \advanced_testcase {
 
     /**
      * Test is_secret_key_overridden() function.
+     * @covers \local_envbar\local\envbarlib
      */
-    public function test_is_secret_key_overridden() {
+    public function test_is_secret_key_overridden(): void {
         global $CFG;
 
         $this->resetAfterTest();
@@ -151,10 +154,10 @@ class lib_test extends \advanced_testcase {
         $CFG->local_envbar_secretkey = '';
         $this->assertFalse(envbarlib::is_secret_key_overridden());
 
-        $CFG->local_envbar_secretkey = array();
+        $CFG->local_envbar_secretkey = [];
         $this->assertFalse(envbarlib::is_secret_key_overridden());
 
-        $CFG->local_envbar_secretkey = array(1);
+        $CFG->local_envbar_secretkey = [1];
         $this->assertFalse(envbarlib::is_secret_key_overridden());
 
         $CFG->local_envbar_secretkey = new stdClass();
@@ -166,8 +169,9 @@ class lib_test extends \advanced_testcase {
 
     /**
      * Test get_secret_key().
+     * @covers \local_envbar\local\envbarlib
      */
-    public function test_get_secret_key() {
+    public function test_get_secret_key(): void {
         global $CFG;
 
         $this->resetAfterTest();
@@ -184,13 +188,14 @@ class lib_test extends \advanced_testcase {
 
     /**
      * Test get_toggled_debug_config().
+     * @covers \local_envbar\local\envbarlib
      */
-    public function test_get_toggle_debug_config() {
+    public function test_get_toggle_debug_config(): void {
         global $CFG;
 
         $this->resetAfterTest();
         $data = new stdClass();
-        $array = array('DEBUG_DEVELOPER', 'DEBUG_NORMAL');
+        $array = ['DEBUG_DEVELOPER', 'DEBUG_NORMAL'];
         $this->assertEquals(DEBUG_NORMAL, envbarlib::get_toggle_debug_config(100));
         $this->assertEquals(DEBUG_NORMAL, envbarlib::get_toggle_debug_config('DEVELOPER'));
         $this->assertEquals(DEBUG_NORMAL, envbarlib::get_toggle_debug_config($data));
@@ -201,11 +206,12 @@ class lib_test extends \advanced_testcase {
 
     /**
      * Test get_debug_display_config().
+     * @covers \local_envbar\local\envbarlib
      */
-    public function test_get_debug_display_config() {
+    public function test_get_debug_display_config(): void {
         $this->resetAfterTest();
         $data = new stdClass();
-        $array = array('DEBUG_DEVELOPER', 'DEBUG_NORMAL');
+        $array = ['DEBUG_DEVELOPER', 'DEBUG_NORMAL'];
         $this->assertEquals(0, envbarlib::get_debug_display_config(1));
         $this->assertEquals(0, envbarlib::get_debug_display_config('DEVELOPER'));
         $this->assertEquals(0, envbarlib::get_debug_display_config($data));
@@ -216,8 +222,9 @@ class lib_test extends \advanced_testcase {
 
     /**
      * Test get_debugging_status_string().
+     * @covers \local_envbar\local\envbarlib
      */
-    public function test_get_debugging_status_string() {
+    public function test_get_debugging_status_string(): void {
         global $CFG;
 
         $this->resetAfterTest();
@@ -237,8 +244,9 @@ class lib_test extends \advanced_testcase {
 
     /**
      * Test get_debug_toggle_string().
+     * @covers \local_envbar\local\envbarlib
      */
-    public function test_get_debug_toggle_string() {
+    public function test_get_debug_toggle_string(): void {
         global $CFG;
 
         $this->resetAfterTest();
@@ -258,13 +266,14 @@ class lib_test extends \advanced_testcase {
 
     /**
      * Test set_debug_config().
+     * @covers \local_envbar\local\envbarlib
      */
-    public function test_set_debug_config() {
+    public function test_set_debug_config(): void {
         global $DB;
 
         $this->resetAfterTest();
         $data = new stdClass();
-        $array = array('DEBUG_DEVELOPER', 'DEBUG_NORMAL');
+        $array = ['DEBUG_DEVELOPER', 'DEBUG_NORMAL'];
 
         envbarlib::set_debug_config(100);
         $debug = $DB->get_field('config', 'value', ['name' => 'debug']);
@@ -308,7 +317,7 @@ class lib_test extends \advanced_testcase {
      *
      * @covers ::check_refresh_timestamp
      */
-    public function test_check_refresh_timestamp() {
+    public function test_check_refresh_timestamp(): void {
         global $CFG;
 
         $CFG->wwwroot = 'https://staging.moodle.edu';
