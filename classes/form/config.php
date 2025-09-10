@@ -111,6 +111,21 @@ class config extends moodleform {
         $mform->setType("prodwwwroot", PARAM_URL);
         $mform->setDefault("prodwwwroot", envbarlib::getprodwwwroot());
 
+        if ($CFG->allowmultipledomains) {
+            $mform->addElement(
+                'textarea',
+                'secondaryurls',
+                get_string('secondaryurls', 'local_envbar'),
+                [
+                    'rows' => 5,
+                    'cols' => 20,
+                ],
+            );
+            $customdomains = envbarlib::getprodsecondaryurls();
+            if (isset($customdomains)) {
+                $mform->setDefault('secondaryurls', $customdomains);
+            }
+        }
         $config = get_config('local_envbar');
         $mform->addElement('text', 'prodtextcolour', get_string('prodtextcolour', 'local_envbar'), [
             'placeholder' => 'white',

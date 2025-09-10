@@ -83,6 +83,9 @@ $CFG->local_envbar_items = array(
     ),
 );
 ```
+In Moodle Workplace, domain-per-tenant is supported. 
+To enable secondary production URLs, add `$CFG->allowmultipledomains = true` to config.php. 
+The related setting will then appear on the plugin’s settings page.
 
 The colours available are,
 
