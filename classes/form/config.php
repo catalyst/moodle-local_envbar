@@ -111,7 +111,7 @@ class config extends moodleform {
         $mform->setType("prodwwwroot", PARAM_URL);
         $mform->setDefault("prodwwwroot", envbarlib::getprodwwwroot());
 
-        if ($CFG->allowmultipledomains) {
+        if ($CFG->allowmultipledomains ?? false) {
             $mform->addElement(
                 'textarea',
                 'secondaryurls',
