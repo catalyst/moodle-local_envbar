@@ -326,7 +326,7 @@ CSS;
             }
 
             // Do not display on the production secondary urls!
-            if ($CFG->allowmultipledomains ?? false) {
+            if (!empty($CFG->allowmultipledomains)) {
                 $customdomains = explode("\n", self::getprodsecondaryurls());
                 foreach ($customdomains as $customdomain) {
                     if ($customdomain === $CFG->wwwroot) {
