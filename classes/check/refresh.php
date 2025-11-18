@@ -46,10 +46,8 @@ class refresh extends check {
      * @return result
      */
     public function get_result(): result {
-        global $CFG;
-
         // Do not perform check on production site.
-        if (envbarlib::getprodwwwroot() === $CFG->wwwroot) {
+        if (envbarlib::is_prod_env()) {
             return new result(result::NA, get_string('prodwwwroottext', 'local_envbar'), '');
         }
 

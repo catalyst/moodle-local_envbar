@@ -306,7 +306,7 @@ CSS;
      * @return string the additional top of body html
      */
     public static function get_inject_code() {
-        global $CFG, $PAGE;
+        global $PAGE;
 
         // During the initial install we don't want to break the admin gui.
         try {
@@ -321,18 +321,8 @@ CSS;
             self::update_wwwwroot_db($prodwwwroot);
 
             // Do not display on the production environment!
-            if ($prodwwwroot === $CFG->wwwroot) {
+            if (self::is_prod_env($prodwwwroot)) {
                 return '';
-            }
-
-            // Do not display on the production secondary urls!
-            if (!empty($CFG->allowmultipledomains)) {
-                $customdomains = explode("\n", self::getprodsecondaryurls());
-                foreach ($customdomains as $customdomain) {
-                    if ($customdomain === $CFG->wwwroot) {
-                        return '';
-                    }
-                }
             }
 
             // If the prodwwwroot is not set, only show the bar to admin users.
@@ -457,6 +447,37 @@ CSS;
         }
         // Not set - return empty string.
         return '';
+    }
+
+    /**
+     * Checks whether the current site is a production environment.
+     *
+     * @param string|null $prodwwwroot
+     * @return bool
+     */
+    public static function is_prod_env(?string $prodwwwroot = null): bool {
+        global $CFG;
+
+        if (!isset($prodwwwroot)) {
+            $prodwwwroot = self::getprodwwwroot();
+        }
+
+        // Compare against primary prod wwwroot.
+        if ($prodwwwroot === $CFG->wwwroot) {
+            return true;
+        }
+
+        // Compare against secondary prod wwwroots.
+        if (!empty($CFG->allowmultipledomains)) {
+            $customdomains = explode("\n", self::getprodsecondaryurls());
+            foreach ($customdomains as $customdomain) {
+                if ($customdomain === $CFG->wwwroot) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -679,10 +700,9 @@ CSS;
      */
     public static function config() {
         global $CFG, $FULLME;
-        $prodwwwroot = self::getprodwwwroot();
 
         // Do not modify config on the production environment!
-        if ($prodwwwroot === $CFG->wwwroot) {
+        if (self::is_prod_env()) {
             return;
         }
 
