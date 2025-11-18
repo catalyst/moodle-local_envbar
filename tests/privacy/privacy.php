@@ -111,4 +111,3 @@ function check_implements($component, $interface) {
 
         return $rcm->invoke($manager, $component, $interface);
 }
-

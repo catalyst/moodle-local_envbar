@@ -32,7 +32,6 @@ use stdClass;
  * Unit testing class for envbar_lib
  */
 final class lib_test extends \advanced_testcase {
-
     /**
      * Initial set up.
      */

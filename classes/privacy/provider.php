@@ -33,6 +33,7 @@ use core_privacy\local\legacy_polyfill;
  */
 class provider implements null_provider {
     use legacy_polyfill;
+
     /**
      * Get the language string identifier with the component's language
      * file to explain why this plugin stores no data.

@@ -43,4 +43,3 @@ if (strpos($redirecturl, '/') !== 0) {
     throw new \moodle_exception('accessdenied');
 }
 redirect($redirecturl);
-
