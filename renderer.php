@@ -32,7 +32,6 @@ use local_envbar\local\envbarlib;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class local_envbar_renderer extends plugin_renderer_base {
-
     /**
      * Render the envbar
      *
@@ -169,12 +168,16 @@ EOD;
         $canedit = has_capability('moodle/site:config', $systemcontext);
         if ($canedit && !empty($config->showconfiglink)) {
             if ($produrl) {
-                $editlink = html_writer::link($produrl.'/local/envbar/index.php',
-                        get_string('configureinprod', 'local_envbar'),
-                        ['target' => 'prod', 'class' => 'no-envbar-highlight']);
+                $editlink = html_writer::link(
+                    $produrl . '/local/envbar/index.php',
+                    get_string('configureinprod', 'local_envbar'),
+                    ['target' => 'prod', 'class' => 'no-envbar-highlight']
+                );
             } else {
-                $editlink = html_writer::link(new moodle_url('/local/envbar/index.php'),
-                        get_string('configurehere', 'local_envbar'));
+                $editlink = html_writer::link(
+                    new moodle_url('/local/envbar/index.php'),
+                    get_string('configurehere', 'local_envbar')
+                );
             }
             $showtext .= '<nobr> ' . $config->stringseparator . ' ' . $editlink . '</nobr>';
         }
@@ -253,8 +256,10 @@ EOD;
             // Get the url of the current page.
             $currentlink = $ME ?? '/';
             $debugtogglelink = html_writer::link(
-                new moodle_url('/local/envbar/toggle_debugging.php',
-                    ['redirect' => base64_encode($currentlink), 'sesskey' => sesskey()] ),
+                new moodle_url(
+                    '/local/envbar/toggle_debugging.php',
+                    ['redirect' => base64_encode($currentlink), 'sesskey' => sesskey()]
+                ),
                 envbarlib::get_debug_toggle_string()
             );
             $debugtext .= $this->get_debug_text_for_admin($config->stringseparator, $debugging, $debugtogglelink);
@@ -279,7 +284,7 @@ EOD;
         $debugtext = '';
         // Check if debug level and debug display is set on config.php.
         if (!isset($CFG->config_php_settings['debug']) && !isset($CFG->config_php_settings['debugdisplay'])) {
-            $debugtext .= '<nobr> ' . $stringseparator . ' ' . $debugging. ' ' . $debugtogglelink . '</nobr>';
+            $debugtext .= '<nobr> ' . $stringseparator . ' ' . $debugging . ' ' . $debugtogglelink . '</nobr>';
         } else {
             $debuggingdefinedstr = get_string('debuggingdefinedinconfig', 'local_envbar');
             // Remove link to toggle debugging.
@@ -288,7 +293,6 @@ EOD;
         }
         return $debugtext;
     }
-
 }
 
 /**
@@ -312,7 +316,6 @@ function local_envbar_title($match) {
 
 EOD;
     return $js;
-
 }
 
 /**

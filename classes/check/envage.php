@@ -37,7 +37,6 @@ use local_envbar\local\envbarlib;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class envage extends check {
-
     /**
      * A link to a place to action this
      *
@@ -46,7 +45,8 @@ class envage extends check {
     public function get_action_link(): ?\action_link {
         return new \action_link(
             new \moodle_url('/local/envbar/index.php'),
-            get_string('menuenvsettings', 'local_envbar'));
+            get_string('menuenvsettings', 'local_envbar')
+        );
     }
 
     /**
@@ -78,4 +78,3 @@ class envage extends check {
         return new result(result::INFO, $summary, '');
     }
 }
-

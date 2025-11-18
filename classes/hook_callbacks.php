@@ -34,7 +34,6 @@ use local_envbar\local\envbarlib;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class hook_callbacks {
-
     /**
      * This is the hook enables the plugin to insert a chunk of html at the start of the html document.
      *

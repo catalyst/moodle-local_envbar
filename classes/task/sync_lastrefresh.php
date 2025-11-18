@@ -34,7 +34,6 @@ use moodle_url;
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class sync_lastrefresh extends \core\task\scheduled_task {
-
     /**
      * Get task name
      */

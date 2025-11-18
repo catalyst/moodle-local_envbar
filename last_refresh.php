@@ -48,7 +48,6 @@ if ($data = $form->get_data()) {
     } else {
         redirect(new moodle_url('/local/envbar/last_refresh.php'), get_string('changessaved'));
     }
-
 }
 
 echo $OUTPUT->header();
@@ -58,4 +57,3 @@ if (isset($debug)) {
     echo "<pre>{$debug}</pre>";
 }
 echo $OUTPUT->footer();
-

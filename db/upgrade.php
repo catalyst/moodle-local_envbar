@@ -47,7 +47,6 @@ function xmldb_local_envbar_upgrade($oldversion) {
     }
 
     if ($oldversion < 2016041505) {
-
         $table = new xmldb_table('local_envbar');
         $field = new xmldb_field('colorbg', XMLDB_TYPE_CHAR, '64', null, XMLDB_NOTNULL, null, null, 'id');
         if ($dbman->field_exists($table, $field)) {
@@ -63,7 +62,6 @@ function xmldb_local_envbar_upgrade($oldversion) {
     }
 
     if ($oldversion < 2016041510) {
-
         // Define index idx_match (unique) to be dropped form local_envbar.
         $table = new xmldb_table('local_envbar');
         $index = new xmldb_index('idx_match', XMLDB_INDEX_UNIQUE, ['matchpattern']);
@@ -78,7 +76,6 @@ function xmldb_local_envbar_upgrade($oldversion) {
     }
 
     if ($oldversion < 2017062800) {
-
         $table = new xmldb_table('local_envbar');
         $field = new xmldb_field('lastrefresh', XMLDB_TYPE_INTEGER, '20', null, XMLDB_NOTNULL, null, '0', null);
         if (!$dbman->field_exists($table, $field)) {
@@ -105,7 +102,6 @@ function xmldb_local_envbar_upgrade($oldversion) {
     }
 
     if ($oldversion < 2025033100) {
-
         // Define field refreshschedule to be added to local_envbar.
         $table = new xmldb_table('local_envbar');
         $field = new xmldb_field('refreshschedule', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'lastrefresh');

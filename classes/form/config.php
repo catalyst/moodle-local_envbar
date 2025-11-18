@@ -36,7 +36,6 @@ use moodleform;
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class config extends moodleform {
-
     /**
      * {@inheritDoc}
      * @see moodleform::definition()
@@ -67,9 +66,9 @@ class config extends moodleform {
         }
         $datalisthtml .= '</datalist>';
 
-        $coloursregex = implode ('\\b|', $colours);
+        $coloursregex = implode('\\b|', $colours);
 
-        require_once($CFG->dirroot.'/local/envbar/renderer.php');
+        require_once($CFG->dirroot . '/local/envbar/renderer.php');
         $renderer = $PAGE->get_renderer('local_envbar');
 
         $mform = $this->_form;
@@ -139,11 +138,11 @@ class config extends moodleform {
             $mform->setDefault('prodtextcolour', 'white');
         }
         $mform->addRule(
-                'prodtextcolour',
-                get_string('colourerror', 'local_envbar'),
-                'regex',
-                '/#([a-f0-9]{3}){1,2}\b|' . $coloursregex . '\b/i',
-                'client'
+            'prodtextcolour',
+            get_string('colourerror', 'local_envbar'),
+            'regex',
+            '/#([a-f0-9]{3}){1,2}\b|' . $coloursregex . '\b/i',
+            'client'
         );
 
         $mform->addElement('text', 'prodbgcolour', get_string('prodbgcolour', 'local_envbar'), [
@@ -158,11 +157,11 @@ class config extends moodleform {
             $mform->setDefault('prodbgcolour', 'red');
         }
         $mform->addRule(
-                'prodbgcolour',
-                get_string('colourerror', 'local_envbar'),
-                'regex',
-                '/#([a-f0-9]{3}){1,2}\b|' . $coloursregex . '\b/i',
-                'client'
+            'prodbgcolour',
+            get_string('colourerror', 'local_envbar'),
+            'regex',
+            '/#([a-f0-9]{3}){1,2}\b|' . $coloursregex . '\b/i',
+            'client'
         );
 
         $secretkeygroup = [];
@@ -192,7 +191,6 @@ class config extends moodleform {
         $mform->addHelpButton('secretkeyg', 'secretkey', 'local_envbar');
 
         foreach ($records as $record) {
-
             $locked = false;
 
             // Local records set in config.php will be locked for editing.
@@ -329,7 +327,6 @@ class config extends moodleform {
             $mform->setDefault("colourbg[{$id}]", $record->colourbg);
             $mform->setDefault("refreshschedule[{$id}]", $record->refreshschedule);
             $mform->setDefault("delete[{$id}]", 0);
-
         }
 
         // Now we set up the same fields to repeat and add elements.
@@ -447,4 +444,3 @@ class config extends moodleform {
         $this->add_action_buttons();
     }
 }
-

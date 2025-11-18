@@ -29,7 +29,6 @@ use local_envbar\local\envbarlib;
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class refresh extends check {
-
     /**
      * A link to the page to handle this.
      *
@@ -91,6 +90,6 @@ class refresh extends check {
 
         $summary = userdate($nextrefresh, get_string('refreshedagoformat', 'local_envbar'));
 
-        return new result($status, $summary . ' - ' . envbarlib::get_next_refresh_as_text($nextrefresh) , '');
+        return new result($status, $summary . ' - ' . envbarlib::get_next_refresh_as_text($nextrefresh), '');
     }
 }

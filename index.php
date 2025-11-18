@@ -38,7 +38,6 @@ $gensecretkey = random_string(25);
 $form = new \local_envbar\form\config(null, ['records' => $records, 'gensecretkey' => $gensecretkey]);
 
 if ($data = $form->get_data()) {
-
     envbarlib::setprodwwwroot($data->prodwwwroot);
     if (!empty($CFG->allowmultipledomains)) {
         envbarlib::setprodsecondaryurls($data->secondaryurls);
@@ -50,11 +49,9 @@ if ($data = $form->get_data()) {
     }
 
     if (!empty($data->id)) {
-
         $keys = array_keys($data->id);
 
         foreach ($keys as $key => $value) {
-
             // Do not update the database with manual set config.php items.
             if (!empty($data->locked[$value])) {
                 continue;
@@ -111,4 +108,3 @@ if (isset($config->prodlastcheck)) {
 
 echo $form->display();
 echo $OUTPUT->footer();
-

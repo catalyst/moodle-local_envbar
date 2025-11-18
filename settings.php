@@ -29,105 +29,144 @@ use local_envbar\local\envbarlib;
 defined('MOODLE_INTERNAL') || die;
 
 if ($hassiteconfig) {
-
     $ADMIN->add('localplugins', new admin_category('envbar', get_string('pluginname', 'local_envbar')));
 
-    $envsettings = new admin_externalpage('local_envbar_settings',
+    $envsettings = new admin_externalpage(
+        'local_envbar_settings',
         get_string('menuenvsettings', 'local_envbar', null, true),
-        new moodle_url('/local/envbar/index.php'));
+        new moodle_url('/local/envbar/index.php')
+    );
 
-    $lastrefresh = new admin_externalpage('local_envbar_lastrefresh',
+    $lastrefresh = new admin_externalpage(
+        'local_envbar_lastrefresh',
         get_string('menulastrefresh', 'local_envbar', null, true),
-        new moodle_url('/local/envbar/last_refresh.php'));
+        new moodle_url('/local/envbar/last_refresh.php')
+    );
 
-    $presentation = new admin_settingpage('local_envbar_presentation',
-            get_string('menupresentation', 'local_envbar', null, true));
+    $presentation = new admin_settingpage(
+        'local_envbar_presentation',
+        get_string('menupresentation', 'local_envbar', null, true)
+    );
 
-    $presentation->add(new admin_setting_heading('local_envbar/envbarheading',
-            get_string('envbarheading', 'local_envbar', null, true),
-            ''));
+    $presentation->add(new admin_setting_heading(
+        'local_envbar/envbarheading',
+        get_string('envbarheading', 'local_envbar', null, true),
+        ''
+    ));
 
-    $presentation->add(new admin_setting_configtextarea('local_envbar/extracss',
-            get_string('extracss', 'local_envbar', null, true),
-            get_string('extracss_desc', 'local_envbar', null, true),
-            envbarlib::get_default_extra_css(),
-            PARAM_RAW,
-            50,
-            10));
+    $presentation->add(new admin_setting_configtextarea(
+        'local_envbar/extracss',
+        get_string('extracss', 'local_envbar', null, true),
+        get_string('extracss_desc', 'local_envbar', null, true),
+        envbarlib::get_default_extra_css(),
+        PARAM_RAW,
+        50,
+        10
+    ));
 
-    $presentation->add(new admin_setting_configtext('local_envbar/stringseparator',
-            get_string('stringseparator', 'local_envbar', null, true),
-            get_string('stringseparator_desc', 'local_envbar', null, true),
-            '-',
-            PARAM_CLEANHTML));
+    $presentation->add(new admin_setting_configtext(
+        'local_envbar/stringseparator',
+        get_string('stringseparator', 'local_envbar', null, true),
+        get_string('stringseparator_desc', 'local_envbar', null, true),
+        '-',
+        PARAM_CLEANHTML
+    ));
 
-    $presentation->add(new admin_setting_configcheckbox('local_envbar/showconfiglink',
-            get_string('showconfiglink', 'local_envbar', null, true),
-            get_string('showconfiglink_desc', 'local_envbar', null, true),
-            true));
+    $presentation->add(new admin_setting_configcheckbox(
+        'local_envbar/showconfiglink',
+        get_string('showconfiglink', 'local_envbar', null, true),
+        get_string('showconfiglink_desc', 'local_envbar', null, true),
+        true
+    ));
 
-    $presentation->add(new admin_setting_configcheckbox('local_envbar/showrefresh',
-            get_string('showrefresh', 'local_envbar', null, true),
-            get_string('showrefresh_desc', 'local_envbar', null, true),
-            true));
+    $presentation->add(new admin_setting_configcheckbox(
+        'local_envbar/showrefresh',
+        get_string('showrefresh', 'local_envbar', null, true),
+        get_string('showrefresh_desc', 'local_envbar', null, true),
+        true
+    ));
 
-    $presentation->add(new admin_setting_configcheckbox('local_envbar/showdebugging',
-            get_string('showdebugging', 'local_envbar', null, true),
-            get_string('showdebugging_desc', 'local_envbar', null, true),
-            true));
+    $presentation->add(new admin_setting_configcheckbox(
+        'local_envbar/showdebugging',
+        get_string('showdebugging', 'local_envbar', null, true),
+        get_string('showdebugging_desc', 'local_envbar', null, true),
+        true
+    ));
 
-    $presentation->add(new admin_setting_heading('local_envbar/menuheading',
-            get_string('menuheading', 'local_envbar', null, true),
-            ''));
+    $presentation->add(new admin_setting_heading(
+        'local_envbar/menuheading',
+        get_string('menuheading', 'local_envbar', null, true),
+        ''
+    ));
 
     // This setting defaults to false only in PHPUnit tests.
     // We do this because \core\user_menu_test::test_custom_user_menu() expect a certain number of user menu items.
     // The test doesn't account for plugins, future test may not account for this too.
-    $presentation->add(new admin_setting_configcheckbox('local_envbar/enablemenu',
-            get_string('enablemenu', 'local_envbar', null, true),
-            get_string('enablemenu_desc', 'local_envbar', null, true),
-            PHPUNIT_TEST ? false : true));
+    $presentation->add(new admin_setting_configcheckbox(
+        'local_envbar/enablemenu',
+        get_string('enablemenu', 'local_envbar', null, true),
+        get_string('enablemenu_desc', 'local_envbar', null, true),
+        PHPUNIT_TEST ? false : true
+    ));
 
-    $presentation->add(new admin_setting_heading('local_envbar/linksheading',
-            get_string('linksheading', 'local_envbar', null, true),
-            ''));
+    $presentation->add(new admin_setting_heading(
+        'local_envbar/linksheading',
+        get_string('linksheading', 'local_envbar', null, true),
+        ''
+    ));
 
-    $presentation->add(new admin_setting_configcheckbox('local_envbar/highlightlinks',
-            get_string('highlightlinks', 'local_envbar', null, true),
-            get_string('highlightlinks_desc', 'local_envbar', null, true),
-            true));
+    $presentation->add(new admin_setting_configcheckbox(
+        'local_envbar/highlightlinks',
+        get_string('highlightlinks', 'local_envbar', null, true),
+        get_string('highlightlinks_desc', 'local_envbar', null, true),
+        true
+    ));
 
-    $presentation->add(new admin_setting_configcheckbox('local_envbar/highlightlinksenvbar',
-            get_string('highlightlinksenvbar', 'local_envbar', null, true),
-            get_string('highlightlinksenvbar_desc', 'local_envbar', null, true),
-            true));
+    $presentation->add(new admin_setting_configcheckbox(
+        'local_envbar/highlightlinksenvbar',
+        get_string('highlightlinksenvbar', 'local_envbar', null, true),
+        get_string('highlightlinksenvbar_desc', 'local_envbar', null, true),
+        true
+    ));
 
-    $presentation->add(new admin_setting_heading('local_envbar/faviconheading',
-            get_string('faviconheading', 'local_envbar', null, true),
-            ''));
+    $presentation->add(new admin_setting_heading(
+        'local_envbar/faviconheading',
+        get_string('faviconheading', 'local_envbar', null, true),
+        ''
+    ));
 
-    $presentation->add(new admin_setting_configcheckbox('local_envbar/enablefaviconcolorize',
-            get_string('enablefaviconcolorize', 'local_envbar', null, true),
-            get_string('enablefaviconcolorize_desc', 'local_envbar', null, true),
-            true));
+    $presentation->add(new admin_setting_configcheckbox(
+        'local_envbar/enablefaviconcolorize',
+        get_string('enablefaviconcolorize', 'local_envbar', null, true),
+        get_string('enablefaviconcolorize_desc', 'local_envbar', null, true),
+        true
+    ));
 
-    $presentation->add(new admin_setting_heading('local_envbar/titleheading',
-            get_string('titleheading', 'local_envbar', null, true),
-            ''));
+    $presentation->add(new admin_setting_heading(
+        'local_envbar/titleheading',
+        get_string('titleheading', 'local_envbar', null, true),
+        ''
+    ));
 
-    $presentation->add(new admin_setting_configcheckbox('local_envbar/enabletitleprefix',
-            get_string('enabletitleprefix', 'local_envbar', null, true),
-            get_string('enabletitleprefix_desc', 'local_envbar', null, true),
-            true));
+    $presentation->add(new admin_setting_configcheckbox(
+        'local_envbar/enabletitleprefix',
+        get_string('enabletitleprefix', 'local_envbar', null, true),
+        get_string('enabletitleprefix_desc', 'local_envbar', null, true),
+        true
+    ));
 
-    $presentation->add(new admin_setting_heading('local_envbar/emailheading',
-            get_string('emailheading', 'local_envbar', null, true),
-            ''));
+    $presentation->add(new admin_setting_heading(
+        'local_envbar/emailheading',
+        get_string('emailheading', 'local_envbar', null, true),
+        ''
+    ));
 
-    $presentation->add(new admin_setting_configcheckbox('local_envbar/enableemailprefix',
-            get_string('enableemailprefix', 'local_envbar', null, true),
-            get_string('enableemailprefix_desc', 'local_envbar', null, true),
-            true));
+    $presentation->add(new admin_setting_configcheckbox(
+        'local_envbar/enableemailprefix',
+        get_string('enableemailprefix', 'local_envbar', null, true),
+        get_string('enableemailprefix_desc', 'local_envbar', null, true),
+        true
+    ));
 
     $ADMIN->add('envbar', $envsettings);
     $ADMIN->add('envbar', $lastrefresh);

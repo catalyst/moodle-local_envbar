@@ -42,7 +42,6 @@ use stdClass;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class envbarlib {
-
     /**
      * Constant string variable - <!-- ENVBARSTART -->
      *
@@ -355,7 +354,6 @@ CSS;
                     'lastrefresh' => get_config('local_envbar', 'prodlastcheck'),
                     'refreshschedule' => '',
                 ];
-
             }
 
             array_push($envs, (object) [
@@ -368,9 +366,8 @@ CSS;
 
             $renderer = $PAGE->get_renderer('local_envbar');
             return $renderer->render_envbar($match, true, $envs);
-
         } catch (Exception $e) {
-            debugging('Exception occured while injecting our code: '.$e->getMessage(), DEBUG_DEVELOPER);
+            debugging('Exception occured while injecting our code: ' . $e->getMessage(), DEBUG_DEVELOPER);
         }
 
         return '';
@@ -548,9 +545,9 @@ CSS;
         }
 
         // Ping prod with the env and lastrefresh.
-        $url = $prodwwwroot."/local/envbar/service/updatelastrefresh.php";
-        $params = "wwwroot=".urlencode($CFG->wwwroot)."&lastrefresh=".
-            urlencode($lastrefresh)."&secretkey=".urlencode(self::get_secret_key());
+        $url = $prodwwwroot . "/local/envbar/service/updatelastrefresh.php";
+        $params = "wwwroot=" . urlencode($CFG->wwwroot) . "&lastrefresh=" .
+            urlencode($lastrefresh) . "&secretkey=" . urlencode(self::get_secret_key());
         $options = [];
         if ($debug) {
             $options['debug'] = true;
@@ -562,7 +559,7 @@ CSS;
         try {
             $response = $curl->post($url, $params);
         } catch (Exception $e) {
-            mtrace("Error contacting production, error returned was: ".$e->getMessage());
+            mtrace("Error contacting production, error returned was: " . $e->getMessage());
         }
 
         $response = json_decode($response);
@@ -709,9 +706,11 @@ CSS;
         // If on admin pages, we do not want to do anything, as we need to avoid recursively adding config through GUI.
         // Too early to use $PAGE here.
         $cleanurl = new \moodle_url($FULLME);
-        if (strpos($cleanurl->out(), $CFG->wwwroot . '/admin/settings.php') !== false ||
+        if (
+            strpos($cleanurl->out(), $CFG->wwwroot . '/admin/settings.php') !== false ||
             strpos($cleanurl->out(), $CFG->wwwroot . '/admin/category.php') !== false ||
-            strpos($cleanurl->out(), $CFG->wwwroot . '/admin/search.php') !== false) {
+            strpos($cleanurl->out(), $CFG->wwwroot . '/admin/search.php') !== false
+        ) {
             return;
         }
 
@@ -773,8 +772,8 @@ CSS;
             $usermenu = new stdClass();
             $usermenu->itemtype = 'link';
             $usermenu->title = $env->showtext;
-            $pathurl = (new moodle_url( $PAGE->__get('url')))->get_path();
-            $currenturl = $env->matchpattern.$pathurl;
+            $pathurl = (new moodle_url($PAGE->__get('url')))->get_path();
+            $currenturl = $env->matchpattern . $pathurl;
             $usermenu->url = new moodle_url($currenturl);
             // Which env matches?
             if (self::is_match($here, $env->matchpattern)) {
@@ -887,7 +886,7 @@ CSS;
         }
 
         // If we can't find any future value within a reasonable time, fallback to the original.
-        return strtotime($refreshschedule, $lastrefresh);;
+        return strtotime($refreshschedule, $lastrefresh);
     }
 
     /**

@@ -35,7 +35,6 @@ use moodleform;
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class lastrefresh extends moodleform {
-
     /**
      * {@inheritDoc}
      * @see moodleform::definition()
@@ -70,4 +69,3 @@ class lastrefresh extends moodleform {
         $this->add_action_buttons();
     }
 }
-
