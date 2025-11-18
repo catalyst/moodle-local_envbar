@@ -58,8 +58,6 @@ class hook_callbacks {
      * @param extend_user_menu $hook
      */
     public static function extend_user_menu(extend_user_menu $hook): void {
-        global $CFG;
-
         $config = get_config('local_envbar');
         if (empty($config->enablemenu)) {
             return;
@@ -67,7 +65,7 @@ class hook_callbacks {
 
         $prodwwwroot = envbarlib::getprodwwwroot();
         // Do not display on the production environment!
-        if ($prodwwwroot === $CFG->wwwroot) {
+        if (envbarlib::is_prod_env($prodwwwroot)) {
             return;
         }
 

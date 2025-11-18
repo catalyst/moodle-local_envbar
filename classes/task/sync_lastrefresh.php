@@ -46,10 +46,8 @@ class sync_lastrefresh extends \core\task\scheduled_task {
      * Execute task
      */
     public function execute() {
-        global $CFG;
-
         // Are we on the production env?
-        if (envbarlib::getprodwwwroot() === $CFG->wwwroot) {
+        if (envbarlib::is_prod_env()) {
             envbarlib::updatelastcheck();
         } else {
             envbarlib::pingprod();
