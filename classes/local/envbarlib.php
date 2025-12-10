@@ -645,6 +645,27 @@ CSS;
     }
 
     /**
+     * Returns the email status string to be displayed.
+     *
+     * @return string
+     */
+    public static function get_email_status_string() {
+        global $CFG;
+
+        $email = get_string('emailstatus', 'local_envbar');
+        if (!empty($CFG->noemailever)) {
+            $status = get_string('emailnoemailever', 'local_envbar');
+        } else if ($CFG->divertallemailsto != '') {
+            $status = get_string('emaildiverted', 'local_envbar');
+        } else {
+            $status = get_string('emailon', 'local_envbar');
+        }
+        $email .= \html_writer::link(new moodle_url('/admin/settings.php?section=outgoingmailconfig'), $status);
+
+        return $email;
+    }
+
+    /**
      * Returns the debugging status string to be displayed.
      *
      * @return string

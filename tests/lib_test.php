@@ -262,16 +262,34 @@ final class lib_test extends \advanced_testcase {
         $this->resetAfterTest();
 
         $CFG->debug = 100;
-        $this->assertEquals('Debugging Off', envbarlib::get_debugging_status_string());
+        $this->assertEquals('Debug: Off', envbarlib::get_debugging_status_string());
 
         $CFG->debug = 'DEVELOPER';
-        $this->assertEquals('Debugging Off', envbarlib::get_debugging_status_string());
+        $this->assertEquals('Debug: Off', envbarlib::get_debugging_status_string());
 
         $CFG->debug = DEBUG_NORMAL;
-        $this->assertEquals('Debugging Off', envbarlib::get_debugging_status_string());
+        $this->assertEquals('Debug: Off', envbarlib::get_debugging_status_string());
 
         $CFG->debug = DEBUG_DEVELOPER;
-        $this->assertEquals('Debugging On', envbarlib::get_debugging_status_string());
+        $this->assertEquals('Debug: On', envbarlib::get_debugging_status_string());
+    }
+
+    /**
+     * Test get_email_status_string().
+     * @covers \local_envbar\local\envbarlib
+     */
+    public function test_get_email_status_string(): void {
+        global $CFG;
+
+        $this->resetAfterTest();
+
+        $this->assertStringContainsString('On', envbarlib::get_email_status_string());
+
+        $CFG->divertallemailsto = 'somewhere@example.com';
+        $this->assertStringContainsString('DIVERTED', envbarlib::get_email_status_string());
+
+        $CFG->noemailever = 1;
+        $this->assertStringContainsString('DISABLED', envbarlib::get_email_status_string());
     }
 
     /**

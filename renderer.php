@@ -186,6 +186,11 @@ EOD;
             $showtext .= $this->get_debug_text($config, $canedit);
         }
 
+        if (!empty($config->showemail)) {
+            $showtext .= ' ' . $config->stringseparator . ' ';
+            $showtext .= $this->get_email_text();
+        }
+
         if ($fixed) {
             $js .= local_envbar_favicon_js($match);
             $js .= local_envbar_title($match);
@@ -238,6 +243,15 @@ $ebend
 EOD;
 
         return $html;
+    }
+
+    /**
+     * Returns the email text to be displayed in the envbar.
+     *
+     * @return string Email status
+     */
+    protected function get_email_text(): string {
+        return envbarlib::get_email_status_string();
     }
 
     /**
