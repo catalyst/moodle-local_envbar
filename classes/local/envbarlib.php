@@ -793,7 +793,7 @@ CSS;
             $usermenu = new stdClass();
             $usermenu->itemtype = 'link';
             $usermenu->title = $env->showtext;
-            $pathurl = (new moodle_url($PAGE->__get('url')))->get_path();
+            $pathurl = (new moodle_url($PAGE->__get('url')))->out_as_local_url();
             $currenturl = $env->matchpattern . $pathurl;
             $usermenu->url = new moodle_url($currenturl);
             // Which env matches?
