@@ -64,7 +64,7 @@ class hook_callbacks {
 
         $prodwwwroot = envbarlib::getprodwwwroot();
         // Do not display on the production environment!
-        if (envbarlib::is_prod_env($prodwwwroot)) {
+        if (envbarlib::is_prod_env($prodwwwroot) && empty($config->enablemenuprod)) {
             return;
         }
 

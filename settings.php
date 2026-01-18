@@ -116,6 +116,13 @@ if ($hassiteconfig) {
         PHPUNIT_TEST ? false : true
     ));
 
+    $presentation->add(new admin_setting_configcheckbox(
+        'local_envbar/enablemenuprod',
+        get_string('enablemenuprod', 'local_envbar', null, true),
+        get_string('enablemenuprod_desc', 'local_envbar', null, true),
+        PHPUNIT_TEST ? false : true
+    ));
+
     $presentation->add(new admin_setting_heading(
         'local_envbar/linksheading',
         get_string('linksheading', 'local_envbar', null, true),
