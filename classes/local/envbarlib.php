@@ -804,6 +804,11 @@ CSS;
             }
             $navitem[] = $usermenu;
         }
+
+        // If not configured then don't show anything.
+        if (count($navitem) == 2) {
+            return [];
+        }
         return $navitem;
     }
 
