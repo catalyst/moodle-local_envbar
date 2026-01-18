@@ -799,6 +799,8 @@ CSS;
             // Which env matches?
             if (self::is_match($here, $env->matchpattern)) {
                 $usermenu->pix = 'e/tick';
+            } else {
+                $usermenu->pix = 'e/blank';
             }
             $navitem[] = $usermenu;
         }
