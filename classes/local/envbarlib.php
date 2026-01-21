@@ -800,7 +800,7 @@ CSS;
             if (self::is_match($here, $env->matchpattern)) {
                 $usermenu->pix = 'e/tick';
             } else {
-                $usermenu->pix = 'e/blank';
+                $usermenu->pix = 'spacer';
             }
             $navitem[] = $usermenu;
         }
