@@ -68,11 +68,8 @@ class hook_callbacks {
             return;
         }
 
-        // If the prodwwwroot is not set, only show the bar to admin users.
-        if (empty($prodwwwroot)) {
-            if (!has_capability('moodle/site:config', context_system::instance())) {
-                return;
-            }
+        if (!has_capability('moodle/site:config', context_system::instance())) {
+            return;
         }
 
         // Get items to add.
