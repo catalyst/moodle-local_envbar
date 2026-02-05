@@ -69,7 +69,7 @@ class hook_callbacks {
         }
 
         // If the prodwwwroot is not set, only show the bar to admin users.
-        if (empty($prodwwwroot)) {
+        if (empty($prodwwwroot) || envbarlib::is_prod_env($prodwwwroot)) {
             if (!has_capability('moodle/site:config', context_system::instance())) {
                 return;
             }
