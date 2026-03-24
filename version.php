@@ -21,7 +21,7 @@
  * @author    Brendan Heywood (brendan@catalyst-au.net)
  * @author    Grigory Baleevskiy (grigory@catalyst-au.net)
  * @author    Nicholas Hoobin <nicholashoobin@catalyst-au.net>
- * @copyright Catalyst IT
+ * @copyright 2016 Catalyst IT
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
