@@ -31,7 +31,7 @@ require_once($CFG->libdir . '/adminlib.php');
 
 global $DB;
 
-admin_externalpage_setup('local_envbar_lastrefresh');
+\core\setting\page\externalpage::setup(null, 'local_envbar_lastrefresh');
 
 $form = new \local_envbar\form\lastrefresh(null, array('prodlastcheck' => get_config('local_envbar', 'prodlastcheck')));
 

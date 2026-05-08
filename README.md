@@ -35,6 +35,7 @@ Branches
 | Moodle version     | Totara version   | Branch            | PHP  |
 |--------------------|------------------|-------------------|------|
 | Moodle 4.5+        |                  | MOODLE_405_STABLE | 8.1+ |
+|                    | Totara 20+       | VERSION4          | 8.2+ |
 | Moodle 3.10 to 4.4 | Totara 13 to 17  | VERSION3          | 7.3+ |
 | Moodle 3.3 to 3.9  | Totara 12        | VERSION2          | 7.0+ |
 | Moodle 2.7 to 3.2  | Totara 2.7 to 11 | VERSION1          | 5.5+ |
