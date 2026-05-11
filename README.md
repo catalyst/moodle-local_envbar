@@ -37,6 +37,7 @@ Branches
 | Moodle 2.7 to 3.2 | Totara 2.7 to 11 | VERSION1 | 5.5+ |
 | Moodle 3.3 to 3.9 | Totara 12        | VERSION2 | 7.0+ |
 | Moodle 3.10+      | Totara 13        | VERSION3 | 7.3+ |
+|                   | Totara 20+       | VERSION4 | 8.2+ |
 
 Installation
 ------------
