@@ -28,6 +28,11 @@ namespace local_envbar\local;
 
 use cache;
 use context_system;
+use core\output\pix_icon;
+use core\url;
+use core_user\output\user_action_menu\divider;
+use core_user\output\user_action_menu\header as user_menu_header;
+use core_user\output\user_action_menu\link as user_menu_link;
 use Exception;
 use moodle_url;
 use moodle_exception;
@@ -777,8 +782,6 @@ CSS;
      */
     public static function add_menuuser(): array {
         global $PAGE;
-        $userfirstmenu = new stdClass();
-        $userfirstmenu->itemtype = 'divider';
         $here = (new moodle_url('/'))->out();
         $prodwwwroot = self::getprodwwwroot();
         // Get prod Environment.
@@ -788,21 +791,18 @@ CSS;
         $envsprod[] = $prodenv;
         // Attached the list of Environments to the prod one.
         $envslistfinal = array_merge($envsprod, self::get_records());
-        $navitem[] = $userfirstmenu;
+        $navitem[] = new divider();
+        $navitem[] = new user_menu_header(get_string('menuenvsettings', 'local_envbar'));
         foreach ($envslistfinal as $env) {
-            $usermenu = new stdClass();
-            $usermenu->itemtype = 'link';
-            $usermenu->title = $env->showtext;
             $pathurl = (new moodle_url($PAGE->__get('url')))->out_as_local_url();
             $currenturl = $env->matchpattern . $pathurl;
-            $usermenu->url = new moodle_url($currenturl);
-            // Which env matches?
-            if (self::is_match($here, $env->matchpattern)) {
-                $usermenu->pix = 'e/tick';
-            } else {
-                $usermenu->pix = 'spacer';
-            }
-            $navitem[] = $usermenu;
+            $pix = self::is_match($here, $env->matchpattern) ? 'e/tick' : 'spacer';
+            $navitem[] = new user_menu_link(
+                new url($currenturl),
+                $env->showtext,
+                null,
+                new pix_icon($pix, ''),
+            );
         }
 
         // If not configured then don't show anything.
