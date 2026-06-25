@@ -78,7 +78,7 @@ class hook_callbacks {
         // Get items to add.
         $navitems = envbarlib::add_menuuser();
         foreach ($navitems as $item) {
-            $hook->add_navitem($item);
+            $hook->add_menu_item($item);
         }
     }
 
