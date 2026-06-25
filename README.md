@@ -1,4 +1,4 @@
-[![ci](https://github.com/catalyst/moodle-local_envbar/actions/workflows/ci.yml/badge.svg?branch=MOODLE_405_STABLE)](https://github.com/catalyst/moodle-local_envbar/actions/workflows/ci.yml?branch=MOODLE_405_STABLE)
+[![ci](https://github.com/catalyst/moodle-local_envbar/actions/workflows/ci.yml/badge.svg?branch=MOODLE_503_STABLE)](https://github.com/catalyst/moodle-local_envbar/actions/workflows/ci.yml?branch=MOODLE_503_STABLE)
 
 Environment bar - Moodle local plugin
 ====================
@@ -34,7 +34,8 @@ Branches
 --------
 | Moodle version     | Totara version   | Branch            | PHP  |
 |--------------------|------------------|-------------------|------|
-| Moodle 4.5+        |                  | MOODLE_405_STABLE | 8.1+ |
+| Moodle 5.3+        |                  | MOODLE_503_STABLE | 8.2+ |
+| Moodle 4.5 to 5.2  |                  | MOODLE_405_STABLE | 8.1+ |
 |                    | Totara 20+       | VERSION4          | 8.2+ |
 | Moodle 3.10 to 4.4 | Totara 13 to 17  | VERSION3          | 7.3+ |
 | Moodle 3.3 to 3.9  | Totara 12        | VERSION2          | 7.0+ |
