@@ -802,6 +802,8 @@ CSS;
                 $env->showtext,
                 null,
                 new pix_icon($pix, ''),
+                null,
+                ['no-envbar-highlight'],
             );
         }
 
