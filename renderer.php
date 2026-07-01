@@ -46,6 +46,8 @@ class local_envbar_renderer extends plugin_renderer_base {
         $config = get_config('local_envbar');
 
         $js = '';
+        $matchcolourbg = envbarlib::clean_css_string($match->colourbg);
+        $matchcolourtext = envbarlib::clean_css_string($match->colourtext);
         $css = <<<EOD
 .envbar {
     padding: 15px;
@@ -57,8 +59,8 @@ class local_envbar_renderer extends plugin_renderer_base {
 }
 .envbar.env{$match->id},
 .envbar.env{$match->id} a {
-    background: {$match->colourbg};
-    color: {$match->colourtext};
+    background: {$matchcolourbg};
+    color: {$matchcolourtext};
 }
 .envbar.env{$match->id} a {
     text-decoration: underline;
@@ -86,16 +88,20 @@ EOD;
         if (isset($config->highlightlinks) && $config->highlightlinks) {
             foreach ($envs as $env) {
                 if ($env->matchpattern != $match->matchpattern) {
+                    $envmatchpattern = envbarlib::clean_css_string($env->matchpattern);
+                    $envcolourbg = envbarlib::clean_css_string($env->colourbg);
+                    $envshowtext = envbarlib::clean_css_string($env->showtext);
+                    $envcolourtext = envbarlib::clean_css_string($env->colourtext);
                     $css .= <<<EOD
 
-a[href^="{$env->matchpattern}"]:not(.no-envbar-highlight) {
-    outline: 2px solid {$env->colourbg};
+a[href^="{$envmatchpattern}"]:not(.no-envbar-highlight) {
+    outline: 2px solid {$envcolourbg};
     padding-right: 4px;
 }
-a[href^="{$env->matchpattern}"]:not(.no-envbar-highlight)::before {
-    content: '{$env->showtext}';
-    background-color: {$env->colourbg};
-    color: {$env->colourtext};
+a[href^="{$envmatchpattern}"]:not(.no-envbar-highlight)::before {
+    content: '{$envshowtext}';
+    background-color: {$envcolourbg};
+    color: {$envcolourtext};
     padding: 1px 4px 1px 2px;
     margin-right: 4px;
 }
@@ -104,14 +110,15 @@ EOD;
             }
         }
         if (isset($config->highlightlinks) && !empty($config->highlightlinks) && empty($config->highlightlinksenvbar)) {
+            $matchmatchpattern = envbarlib::clean_css_string($match->matchpattern);
             $css .= <<<EOD
 
 /* Restricting the rules above for elements outside the envbar with :not() does not work reliably,
     so we revert the rules here. */
-.envbar a[href^="{$env->matchpattern}"] {
+.envbar a[href^="{$matchmatchpattern}"] {
     outline: inherit;
 }
-.envbar a[href^="{$env->matchpattern}"]::before {
+.envbar a[href^="{$matchmatchpattern}"]::before {
     content: '';
     background-color: transparent;
     padding: 0;
@@ -127,7 +134,7 @@ EOD;
         $class .= $fixed ? ' fixed' : '';
 
         // Show the configured env message.
-        $showtext = format_string(htmlspecialchars($match->showtext));
+        $showtext = format_string($match->showtext);
 
         // Just show the biggest time unit instead of 2.
         if (!isset($config->stringseparator)) {
@@ -269,12 +276,30 @@ EOD;
         if ($canedit) {
             // Get the url of the current page.
             $currentlink = $ME ?? '/';
-            $debugtogglelink = html_writer::link(
-                new moodle_url(
-                    '/local/envbar/toggle_debugging.php',
-                    ['redirect' => base64_encode($currentlink), 'sesskey' => sesskey()]
+            // Use a POST form rather than a GET link so the sesskey is not exposed in the
+            // URL (access logs, browser history, Referer headers).
+            $debugtogglelink = html_writer::tag(
+                'form',
+                html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()]) .
+                html_writer::empty_tag('input', [
+                    'type' => 'hidden',
+                    'name' => 'redirect',
+                    'value' => base64_encode($currentlink),
+                ]) .
+                html_writer::tag(
+                    'button',
+                    envbarlib::get_debug_toggle_string(),
+                    [
+                        'type' => 'submit',
+                        'style' => 'background:none;border:none;padding:0;margin:0;' .
+                            'color:inherit;text-decoration:underline;cursor:pointer;font:inherit;',
+                    ]
                 ),
-                envbarlib::get_debug_toggle_string()
+                [
+                    'method' => 'post',
+                    'action' => (new moodle_url('/local/envbar/toggle_debugging.php'))->out(false),
+                    'style' => 'display:inline;margin:0;padding:0;',
+                ]
             );
             $debugtext .= $this->get_debug_text_for_admin($config->stringseparator, $debugging, $debugtogglelink);
         } else {
@@ -345,6 +370,7 @@ function local_envbar_favicon_js($match) {
         return '';
     }
 
+    $colourbgjs = json_encode($match->colourbg);
     $js = <<<EOD
     var favicon;
     var links = document.getElementsByTagName("link");
@@ -368,7 +394,7 @@ function local_envbar_favicon_js($match) {
     canvas.width = 16;
     canvas.height = 16;
     var ctx = canvas.getContext('2d');
-    ctx.fillStyle = "{$match->colourbg}";
+    ctx.fillStyle = {$colourbgjs};
     ctx.fillRect(0, 0, 16, 16);
 
     // And then optionally if there was an existing favicon we add it back

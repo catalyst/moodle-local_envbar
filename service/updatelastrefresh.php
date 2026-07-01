@@ -32,16 +32,23 @@ define('NO_MOODLE_COOKIES', true);
 
 require_once(dirname(__FILE__) . '/../../../config.php');
 
-$wwwroot = required_param('wwwroot', PARAM_RAW);
+$wwwroot = required_param('wwwroot', PARAM_URL);
 $lastrefresh = required_param('lastrefresh', PARAM_INT);
 $secretkey = required_param('secretkey', PARAM_TEXT);
 $config = get_config('local_envbar');
 
 $response = [];
 
-if ($secretkey !== envbarlib::get_secret_key()) {
+if (!hash_equals(envbarlib::get_secret_key(), $secretkey)) {
     $response['result'] = 'secretkey_invalid';
     $response['message'] = get_string('secretkey_invalid', 'local_envbar');
+    echo json_encode($response);
+    die;
+}
+
+if (empty($wwwroot) || !preg_match('#^https?://#i', $wwwroot)) {
+    $response['result'] = 'wwwroot_invalid';
+    $response['message'] = get_string('wwwroot_invalid', 'local_envbar');
     echo json_encode($response);
     die;
 }

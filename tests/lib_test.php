@@ -424,4 +424,82 @@ final class lib_test extends \advanced_testcase {
         envbarlib::check_refresh_timestamp();
         $this->assertEquals($env->refreshschedule, get_config('local_envbar', 'nextrefreshasts'));
     }
+
+    /**
+     * Test that update_envbar() fires an envbar_updated event on both insert and update.
+     *
+     * @covers \local_envbar\local\envbarlib::update_envbar
+     * @covers \local_envbar\event\envbar_updated
+     */
+    public function test_update_envbar_triggers_event(): void {
+        $this->resetAfterTest(true);
+
+        $env = (object) [
+            'matchpattern'    => 'https://staging.moodle.edu',
+            'showtext'        => 'Staging environment',
+            'colourbg'        => 'red',
+            'colourtext'      => 'white',
+            'refreshschedule' => '',
+        ];
+
+        // Insert.
+        $sink = $this->redirectEvents();
+        $id = envbarlib::update_envbar(clone $env);
+        $events = $sink->get_events();
+        $sink->close();
+
+        $this->assertCount(1, $events);
+        $event = reset($events);
+        $this->assertInstanceOf(\local_envbar\event\envbar_updated::class, $event);
+        $this->assertEquals($id, $event->objectid);
+        $this->assertEquals('local_envbar', $event->objecttable);
+        $this->assertEquals('u', $event->crud);
+        $this->assertEquals(\context_system::instance(), $event->get_context());
+
+        // Update.
+        $env->id = $id;
+        $env->showtext = 'Staging environment updated';
+
+        $sink = $this->redirectEvents();
+        envbarlib::update_envbar(clone $env);
+        $events = $sink->get_events();
+        $sink->close();
+
+        $this->assertCount(1, $events);
+        $event = reset($events);
+        $this->assertInstanceOf(\local_envbar\event\envbar_updated::class, $event);
+        $this->assertEquals($id, $event->objectid);
+    }
+
+    /**
+     * Test that delete_envbar() fires an envbar_deleted event.
+     *
+     * @covers \local_envbar\local\envbarlib::delete_envbar
+     * @covers \local_envbar\event\envbar_deleted
+     */
+    public function test_delete_envbar_triggers_event(): void {
+        $this->resetAfterTest(true);
+
+        $env = (object) [
+            'matchpattern'    => 'https://staging.moodle.edu',
+            'showtext'        => 'Staging environment',
+            'colourbg'        => 'red',
+            'colourtext'      => 'white',
+            'refreshschedule' => '',
+        ];
+        $id = envbarlib::update_envbar(clone $env);
+
+        $sink = $this->redirectEvents();
+        envbarlib::delete_envbar($id);
+        $events = $sink->get_events();
+        $sink->close();
+
+        $this->assertCount(1, $events);
+        $event = reset($events);
+        $this->assertInstanceOf(\local_envbar\event\envbar_deleted::class, $event);
+        $this->assertEquals($id, $event->objectid);
+        $this->assertEquals('local_envbar', $event->objecttable);
+        $this->assertEquals('d', $event->crud);
+        $this->assertEquals(\context_system::instance(), $event->get_context());
+    }
 }

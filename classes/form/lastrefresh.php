@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy provider.
+ * Form for editing the last refresh time and pinging prod.
  *
  * @package   local_envbar
  * @author    Rossco Hellmans <rosscohellmans@catalyst-au.net>
@@ -50,6 +50,7 @@ class lastrefresh extends moodleform {
             "lastrefresh",
             get_string("lastrefresh", "local_envbar")
         );
+        $mform->setType('lastrefresh', PARAM_INT);
         $mform->setDefault("lastrefresh", $prodlastcheck);
 
         $mform->addElement(
@@ -57,6 +58,7 @@ class lastrefresh extends moodleform {
             "pingprod",
             get_string("pingprod", "local_envbar")
         );
+        $mform->setType('pingprod', PARAM_INT);
         $mform->addHelpButton('pingprod', 'pingprod', 'local_envbar');
 
         $mform->addElement(
@@ -64,6 +66,7 @@ class lastrefresh extends moodleform {
             "verbose",
             get_string("pingprodverbose", "local_envbar")
         );
+        $mform->setType('verbose', PARAM_INT);
         $mform->addHelpButton('verbose', 'pingprodverbose', 'local_envbar');
 
         $this->add_action_buttons();

@@ -33,6 +33,12 @@ if (!is_siteadmin()) {
     throw new \moodle_exception('accessdenied');
 }
 
+// Only accept POST so the sesskey is never exposed via a GET URL (access logs,
+// browser history, Referer headers).
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    throw new \moodle_exception('accessdenied');
+}
+
 require_sesskey();
 
 envbarlib::set_debug_config($CFG->debug);
