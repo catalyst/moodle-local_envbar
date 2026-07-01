@@ -36,6 +36,8 @@ use moodle_url;
 class sync_lastrefresh extends \core\task\scheduled_task {
     /**
      * Get task name
+     *
+     * @return string
      */
     public function get_name() {
         return get_string('pluginname', 'local_envbar');

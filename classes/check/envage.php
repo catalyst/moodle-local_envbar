@@ -63,7 +63,6 @@ class envage extends check {
         // This takes the lastrefresh timestamp and displays it similar to how it appears in
         // the headers such as 'Friday, 27 August 2021 - 144 days old.'.
         if ($lastrefresh && $lastrefresh > 0) {
-            $format = get_string('strftimedatemonthabbr', 'langconfig');
             $summary = userdate($lastrefresh, get_string('strftimedaydate', 'langconfig'));
 
             $show = format_time(time() - $lastrefresh);
