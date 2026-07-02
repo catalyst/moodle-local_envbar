@@ -127,3 +127,4 @@ $string['titleheading'] = 'Page title';
 $string['urlmatch'] = 'Non Production URL';
 $string['urlmatch_help'] = 'Add the address for your non prod site.<br />Note: You can use Regular Expressions to match your URL.<br />E.g. http://stage[1,2,3].example.com to match http://stage2.example.com<br />Note that following special characters will be escaped:<br /> / \ - . ? * ^ $';
 $string['urlmatchplaceholder'] = 'eg. staging';
+$string['wwwroot_invalid'] = 'The wwwroot provided was missing or not a valid URL.';
