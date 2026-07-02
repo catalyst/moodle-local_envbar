@@ -293,15 +293,20 @@ class config extends moodleform {
             );
 
             $targeturl = $record->matchpattern ?? '';
-            $mform->addElement(
-                "button",
-                "autofill",
-                get_string('gotolastrefresh', 'local_envbar'),
-                [
-                    "onclick" => "window.location.href='" .  rtrim($targeturl, '/') . "/local/envbar/last_refresh.php'",
-                    empty(trim($targeturl)) ? 'disabled' : 'enabled',
-                ]
-            );
+            if (empty(trim($targeturl))) {
+                $autofilllink = \html_writer::tag(
+                    'span',
+                    get_string('gotolastrefresh', 'local_envbar'),
+                    ['class' => 'btn btn-secondary disabled', 'aria-disabled' => 'true']
+                );
+            } else {
+                $autofilllink = \html_writer::link(
+                    rtrim($targeturl, '/') . '/local/envbar/last_refresh.php',
+                    get_string('gotolastrefresh', 'local_envbar'),
+                    ['class' => 'btn btn-secondary']
+                );
+            }
+            $mform->addElement('static', 'autofill', '', $autofilllink);
 
             $mform->addElement(
                 "advcheckbox",
