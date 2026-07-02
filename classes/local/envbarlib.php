@@ -143,6 +143,12 @@ CSS;
         $cache = cache::make('local_envbar', 'records');
         $cache->delete('records');
 
+        $event = \local_envbar\event\envbar_updated::create([
+            'context' => context_system::instance(),
+            'objectid' => $data->id,
+        ]);
+        $event->trigger();
+
         return $ret;
     }
 
@@ -159,6 +165,13 @@ CSS;
         $cache->delete('records');
 
         $ret = $DB->delete_records('local_envbar', ['id' => $id]);
+
+        $event = \local_envbar\event\envbar_deleted::create([
+            'context' => context_system::instance(),
+            'objectid' => $id,
+        ]);
+        $event->trigger();
+
         return $ret;
     }
 
