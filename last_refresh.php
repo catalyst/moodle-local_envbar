@@ -29,8 +29,6 @@ use local_envbar\local\envbarlib;
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 
-global $DB;
-
 admin_externalpage_setup('local_envbar_lastrefresh');
 
 $form = new \local_envbar\form\lastrefresh(null, ['prodlastcheck' => get_config('local_envbar', 'prodlastcheck')]);
@@ -54,6 +52,6 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('header_envbar', 'local_envbar'));
 echo $form->display();
 if (isset($debug)) {
-    echo "<pre>{$debug}</pre>";
+    echo '<pre>' . s($debug) . '</pre>';
 }
 echo $OUTPUT->footer();

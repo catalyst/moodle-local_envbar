@@ -38,6 +38,7 @@ class hook_callbacks {
      * This is the hook enables the plugin to insert a chunk of html at the start of the html document.
      *
      * @param before_standard_top_of_body_html_generation $hook
+     * @return void
      */
     public static function before_standard_top_of_body_html_generation(before_standard_top_of_body_html_generation $hook): void {
         global $CFG;
@@ -55,6 +56,7 @@ class hook_callbacks {
      * This is the hook enables the plugin to add one or more menu item.
      *
      * @param extend_user_menu $hook
+     * @return void
      */
     public static function extend_user_menu(extend_user_menu $hook): void {
         $config = get_config('local_envbar');
@@ -86,6 +88,7 @@ class hook_callbacks {
      * Listener for the after_config hook.
      *
      * @param \core\hook\after_config $hook
+     * @return void
      */
     public static function after_config(\core\hook\after_config $hook): void {
         global $CFG;

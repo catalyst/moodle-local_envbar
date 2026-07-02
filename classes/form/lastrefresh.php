@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy provider.
+ * Form for editing the last refresh time and pinging prod.
  *
  * @package   local_envbar
  * @author    Rossco Hellmans <rosscohellmans@catalyst-au.net>
