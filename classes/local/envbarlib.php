@@ -271,6 +271,19 @@ CSS;
     }
 
     /**
+     * Escapes a value for safe use inside an inline <style> block.
+     *
+     * Strips '</style' breakouts and escapes quotes/backslashes.
+     *
+     * @param string $value Untrusted value to be placed inside a <style> block.
+     * @return string Escaped value.
+     */
+    public static function clean_css_string($value) {
+        $value = str_ireplace('</style', '', (string) $value);
+        return addcslashes($value, "\"'\\");
+    }
+
+    /**
      * Helper inject function that is used to set the prodwwwroot in the database if it exists as a $CFG variable.
      * When refreshing the database to another staging/development server, if this config.php file omits this value
      * then we have saved it to the database.
