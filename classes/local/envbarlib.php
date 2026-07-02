@@ -80,6 +80,8 @@ class envbarlib {
 
     /**
      * Provides the default CSS code to be used in settings or when not configured.
+     *
+     * @return string Default extra CSS.
      */
     public static function get_default_extra_css() {
         return <<<CSS
@@ -579,7 +581,10 @@ CSS;
         $url = $prodwwwroot . "/local/envbar/service/updatelastrefresh.php";
         $params = "wwwroot=" . urlencode($CFG->wwwroot) . "&lastrefresh=" .
             urlencode($lastrefresh) . "&secretkey=" . urlencode(self::get_secret_key());
-        $options = [];
+        $options = [
+            'timeout' => 15,
+            'connecttimeout' => 5,
+        ];
         if ($debug) {
             $options['debug'] = true;
         }
@@ -589,13 +594,13 @@ CSS;
 
         try {
             $response = $curl->post($url, $params);
+            $response = json_decode($response);
         } catch (Exception $e) {
             mtrace("Error contacting production, error returned was: " . $e->getMessage());
+            $response = null;
         }
 
-        $response = json_decode($response);
-
-        if ($response->result === 'success') {
+        if (isset($response->result) && $response->result === 'success') {
             mtrace($response->message);
         } else {
             mtrace("Error contacting production, the lastrefresh was not updated");
