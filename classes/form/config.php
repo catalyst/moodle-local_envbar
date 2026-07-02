@@ -120,6 +120,7 @@ class config extends moodleform {
                     'cols' => 20,
                 ],
             );
+            $mform->setType('secondaryurls', PARAM_TEXT);
             $customdomains = envbarlib::getprodsecondaryurls();
             if (isset($customdomains)) {
                 $mform->setDefault('secondaryurls', $customdomains);
@@ -312,6 +313,7 @@ class config extends moodleform {
             );
 
             $mform->setType("id[{$id}]", PARAM_INT);
+            $mform->setType("delete[{$id}]", PARAM_INT);
             $mform->setType("matchpattern[{$id}]", PARAM_TEXT);
             $mform->addHelpButton("matchpattern[{$id}]", 'urlmatch', 'local_envbar');
             $mform->setType("showtext[{$id}]", PARAM_TEXT);
@@ -437,6 +439,9 @@ class config extends moodleform {
         $repeatoptions["repeatrefreshschedule"]["default"] = "";
         $repeatoptions["repeatrefreshschedule"]["type"] = PARAM_TEXT;
         $repeatoptions["repeatrefreshschedule"]["helpbutton"] = ['refreshschedule', 'local_envbar'];
+
+        $repeatoptions["repeatdelete"]["default"] = 0;
+        $repeatoptions["repeatdelete"]["type"] = PARAM_INT;
 
         $addstring = get_string("addfields", "local_envbar");
         $this->repeat_elements($repeatarray, $repeatnumber, $repeatoptions, "repeats", "envbar_add", 1, $addstring, false);
