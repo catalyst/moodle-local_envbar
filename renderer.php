@@ -127,7 +127,7 @@ EOD;
         $class .= $fixed ? ' fixed' : '';
 
         // Show the configured env message.
-        $showtext = format_string(htmlspecialchars($match->showtext));
+        $showtext = format_string($match->showtext);
 
         // Just show the biggest time unit instead of 2.
         if (!isset($config->stringseparator)) {
@@ -183,7 +183,7 @@ EOD;
         }
 
         if (!empty($config->showdebugging)) {
-            $showtext .= $this->get_debug_text($config, $canedit);
+            $showtext .= $this->get_debug_text($config, $canedit, $fixed);
         }
 
         if (!empty($config->showemail)) {
@@ -259,22 +259,41 @@ EOD;
      *
      * @param stdClass $config Config
      * @param bool $canedit Whether editing is allowed
+     * @param bool $fixed Whether this is the fixed envbar (true) or a preview inside a form (false)
      * @return string Debug text
      */
-    protected function get_debug_text(stdClass $config, bool $canedit): string {
+    protected function get_debug_text(stdClass $config, bool $canedit, bool $fixed = true): string {
         global $ME;
 
         $debugtext = '';
         $debugging = envbarlib::get_debugging_status_string();
-        if ($canedit) {
+        if ($canedit && $fixed) {
             // Get the url of the current page.
             $currentlink = $ME ?? '/';
-            $debugtogglelink = html_writer::link(
-                new moodle_url(
-                    '/local/envbar/toggle_debugging.php',
-                    ['redirect' => base64_encode($currentlink), 'sesskey' => sesskey()]
+            // Use a POST form rather than a GET link so the sesskey is not exposed in the
+            // URL (access logs, browser history, Referer headers).
+            $debugtogglelink = html_writer::tag(
+                'form',
+                html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()]) .
+                html_writer::empty_tag('input', [
+                    'type' => 'hidden',
+                    'name' => 'redirect',
+                    'value' => base64_encode($currentlink),
+                ]) .
+                html_writer::tag(
+                    'button',
+                    envbarlib::get_debug_toggle_string(),
+                    [
+                        'type' => 'submit',
+                        'style' => 'background:none;border:none;padding:0;margin:0;' .
+                            'color:inherit;text-decoration:underline;cursor:pointer;font:inherit;',
+                    ]
                 ),
-                envbarlib::get_debug_toggle_string()
+                [
+                    'method' => 'post',
+                    'action' => (new moodle_url('/local/envbar/toggle_debugging.php'))->out(false),
+                    'style' => 'display:inline;margin:0;padding:0;',
+                ]
             );
             $debugtext .= $this->get_debug_text_for_admin($config->stringseparator, $debugging, $debugtogglelink);
         } else {

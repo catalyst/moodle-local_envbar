@@ -80,6 +80,8 @@ class envbarlib {
 
     /**
      * Provides the default CSS code to be used in settings or when not configured.
+     *
+     * @return string Default extra CSS.
      */
     public static function get_default_extra_css() {
         return <<<CSS
@@ -143,6 +145,12 @@ CSS;
         $cache = cache::make('local_envbar', 'records');
         $cache->delete('records');
 
+        $event = \local_envbar\event\envbar_updated::create([
+            'context' => context_system::instance(),
+            'objectid' => $data->id,
+        ]);
+        $event->trigger();
+
         return $ret;
     }
 
@@ -159,6 +167,13 @@ CSS;
         $cache->delete('records');
 
         $ret = $DB->delete_records('local_envbar', ['id' => $id]);
+
+        $event = \local_envbar\event\envbar_deleted::create([
+            'context' => context_system::instance(),
+            'objectid' => $id,
+        ]);
+        $event->trigger();
+
         return $ret;
     }
 
@@ -553,7 +568,10 @@ CSS;
         $url = $prodwwwroot . "/local/envbar/service/updatelastrefresh.php";
         $params = "wwwroot=" . urlencode($CFG->wwwroot) . "&lastrefresh=" .
             urlencode($lastrefresh) . "&secretkey=" . urlencode(self::get_secret_key());
-        $options = [];
+        $options = [
+            'timeout' => 15,
+            'connecttimeout' => 5,
+        ];
         if ($debug) {
             $options['debug'] = true;
         }
@@ -563,13 +581,13 @@ CSS;
 
         try {
             $response = $curl->post($url, $params);
+            $response = json_decode($response);
         } catch (Exception $e) {
             mtrace("Error contacting production, error returned was: " . $e->getMessage());
+            $response = null;
         }
 
-        $response = json_decode($response);
-
-        if ($response->result === 'success') {
+        if (isset($response->result) && $response->result === 'success') {
             mtrace($response->message);
         } else {
             mtrace("Error contacting production, the lastrefresh was not updated");
@@ -766,11 +784,13 @@ CSS;
         }
 
         // Email subject prefix.
+        static $prefixapplied = false;
         if (get_config('local_envbar', 'enableemailprefix')) {
-            // Only do something if this config exists.
-            if (isset($CFG->emailsubjectprefix)) {
-                $origprefix = $CFG->emailsubjectprefix;
-                $CFG->emailsubjectprefix = '[' . substr($match->showtext, 0, 4) . '] ' . $origprefix;
+            // Only do something if this config exists, and we haven't already applied the
+            // prefix (config() may be called more than once per request/process).
+            if (isset($CFG->emailsubjectprefix) && !$prefixapplied) {
+                $CFG->emailsubjectprefix = '[' . substr($match->showtext, 0, 4) . '] ' . $CFG->emailsubjectprefix;
+                $prefixapplied = true;
             }
         }
     }
