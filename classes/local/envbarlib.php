@@ -797,11 +797,13 @@ CSS;
         }
 
         // Email subject prefix.
+        static $prefixapplied = false;
         if (get_config('local_envbar', 'enableemailprefix')) {
-            // Only do something if this config exists.
-            if (isset($CFG->emailsubjectprefix)) {
-                $origprefix = $CFG->emailsubjectprefix;
-                $CFG->emailsubjectprefix = '[' . substr($match->showtext, 0, 4) . '] ' . $origprefix;
+            // Only do something if this config exists, and we haven't already applied the
+            // prefix (config() may be called more than once per request/process).
+            if (isset($CFG->emailsubjectprefix) && !$prefixapplied) {
+                $CFG->emailsubjectprefix = '[' . substr($match->showtext, 0, 4) . '] ' . $CFG->emailsubjectprefix;
+                $prefixapplied = true;
             }
         }
     }
