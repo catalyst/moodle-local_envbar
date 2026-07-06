@@ -46,8 +46,6 @@ class local_envbar_renderer extends plugin_renderer_base {
         $config = get_config('local_envbar');
 
         $js = '';
-        $matchcolourbg = envbarlib::clean_css_string($match->colourbg);
-        $matchcolourtext = envbarlib::clean_css_string($match->colourtext);
         $css = <<<EOD
 .envbar {
     padding: 15px;
@@ -59,8 +57,8 @@ class local_envbar_renderer extends plugin_renderer_base {
 }
 .envbar.env{$match->id},
 .envbar.env{$match->id} a {
-    background: {$matchcolourbg};
-    color: {$matchcolourtext};
+    background: {$match->colourbg};
+    color: {$match->colourtext};
 }
 .envbar.env{$match->id} a {
     text-decoration: underline;
@@ -88,20 +86,16 @@ EOD;
         if (isset($config->highlightlinks) && $config->highlightlinks) {
             foreach ($envs as $env) {
                 if ($env->matchpattern != $match->matchpattern) {
-                    $envmatchpattern = envbarlib::clean_css_string($env->matchpattern);
-                    $envcolourbg = envbarlib::clean_css_string($env->colourbg);
-                    $envshowtext = envbarlib::clean_css_string($env->showtext);
-                    $envcolourtext = envbarlib::clean_css_string($env->colourtext);
                     $css .= <<<EOD
 
-a[href^="{$envmatchpattern}"]:not(.no-envbar-highlight) {
-    outline: 2px solid {$envcolourbg};
+a[href^="{$env->matchpattern}"]:not(.no-envbar-highlight) {
+    outline: 2px solid {$env->colourbg};
     padding-right: 4px;
 }
-a[href^="{$envmatchpattern}"]:not(.no-envbar-highlight)::before {
-    content: '{$envshowtext}';
-    background-color: {$envcolourbg};
-    color: {$envcolourtext};
+a[href^="{$env->matchpattern}"]:not(.no-envbar-highlight)::before {
+    content: '{$env->showtext}';
+    background-color: {$env->colourbg};
+    color: {$env->colourtext};
     padding: 1px 4px 1px 2px;
     margin-right: 4px;
 }
@@ -110,15 +104,14 @@ EOD;
             }
         }
         if (isset($config->highlightlinks) && !empty($config->highlightlinks) && empty($config->highlightlinksenvbar)) {
-            $matchmatchpattern = envbarlib::clean_css_string($match->matchpattern);
             $css .= <<<EOD
 
 /* Restricting the rules above for elements outside the envbar with :not() does not work reliably,
     so we revert the rules here. */
-.envbar a[href^="{$matchmatchpattern}"] {
+.envbar a[href^="{$env->matchpattern}"] {
     outline: inherit;
 }
-.envbar a[href^="{$matchmatchpattern}"]::before {
+.envbar a[href^="{$env->matchpattern}"]::before {
     content: '';
     background-color: transparent;
     padding: 0;
@@ -371,7 +364,6 @@ function local_envbar_favicon_js($match) {
         return '';
     }
 
-    $colourbgjs = json_encode($match->colourbg);
     $js = <<<EOD
     var favicon;
     var links = document.getElementsByTagName("link");
@@ -395,7 +387,7 @@ function local_envbar_favicon_js($match) {
     canvas.width = 16;
     canvas.height = 16;
     var ctx = canvas.getContext('2d');
-    ctx.fillStyle = {$colourbgjs};
+    ctx.fillStyle = "{$match->colourbg}";
     ctx.fillRect(0, 0, 16, 16);
 
     // And then optionally if there was an existing favicon we add it back
