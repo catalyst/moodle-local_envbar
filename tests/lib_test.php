@@ -50,7 +50,7 @@ class lib_test extends \advanced_testcase {
      *
      * @return array of test cases
      */
-    public function get_data_for_pattern_matching() {
+    public static function get_data_for_pattern_matching() {
         return array(
             array('https://my_moodle.com/', 'https://my_moodle.com/', true),
             array('https://my_moodle.com/', 'https://my_moodle.com', true),
