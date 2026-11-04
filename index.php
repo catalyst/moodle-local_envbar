@@ -93,6 +93,23 @@ if ($data = $form->get_data()) {
     redirect(new moodle_url('/local/envbar/index.php'));
 }
 
+// Pressing enter otherwise triggers the first submit button in the form, which adds a blank environment.
+$PAGE->requires->js_amd_inline("
+    document.querySelectorAll('form.mform').forEach((form) => {
+        form.addEventListener('keydown', (e) => {
+            const target = e.target;
+            if (e.key !== 'Enter' || target.tagName !== 'INPUT' || ['submit', 'button'].includes(target.type)) {
+                return;
+            }
+            const save = form.querySelector('#id_submitbutton');
+            if (save) {
+                e.preventDefault();
+                save.click();
+            }
+        });
+    });
+");
+
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('header_envbar', 'local_envbar'));
 echo get_string('help', 'local_envbar');
